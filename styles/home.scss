@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic");
-@import url('https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css');
+// @import url('https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css');
 
 html, body, #fullheight {
     min-height: 100% !important;
@@ -8,8 +8,8 @@ html, body, #fullheight {
 
 body {
     font-family: "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;
-    color: white;
-    background-color: black;
+    // color: white;
+    // background-color: black;
 }
 
 .text-vertical-center {
@@ -62,4 +62,27 @@ hr.small {
 
 .about {
     padding: 50px 0;
+}
+
+
+body {
+    font-family: 'Signika', sans-serif;
+    font-size: 16px;
+    line-height: 35px;
+    background-color: white;
+}
+
+.row-pad {
+    padding-top: 30px;
+    padding-bottom: 50px;
+}
+
+.clr-white {
+    color: #000;
+}
+
+h1 {
+    padding-top: 50px;
+    font-family: 'Signika', cursie;
+    padding-bottom: 20px;
 }

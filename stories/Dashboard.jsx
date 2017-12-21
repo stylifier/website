@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 
-class ShowCasePhotoSlider extends Component {
+class Dashboard extends Component {
   constructor(props) {
     super(props)
   }
@@ -12,16 +12,15 @@ class ShowCasePhotoSlider extends Component {
   }
 
   render() {
-    return(
+    return (
       <div>
-        {this.props.photos}
       </div>
     )
   }
 }
 
-ShowCasePhotoSlider.propTypes = {
-  photos: PropTypes.array
+Dashboard.propTypes = {
+  isLogedIn: PropTypes.bool
 }
 
-export default ShowCasePhotoSlider
+export default Dashboard

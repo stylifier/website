@@ -1,16 +1,16 @@
 {
-  "name": "react-simple-boilerplate",
+  "name": "stylifier-website",
   "version": "1.0.0",
-  "description": "Simple and lightweight Boilerplate for ReactJS projects",
+  "description": "website for stylifier",
   "scripts": {
     "lint": "eslint src",
-    "start": "node server.js",
+    "start": "webpack-dev-server",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/noahlotzer/react-simple-boilerplate.git"
+    "url": "https://github.com/stylifier/website.git"
   },
   "keywords": [
     "react",
@@ -21,8 +21,8 @@
     "edit",
     "webpack"
   ],
-  "author": "Noah-Jerome Lotzer <n.lotzer@neusta.de>",
-  "license": "MIT",
+  "author": "Ali Khoramshahi",
+  "license": "All rights reserved",
   "bugs": {
     "url": "https://github.com/noahlotzer/react-simple-boilerplate/issues"
   },
@@ -40,10 +40,12 @@
     "node-sass": "3.8.0",
     "sass-loader": "4.0.0",
     "style-loader": "0.13.1",
-    "webpack": "1.13.1",
-    "webpack-dev-server": "1.14.1"
+    "webpack": "^2.6.1",
+    "webpack-dev-server": "^2.4.5"
   },
   "dependencies": {
+    "bluebird": "^3.5.1",
+    "jquery": "^3.2.1",
     "moment": "^2.18.1",
     "pondjs": "^0.8.5",
     "react": "15.3.1",
@@ -52,7 +54,14 @@
     "react-bootstrap": "^0.30.8",
     "react-dom": "15.2.1",
     "react-native-analog-clock": "^0.2.1",
+    "react-responsive-carousel": "^3.1.30",
+    "react-router-dom": "^4.2.2",
+    "react-slick": "^0.15.4",
     "react-timeseries-charts": "^0.12.4",
+    "request": "^2.83.0",
+    "request-promise": "^4.2.2",
+    "slick-carousel": "^1.8.1",
+    "superagent": "^3.8.2",
     "victory": "^0.19.0"
   }
 }

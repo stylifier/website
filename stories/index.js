@@ -1,12 +1,9 @@
 import React from 'react';
 import { storiesOf } from '@kadira/storybook';
 require('../styles/application.scss')
-import ShowCasePhotoSlider from './ShowCasePhotoSlider';
+import Navbar from './Navbar'
 
-storiesOf('ShowCasePhotoSlider', module)
+storiesOf('Navbar', module)
   .add('just plane', () => (
-    <ShowCasePhotoSlider/>
-  ))
-  .add('with photo', () => (
-    <ShowCasePhotoSlider photos={['asd']}/>
+    <Navbar/>
   ))
