@@ -1,10 +1,14 @@
 import React, {Component} from 'react'
-import Navbar from '../stories/Navbar.jsx'
-import Dashboard from '../stories/Dashboard.jsx'
-import Landing from '../stories/Landing.jsx'
-import Login from '../stories/Login.jsx'
-import LogoutComponent from '../stories/LogoutComponent.jsx'
+import Navbar from '../components/Navbar.jsx'
+import Dashboard from '../pages/Dashboard.jsx'
+import Landing from '../pages/Landing.jsx'
+import Login from '../pages/Login.jsx'
+import Profile from '../pages/Profile.jsx'
+import Followers from '../pages/Followers.jsx'
+import LogoutComponent from '../components/Logout.jsx'
 import { Switch, Route } from 'react-router-dom'
+
+require('../styles/application.scss')
 
 let userToken
 
@@ -21,17 +25,28 @@ class App extends Component {
         <Route exact path='/' component={Home}/>
         <Route exact path='/login' component={login}/>
         <Route exact path='/logout' component={LogoutComponent}/>
+        <Route exact path='/profile/*' component={profile}/>
+        <Route exact path='/followers' component={followers}/>
+
       </Switch>
     )
   }
 }
 
-function footer(backgroundColor) {
-  backgroundColor = backgroundColor || 'black'
-  let color = backgroundColor === 'black' ? 'white' : 'black'
+function followers() {
   return (
-    <div id="footer" style={{borderTop: '1px solid black', fontSize: '16px', color: color, backgroundColor: backgroundColor}}>
-      &copy 2017 <a href="http://stylifier.com" target="_blank">stylifier.com</a> | All Rights Reserved
+    <div>
+      <Navbar isLogedIn={userToken ? true : false}/>
+      <Followers/>
+    </div>
+  )
+}
+
+function profile() {
+  return (
+    <div>
+      <Navbar isLogedIn={userToken ? true : false}/>
+      <Profile/>
     </div>
   )
 }
@@ -41,7 +56,6 @@ function login() {
     <div>
       <Navbar emptyRender={true}/>
       <Login/>
-      {footer('white')}
     </div>
   )
 }
@@ -51,7 +65,6 @@ function Home() {
     <div>
       <Navbar isLogedIn={userToken ? true : false}/>
       {userToken ? (<Dashboard/>) : (<Landing/>)}
-      {footer()}
     </div>
   )
 }

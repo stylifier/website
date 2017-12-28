@@ -8,13 +8,12 @@ module.exports = {
     './src/index.jsx'
   ],
   output: {
-    path: path.join(__dirname, 'build'),
+    path: path.join(__dirname, 'dist'),
     filename: 'bundle.js',
     publicPath: '/build/'
   },
   module: {
     loaders: [
-      { test: /\.coffee$/, loader: 'coffee-loader' },
       { test: /\.es6$/, loader: 'babel-loader' },
       { test: /\.jsx$/, loader: 'babel-loader'},
       // handle stylesheets required from node packages

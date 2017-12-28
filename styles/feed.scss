@@ -1,0 +1,64 @@
+.container {
+  position: relative;
+  width: inherit;
+}
+
+.image {
+  display: block;
+  height: auto;
+}
+
+.overlay {
+  // opacity: 0.0;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  // background-color: #595959;
+  overflow: hidden;
+  width: 100%;
+  height: 35px;
+  transition: .3s ease;
+}
+
+.containerItem:hover .overlay {
+  // opacity: 0.8;
+  // height: 50px;
+}
+
+.text {
+  white-space: nowrap;
+  color: black;
+  font-size: 1em;
+  position: absolute;
+  margin: 10;
+  margin-left: 10px;
+  overflow: hidden;
+  // top: 50%;
+  // left: 50%;
+  // transform: translate(-50%, -50%);
+  // -ms-transform: translate(-50%, -50%);
+}
+
+.text a{
+  padding-left: 10px;
+  padding-right: 10px;
+  color: white;
+  text-shadow: 0px 0px 10px #000000, 0px 0px 10px #000000, 0px 0px 10px #000000;
+  // color: black;
+  text-decoration: none;
+}
+
+.btn i{
+  text-shadow: 0px 0px 20px #000000, 0px 0px 20px #000000;
+}
+
+.box{
+	position: relative;
+	width: 100%;		/* desired width */
+}
+.box:before{
+	content: "";
+	display: block;
+	padding-top: 100%; 	/* initial ratio of 1:1*/
+}

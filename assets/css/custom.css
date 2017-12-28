@@ -37,9 +37,9 @@ h1 {
    NAVBAR  STYLES
  ============================================================ */
 .navbar-inverse {
-background-color: #21925C;
-border-color: #21925C;
-
+/* background-color: #21925C;*/
+  border-color: #21925C;
+  background: linear-gradient(to right,black, #565656)
 }
 
 .navbar-inverse .navbar-nav > li > a {
@@ -47,10 +47,9 @@ color: #FFF;
 
 }
 
-
 .navbar-inverse .navbar-brand {
 color: #FFF;
-font-size: 1.3em;
+font-size: 1.4em;
 }
 /* =============================================================
    HOME STYLES

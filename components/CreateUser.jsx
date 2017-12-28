@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react'
-import API from './API'
+import API from '../src/API'
 import { withRouter } from 'react-router-dom'
 
 class CreateUserComponent extends Component {
@@ -40,10 +40,9 @@ class CreateUserComponent extends Component {
     })
     .then((token) => {
       localStorage.setItem('user_token', token)
-      this.props.history.push('/newuser')
+      this.props.history.push('/profile-edit')
     })
-    .catch((e) => {
-      console.log(e)
+    .catch(() => {
       this.setState({registerDisabled: false})
     })
   }
@@ -59,7 +58,7 @@ class CreateUserComponent extends Component {
         <div className="form-group">
           <label htmlFor="username">User Name</label>
           <input pattern="^[a-zA-Z0-9]{3,25}$" className="form-control" value={this.state.username} onChange={e => this.setState({username: e.target.value})} id="username" placeholder="Enter your desired username" required/>
-          <small id="usernameHelp" className="form-text text-muted">Your Username can contain letters and numbers.</small>
+          <small id="usernameHelp" className="form-text text-muted">Your Username can only contain letters and numbers.</small>
         </div>
         <div className="form-group">
           <label htmlFor="email">Email Address</label>
