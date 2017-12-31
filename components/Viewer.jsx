@@ -60,27 +60,19 @@ class Viewer extends Component {
   }
 
   renderItems() {
-    let gridWidth =  '100%'
-    if(window.innerWidth > 1200) {
-      gridWidth = '33.33%'
-    }
-    else if(window.innerWidth > 768) {
-      gridWidth = '50%'
-    }
+    let gridWidth = this.props.smallRowCount ? 100 / this.props.smallRowCount + '%' : '100%'
 
-    if (isMobile) {
-      gridWidth =  '100%'
-    }
-
-    if (this.props.itemWidth) {
-      gridWidth = this.props.itemWidth
+    if(window.innerWidth > 1200 && !isMobile) {
+      gridWidth = this.props.largeRowCount ? 100 / this.props.largeRowCount + '%' : '33.33%'
+    } else if(window.innerWidth > 768 && !isMobile) {
+      gridWidth = this.props.mediomRowCount ? 100 / this.props.mediomRowCount + '%' : '50%'
     }
 
     const ItemView = this.props.ItemView
 
     return (
-      <StackGrid columnWidth={gridWidth} style={{
-        margin: 50
+      <StackGrid columnWidth={gridWidth} style={this.props.styleOverwrite || {
+        margin: 5, marginTop: 30
       }}>
         {(this.state.items && this.state.items.map((f, i) => (<ItemView {...this.props.ItemViewProps} onLoaded={() => this.resized()} key={i} base={f}/>)))}
       </StackGrid>
@@ -89,7 +81,7 @@ class Viewer extends Component {
 
   render() {
     return (
-      <div className="container">
+      <div>
         {this.renderItems()}
         <div style={{textAlign: 'center'}}>
           {this.state.loading ? (<i className="fa fa-circle-o-notch fa-spin fa-3x fa-fw" style={{marginBottom: 60, marginTop: 20}}></i>) : ''}
@@ -104,7 +96,10 @@ Viewer.propTypes = {
   ItemView: React.PropTypes.func,
   ItemViewProps: React.PropTypes.object,
   baseItems: React.PropTypes.array,
-  itemWidth: React.PropTypes.string
+  largeRowCount: React.PropTypes.number,
+  mediomRowCount: React.PropTypes.number,
+  smallRowCount: React.PropTypes.number,
+  styleOverwrite: React.PropTypes.object
 }
 
 

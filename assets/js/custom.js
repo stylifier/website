@@ -7,7 +7,7 @@
 
     100% Free To use For Personal And Commercial Use.
     IN EXCHANGE JUST GIVE US CREDITS AND TELL YOUR FRIENDS ABOUT US
-   
+
     ========================================================  */
 
 (function ($) {
@@ -16,19 +16,19 @@
         scrollAnimation_fun: function () {
 
             /*====================================
-             ON SCROLL ANIMATION SCRIPTS 
+             ON SCROLL ANIMATION SCRIPTS
             ======================================*/
-           
-            
+
+
             window.scrollReveal = new scrollReveal();
 
         },
         specification_fun: function () {
 
             /*====================================
-             SPECIFICATION  SCRIPTS 
+             SPECIFICATION  SCRIPTS
             ======================================*/
-           
+
             $('#specifications').carousel({
                 interval: 3000 //TIME IN MILLI SECONDS
             })
@@ -37,11 +37,12 @@
         scroll_fun: function () {
 
             /*====================================
-                 EASING PLUGIN SCRIPTS 
+                 EASING PLUGIN SCRIPTS
                 ======================================*/
             $(function () {
                 $('.move-me a').bind('click', function (event) { //just pass move-me in design and start scrolling
                     var $anchor = $(this);
+                    if(!$($anchor.attr('href')).offset()) return
                     $('html, body').stop().animate({
                         scrollTop: $($anchor.attr('href')).offset().top
                     }, 1000, 'easeInOutQuad');
@@ -51,7 +52,7 @@
 
         },
 
-      
+
         custom_fun:function()
         {
             /*====================================
@@ -64,8 +65,8 @@
         },
 
     }
-   
-   
+
+
     $(document).ready(function () {
         mainApp.scrollAnimation_fun();
         mainApp.specification_fun();
@@ -73,5 +74,3 @@
         mainApp.custom_fun();
     });
 }(jQuery));
-
-

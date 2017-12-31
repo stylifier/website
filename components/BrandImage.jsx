@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 require('../styles/feed.scss')
 
-class ProfileImage extends Component {
+class BrandImage extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -23,7 +23,7 @@ class ProfileImage extends Component {
   }
 
   render() {
-    const href = '/profile/' + this.props.base.username.toString()
+    const href = '/profile/' + this.props.base.name.toString()
     const img = this.props.base.avatar.toString()
     return (
       <div className="containerItem" style={{visibility: this.state.loaded ? 'visible' : 'hidden', margin: 20}}>
@@ -32,11 +32,11 @@ class ProfileImage extends Component {
           <img
             src={img}
             style={{
-              objectFit: 'cover',
+              objectFit: 'scale-down',
               width: '100%',
               height: '100%'
             }}
-            className="img-circle overlay"
+            className="overlay"
             onClick={() => this.likeClicked()}
             onLoad={() => {
               this.setState({loaded: true})
@@ -45,17 +45,14 @@ class ProfileImage extends Component {
           />
         </a>
         </div>
-        <div>
-          <div style={{textAlign: 'center', width: '100%'}}><a href={href}>{this.props.base.username}</a></div>
-        </div>
       </div>
     )
   }
 }
 
-ProfileImage.propTypes = {
+BrandImage.propTypes = {
   base: PropTypes.object,
   onLoaded: PropTypes.func
 }
 
-export default ProfileImage
+export default BrandImage

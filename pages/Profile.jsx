@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom'
 import API from '../src/API'
 import Promise from 'bluebird'
 
-class Login extends Component {
+class Profile extends Component {
   constructor(props) {
     super(props)
     this.api = new API()
@@ -53,7 +53,7 @@ class Login extends Component {
         <div id="home-sec" className="container" style={{padding: 50}}>
           <div className="row clr-white" style={{textAlign: 'center'}}>
             <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12" style={{textAlign: 'center'}}>
-              <img src={this.state.avatar} className="img-circle" style={{height: 350, objectFit: 'cover',width: 350}}/>
+              <img src={this.state.avatar} className="img-circle" style={{height: 300, objectFit: 'cover',width: 300}}/>
             </div>
             <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12" style={{textAlign: 'left'}}>
               <div>
@@ -65,15 +65,17 @@ class Login extends Component {
             </div>
           </div>
         </div>
-        <SimpleImageViewer username={this.state.username} ItemViewProps={{showUser: false, showLike: !isCurrentUser}}/>
+        <div>
+          <SimpleImageViewer username={this.state.username} ItemViewProps={{showUser: false, showLike: !isCurrentUser}}/>
+        </div>
         <Footer whiteBackground={true}/>
       </div>
     )
   }
 }
 
-Login.propTypes = {
+Profile.propTypes = {
   location: PropTypes.object
 }
 
-export default withRouter(Login)
+export default withRouter(Profile)

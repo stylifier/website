@@ -5,7 +5,6 @@ var rootPath = path.join(__dirname, '../', '../');
 module.exports = {
   devtool: 'eval',
   entry: [
-    'webpack-dev-server/client?http://localhost:8080',
     './src/index.jsx'
   ],
   output: {
@@ -25,11 +24,5 @@ module.exports = {
       // expose flux instance globally as $flux... must use coffe-loader if coffee-script
       { test: path.join(rootPath, 'frontend', 'javascripts', 'flux'), loader: 'expose?$flux!coffee-loader'}
     ]
-  },
-  stats: {
-    errorDetails: true
-  },
-  devServer: {
-    historyApiFallback: true
   }
 }

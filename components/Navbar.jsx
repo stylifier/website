@@ -1,5 +1,9 @@
 import React, {Component, PropTypes} from 'react';
 import API from '../src/API'
+import { withRouter } from 'react-router-dom'
+import FineUploaderTraditional from 'fine-uploader-wrappers'
+import Gallery from 'react-fine-uploader'
+import 'react-fine-uploader/gallery/gallery.css'
 require('../styles/Navbar.scss')
 
 class Navbar extends Component {
@@ -9,6 +13,8 @@ class Navbar extends Component {
 
     this.emptyRender = this.props.emptyRender || false
     this.state = {
+      showUploader: false,
+      searchPhrase: '',
       userInfo: JSON.parse(localStorage.getItem('user_info'))
     }
 
@@ -16,6 +22,35 @@ class Navbar extends Component {
     .then((info) => {
       localStorage.setItem('user_info', JSON.stringify(info))
       this.setState({userInfo: Object.assign({}, info)})
+    })
+
+    this.uploader = new FineUploaderTraditional({
+      options: {
+        chunking: {
+          enabled: true
+        },
+        deleteFile: {
+          enabled: false
+        },
+        request: {
+          endpoint: this.api.baseAddress + '/images',
+          customHeaders: {
+            Authorization: 'Bearer '+ this.api.userToken,
+            'X-Is-Public': false
+          }
+        },
+        retry: {
+          enableAuto: true
+        }
+      }
+    })
+
+    this.uploader.on('complete', (id, name, response) => {
+    })
+
+    this.uploader.on('onAllComplete', (succeeded, failed) => {
+      this.props.history.push('/profile/' + this.state.userInfo.username)
+      window.location.reload()
     })
   }
 
@@ -27,6 +62,8 @@ class Navbar extends Component {
 
   searchClicked(e){
     e.preventDefault()
+    this.props.history.push(`/search?username=${encodeURIComponent(this.state.searchPhrase)}&brand=${encodeURIComponent(this.state.searchPhrase)}`)
+    window.location.reload()
   }
 
   renderLoggedIn() {
@@ -38,12 +75,12 @@ class Navbar extends Component {
               <form className="form-inline" style={{margin: 9}} onSubmit={(e) => this.searchClicked(e)}>
                 <div className="input-group">
                   <span className="input-group-addon" id="basic-addon1">@</span>
-                  <input type="text" className="form-control" placeholder="brand/people" aria-label="Username" aria-describedby="basic-addon1"/>
+                  <input type="text" value={this.state.searchPhrase} onChange={e => this.setState({searchPhrase: e.target.value})} className="form-control" placeholder="Search brand or people" aria-label="Username" aria-describedby="basic-addon1"/>
                 </div>
               </form>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">messages</a>
+              <a className="nav-link" href="/messages">messages</a>
             </li>
 
             <li className="nav-item dropdown">
@@ -60,7 +97,11 @@ class Navbar extends Component {
               </div>
             </li>
             <li className="nav-item">
-                <a className="fa fa-plus fa-lg" style={{marginTop: 5,marginRight: 10, color: 'white'}}></a>
+                <a href="javascript:void(0)" onClick={(e) => {
+                  e.preventDefault()
+                  $(".navbar-collapse").collapse('hide');
+                  this.setState({showUploader:!this.state.showUploader})
+                }} className="fa fa-plus fa-lg" style={{marginTop: 5,marginRight: 10, color: 'white'}}></a>
             </li>
         </ul>
       </div>
@@ -102,6 +143,7 @@ class Navbar extends Component {
         </div>
       </div>
       <div style={{display: 'block', margin: '50px 0'}}/>
+      {this.state.showUploader && <Gallery uploader={ this.uploader } />}
       </div>
     )
   }
@@ -109,7 +151,10 @@ class Navbar extends Component {
 
 Navbar.propTypes = {
   isLogedIn: PropTypes.bool,
-  emptyRender: PropTypes.bool
+  emptyRender: PropTypes.bool,
+  history: React.PropTypes.shape({
+    push: React.PropTypes.func.isRequired
+  }).isRequired
 }
 
-export default Navbar
+export default withRouter(Navbar)

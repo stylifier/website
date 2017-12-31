@@ -22,7 +22,7 @@ class FeedViewer extends Component {
 
   render() {
     return (
-      <Viewer itemWidth="10%" fetcher={() => Promise.resolve([])} baseItems={this.state.followers} ItemView={ProfileImage} ItemViewProps={{showUser: true, showLike:true}}/>
+      <Viewer largeRowCount={8} mediomRowCount={5} smallRowCount={3.5} fetcher={() => Promise.resolve([])} baseItems={this.state.followers} ItemView={ProfileImage} ItemViewProps={{showUser: true, showLike:true}}/>
     )
   }
 }
