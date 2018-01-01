@@ -5,7 +5,7 @@
   "scripts": {
     "lint": "eslint src",
     "start": "webpack-dev-server",
-    "build": "webpack -p --config ./webpack.production.config.js"
+    "build": "webpack -p --config ./webpack.production.config.js --env production"
   },
   "repository": {
     "type": "git",

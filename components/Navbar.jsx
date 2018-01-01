@@ -15,7 +15,7 @@ class Navbar extends Component {
     this.state = {
       showUploader: false,
       searchPhrase: '',
-      userInfo: JSON.parse(localStorage.getItem('user_info'))
+      userInfo: JSON.parse(localStorage.getItem('user_info')) || {}
     }
 
     this.api.fetchUserInfo()

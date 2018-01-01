@@ -98,111 +98,12 @@ class API {
     return this.get(`/users/${username}/images`, from ? ['from=' + from] : [])
   }
 
-  fetchThreads(q, from, to) {
-    return Promise.resolve([{
-      "id": "9210dce8-25da-4275-a73a-1383b9774255",
-      "status": "OPEN",
-      "createdAt": "2017-12-26T18:54:24.921Z",
-      "from": {
-        "username": "MockUser",
-        "firstName": "mock",
-        "lastName": "user",
-        "followersCount": 1,
-        "createdAt": "2017-12-26T18:54:24.921Z",
-        "story": "Praesent mauris.",
-        "avatar": "https://mock.stylifier.com/images/9210dce8-25da-4275-a73a-1383b9774253.jpeg",
-        "rating": 4,
-        "styles": ["formal"],
-        "sponsors": {
-          "name": "acme",
-          "image": "https://mock.stylifier.com/images/9210dce8-25da-4275-a73a-1383b9774253.jpeg"
-        }
-      },
-      "to": {
-        "username": "anna",
-        "firstName": "anna",
-        "lastName": "smith",
-        "followersCount": 1,
-        "createdAt": "2017-12-26T18:54:24.921Z",
-        "story": "Praesent",
-        "avatar": "https://mock.stylifier.com/images/9210dce8-25da-4275-a73a-1383b9774253.jpeg",
-        "rating": 4,
-        "styles": ["formal"],
-        "sponsors": []
-      },
-      assets: [{
-        "id": "d42e0091-2c67-437b-987c-296661c0dc3e",
-        "createdAt": "2017-12-26T15:54:24.921Z",
-        "threadId": "9210dce8-25da-4275-a73a-1383b9774255",
-        "isPublic": false,
-        "owner": "tim"
-      },
-      {
-        "id": "8e0e5bea-f914-492a-8a2b-011bdbae7ae7",
-        "threadId": "9210dce8-25da-4275-a73a-1383b9774255",
-        "createdAt": "2017-12-26T18:54:24.921Z",
-        "isPublic": false,
-        "owner": "anna"
-      }]
-    },
-    {
-      "id": "9210dce8-25da-4275-a73a-1383b9774255",
-      "status": "OPEN",
-      "createdAt": "2017-12-26T18:54:24.921Z",
-      "to": {
-        "username": "MockUser",
-        "firstName": "mock",
-        "lastName": "user",
-        "followersCount": 1,
-        "createdAt": "2017-12-26T18:54:24.921Z",
-        "story": "Praesent mauris.",
-        "avatar": "https://mock.stylifier.com/images/9210dce8-25da-4275-a73a-1383b9774253.jpeg",
-        "rating": 4,
-        "styles": ["formal"],
-        "sponsors": {
-          "name": "acme",
-          "image": "https://mock.stylifier.com/images/9210dce8-25da-4275-a73a-1383b9774253.jpeg"
-        }
-      },
-      "from": {
-        "username": "anna",
-        "firstName": "anna",
-        "lastName": "smith",
-        "followersCount": 1,
-        "createdAt": "2017-12-26T18:54:24.921Z",
-        "story": "Praesent",
-        "avatar": "https://mock.stylifier.com/images/9210dce8-25da-4275-a73a-1383b9774253.jpeg",
-        "rating": 4,
-        "styles": ["formal"],
-        "sponsors": []
-      },
-      assets: [{
-        "id": "d42e0091-2c67-437b-987c-296661c0dc3e",
-        "createdAt": "2017-12-26T15:54:24.921Z",
-        "threadId": "9210dce8-25da-4275-a73a-1383b9774255",
-        "isPublic": false,
-        "owner": "tim"
-      },
-      {
-        "id": "8e0e5bea-f914-492a-8a2b-011bdbae7ae7",
-        "threadId": "9210dce8-25da-4275-a73a-1383b9774255",
-        "createdAt": "2017-12-26T18:54:24.921Z",
-        "isPublic": false,
-        "owner": "anna"
-      }]
-    }])
-
-    const params = []
-    if(from) params.push(from)
-    if(to) params.push(to)
-    return this.get(`/threads?q=${encodeURIComponent(q)}`, params)
+  fetchThreads(q, from) {
+    return this.get(`/threads?q=${encodeURIComponent(q)}`, from ? ['from=' + from] : [])
   }
 
-  fetchMessages(threadId, from, to) {
-    const params = []
-    if(from) params.push(from)
-    if(to) params.push(to)
-    return this.get(`/threads/${threadId}/messages`, params)
+  fetchMessages(threadId, from) {
+    return this.get(`/threads/${threadId}/messages`, from ? ['from=' + from] : [])
   }
 }
 

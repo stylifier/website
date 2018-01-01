@@ -38,8 +38,8 @@ class App extends Component {
 
 function messages() {
   return (
-    <div style={{maxHeight: '100%  !important', minHeight: '100%  !important', height: '100%  !important'}}>
-      <Navbar style={{maxHeight: '100%  !important', minHeight: '100%  !important', height: '100%  !important'}} isLogedIn={userToken ? true : false}/>
+    <div>
+      <Navbar isLogedIn={userToken ? true : false}/>
       <Messages/>
     </div>
   )

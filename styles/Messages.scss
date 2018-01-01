@@ -1,0 +1,19 @@
+.contact a {
+  text-decoration: none;
+  color: black
+}
+
+.selected{
+  color: white;
+}
+
+.selected a{
+  text-decoration: none;
+  color: white;
+  background-color: #0043c9;
+}
+
+.contact a:hover {
+  color: white;
+  background-color: #0043c9;
+}

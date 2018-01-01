@@ -49,7 +49,7 @@ class Feed extends Component {
         }}/>
         <div className="overlay">
           {this.props.showUser ? (<div className="text"><a href={href}>{this.props.base.owner}</a></div>) : ''}
-          {this.props.showLike ? (<a className="btn" onClick={() => this.likeClicked()} style={{float: 'right', margin: 2, color: this.state.heartColor}}>
+          {this.props.showLike ? (<a className="btn shadowed" onClick={() => this.likeClicked()} style={{float: 'right', margin: 2, color: this.state.heartColor}}>
             <i className={this.state.heartClass}></i>
           </a>) : ''}
         </div>

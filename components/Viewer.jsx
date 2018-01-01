@@ -71,11 +71,29 @@ class Viewer extends Component {
     const ItemView = this.props.ItemView
 
     return (
-      <StackGrid columnWidth={gridWidth} style={this.props.styleOverwrite || {
-        margin: 5, marginTop: 30
-      }}>
-        {(this.state.items && this.state.items.map((f, i) => (<ItemView {...this.props.ItemViewProps} onLoaded={() => this.resized()} key={i} base={f}/>)))}
-      </StackGrid>
+      <div style={{height: this.state.items.length > 0 ? 'inherit' : '0'}}>
+        <StackGrid
+          columnWidth={gridWidth}
+          style={this.props.styleOverwrite || {margin: 5, marginTop: 30}}
+          component={this.props.component}
+          gutterWidth={this.props.gutter}
+          gutterHeight={this.props.gutter}>
+
+          {
+            (this.state.items &&
+            this.state.items.map((f, i) => (
+              <ItemView {...this.props.ItemViewProps}
+                onLoaded={() => {
+                  this.props.onLoaded && this.props.onLoaded()
+                  this.resized()
+                }}
+                key={i}
+                base={f}/>
+              )
+            ))
+          }
+        </StackGrid>
+      </div>
     )
   }
 
@@ -99,7 +117,10 @@ Viewer.propTypes = {
   largeRowCount: React.PropTypes.number,
   mediomRowCount: React.PropTypes.number,
   smallRowCount: React.PropTypes.number,
-  styleOverwrite: React.PropTypes.object
+  styleOverwrite: React.PropTypes.object,
+  component: React.PropTypes.string,
+  onLoaded: React.PropTypes.func,
+  gutter: React.PropTypes.number
 }
 
 

@@ -10,51 +10,81 @@ class Messages extends Component {
     super(props)
     this.api = new API()
 
-    this.oldestFetchDate = (new Date()).toISOString()
+    this.oldestFetchedThread = (new Date()).toISOString()
+    this.oldestFetchedMessage = (new Date()).toISOString()
 
-    const parts = this.props.location.pathname.split('/')
+    this.resized = this.resized.bind(this);
 
+    this.state = {
+      username:  '',
+      messages: [],
+      threads: [],
+      query: '',
+      threadId: this.props.location.pathname.split('/')[2],
+      currentUser: {}
+    }
+  }
+
+  setURLElements(location) {
     const args = {}
-    this.props.location.search
+    location.search
     .substring(1)
     .split('&')
     .forEach(i => args[i.split('=')[0]] = i.split('=')[1])
 
-    this.state = {
-      username:  parts[1],
-      threads: [],
+    this.setState({
       query: args.query ? decodeURIComponent(args.query) : '',
-      threadId: this.props.location.pathname.split('/')[2]
-    }
-    this.currentUser = {}
-
-    this.getCurrentUser()
-    .then((user) => {
-      this.setState({currentUser: Object.assign({}, user)})
-      return this.api.fetchThreads(this.state.query, this.oldestFetchDate)
+      threadId: location.pathname.split('/')[2]
     })
-    .then(() => this.fetchThreads())
+
+    if(this.state.threadId) {
+      while(this.state.messages.length > 0)
+        this.state.messages.pop()
+
+      this.fetchMessages()
+    }
   }
 
-  fetchThreads() {
-    return this.api.fetchThreads(this.state.query, this.oldestFetchDate)
-    .then((users) => {
-      this.oldestFetchDate = users
+  fetchMessages() {
+    return this.api.fetchMessages(this.state.threadId, this.oldestFetchedMessage)
+    .then((messages) => {
+      this.oldestFetchedMessage = messages
       .map((i) => i.createdAt)
       .sort((a, b) => a < b).pop()
 
-      this.state.users.push(...users)
-      this.setState({users: this.state.users})
+      this.state.messages.push(...messages)
+      this.setState({messages: this.state.messages})
+    })
+  }
 
-      setTimeout(() => this.forceUpdate(), 100)
-      setTimeout(() => this.forceUpdate(), 200)
+  fetchThreads() {
+    return this.api.fetchThreads(this.state.query, this.oldestFetchedThread)
+    .then((threads) => {
+      this.oldestFetchedThread = threads
+      .map((i) => i.createdAt)
+      .sort((a, b) => a < b).pop()
+
+      this.state.threads.push(...threads)
+      this.setState({threads: this.state.threads})
     })
   }
 
   refreshStats() {
   }
 
+  componentDidMount() {
+    window.addEventListener('resize', this.resized)
+
+    this.setURLElements(location)
+    this.unlisten = this.props.history.listen((location) => this.setURLElements(location))
+
+    this.getCurrentUser()
+    .then((user) => this.setState({currentUser: Object.assign({}, user)}))
+  }
+
   componentWillUnmount() {
+    this.unlisten()
+    window.removeEventListener('resize', this.resized)
   }
 
   getCurrentUser() {
@@ -67,25 +97,49 @@ class Messages extends Component {
 
   searchClicked(e) {
     e.preventDefault()
+
+    while(this.state.threads.length > 0)
+      this.state.threads.pop()
+
+    this.oldestFetchedThread = (new Date()).toISOString()
+
+    this.setState({threads: this.state.threads})
+    this.fetchThreads()
+    .then(() => this.forceUpdate())
+    this.props.history.push('/messages' + (this.state.threadId ? `/${this.state.threadId}` : '') + `?query=${encodeURIComponent(this.state.query)}`)
   }
 
+  resized() {
+    this.forceUpdate()
+  }
+
+  renderMessages() {
+    return (<div className="col-lg-9 col-md-8 col-sm-9 col-xs-12" style={{padding: 0}}>
+      <MessagingView threadId={this.state.threadId} messages={this.state.messages} fetcher={() => this.fetchMessages()} currentUser={this.state.currentUser}/>
+    </div>)
+  }
+
+  renderContacts() {
+    return (<div className="col-lg-3 col-md-4 col-sm-3 col-xs-12" style={{padding: 0, margin: 0, height: '100%', maxHeight: '100%'}}>
+      <form className="form-inline" style={{marginTop: 5,marginBottom: 0, width: '100%'}} onSubmit={(e) => this.searchClicked(e)}>
+        <div className="input-group" style={{width: '100%'}}>
+          <input type="text" value={this.state.query} onChange={e => this.setState({query: e.target.value})} className="form-control" placeholder="Search people" aria-label="Username" aria-describedby="basic-addon1"/>
+          <span className="btn input-group-addon" id="basic-addon1" onClick={(e) => this.searchClicked(e)}><i className="fa fa-search"></i></span>
+        </div>
+      </form>
+      <ThreadsViewer threadId={this.state.threadId} currentUser={this.state.currentUser} threads={this.state.threads} query={this.state.query} fetcher={() => this.fetchThreads()}/>
+    </div>)
+  }
   render() {
+    let showContacts = window.innerWidth < 768 && this.state.threadId? false : true
+    let showMessages = window.innerWidth < 768 && !this.state.threadId ? false : true
     return (
       <div>
-        <div id="home-sec" className="container" style={{padding: 0, margin: 0, width: '100%'}}>
+        <div id="home-sec" className="container" style={{padding: 0, margin: 0, width: '100%', height: 'calc(100% - 50px)', maxHeight: 'calc(100% - 400px) !important'}}>
           <div className="row clr-white" style={{padding: 0, margin: 0, width: '100%'}}>
-            <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12" style={{padding: 0, margin: 0}}>
-              <form className="form-inline" style={{marginTop: 9, width: '100%'}} onSubmit={(e) => this.searchClicked(e)}>
-                <div className="input-group" style={{width: '100%'}}>
-                  <span className="input-group-addon" id="basic-addon1">@</span>
-                  <input type="text" value={this.state.query} onChange={e => this.setState({query: e.target.value})} className="form-control" placeholder="Search brand or people" aria-label="Username" aria-describedby="basic-addon1"/>
-                </div>
-              </form>
-              <ThreadsViewer/>
-            </div>
-            <div className="col-lg-9 col-md-9 col-sm-12 col-xs-12">
-              <MessagingView threadId={this.state.threadId}/>
-            </div>
+            {showContacts ? this.renderContacts() : ''}
+
+            {showMessages ? this.renderMessages() : ''}
           </div>
         </div>
       </div>
@@ -94,7 +148,11 @@ class Messages extends Component {
 }
 
 Messages.propTypes = {
-  location: PropTypes.object
+  location: PropTypes.object,
+  history: React.PropTypes.shape({
+    push: React.PropTypes.func.isRequired,
+    listen: React.PropTypes.func.isRequired
+  }).isRequired
 }
 
 export default withRouter(Messages)

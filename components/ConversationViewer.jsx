@@ -1,10 +1,10 @@
 import React, {Component} from 'react'
 import { withRouter } from 'react-router-dom'
-import ThreadItem from './ThreadItem.jsx'
+import ConversationItem from './ConversationItem.jsx'
 import Viewer from './Viewer.jsx'
 
 
-class ThreadsViewer extends Component {
+class Conversation extends Component {
   constructor(props) {
     super(props)
   }
@@ -12,7 +12,7 @@ class ThreadsViewer extends Component {
   render() {
     return (
       <div>
-        <div style={{maxHeight: 'calc(100% - 40px)', overflowY: 'auto'}}>
+        <div style={{maxHeight: '100%', overflowY: 'auto'}}>
           <Viewer
             className="btn-group-vertical"
             role="group"
@@ -21,16 +21,16 @@ class ThreadsViewer extends Component {
             smallRowCount={1}
             styleOverwrite={{margin: 0}}
             fetcher={() => this.props.fetcher()}
-            baseItems={this.props.threads}
-            component="div"
-            gutter={0}
-            ItemView={ThreadItem}
+            baseItems={this.props.messages}
+            ItemView={ConversationItem}
             ItemViewProps={{
-              onClick:(i) => {
-                this.props.history.push('/messages/' + i.id + (this.props.query ? `?query=${encodeURIComponent(this.props.query)}` : ''))
-              },
               currentUserUsername: this.props.currentUser.username,
-              activeThreadId: this.props.threadId
+              onUpdateParent: () => {
+                this.forceUpdate()
+                setTimeout(() => this.forceUpdate(), 500)
+                setTimeout(() => this.forceUpdate(), 1000)
+                setTimeout(() => this.forceUpdate(), 1500)
+              }
             }}
           />
         </div>
@@ -39,15 +39,14 @@ class ThreadsViewer extends Component {
   }
 }
 
-ThreadsViewer.propTypes = {
-  threads: React.PropTypes.array,
+Conversation.propTypes = {
+  messages: React.PropTypes.array,
   currentUser: React.PropTypes.object,
   history: React.PropTypes.shape({
     push: React.PropTypes.func.isRequired
   }).isRequired,
   query: React.PropTypes.string,
-  threadId: React.PropTypes.string,
   fetcher: React.PropTypes.func
 }
 
-export default withRouter(ThreadsViewer)
+export default withRouter(Conversation)
