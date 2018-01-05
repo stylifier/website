@@ -38,17 +38,14 @@ class Feed extends Component {
   }
 
   render() {
-    const apiUrl = 'https://mock.stylifier.com/'
-    const href = '/profile/' + this.props.base.owner.toString()
-    const img = apiUrl + 'images/' + this.props.base.id.toString() + '_thumbnail.jpeg'
     return (
       <div className="containerItem" style={{visibility: this.state.loaded ? 'visible' : 'hidden'}}>
-        <img src={img} style={{width: '100%'}} onClick={() => this.likeClicked()} onLoad={() => {
+        <img src={this.props.base.images.standard_resolution.url} style={{width: '100%'}} onClick={() => this.likeClicked()} onLoad={() => {
           this.setState({loaded: true})
           this.props.onLoaded()
         }}/>
         <div className="overlay">
-          {this.props.showUser ? (<div className="text"><a href={href}>{this.props.base.owner}</a></div>) : ''}
+          {this.props.showUser ? (<div className="text"><a href={'/profile/' + this.props.base.user.username}>{this.props.base.user.username}</a></div>) : ''}
           {this.props.showLike ? (<a className="btn shadowed" onClick={() => this.likeClicked()} style={{float: 'right', margin: 2, color: this.state.heartColor}}>
             <i className={this.state.heartClass}></i>
           </a>) : ''}

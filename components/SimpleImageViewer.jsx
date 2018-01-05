@@ -2,24 +2,23 @@ import React, {Component} from 'react'
 import SimpleImage from './SimpleImage.jsx'
 import Viewer from './Viewer.jsx'
 import API from '../src/API'
+import Promise from 'bluebird'
 
 class SimpleImageViewer extends Component {
   constructor(props) {
     super(props)
     this.api = new API()
-    this.oldestFetchDate = (new Date()).toISOString()
-
     this.fetchFeeds()
   }
 
   fetchFeeds() {
-    return this.api.fetchUserImages(this.props.username, this.oldestFetchDate)
-    .then((feeds) => {
-      this.oldestFetchDate = feeds
-      .map((i) => i.createdAt)
-      .sort((a, b) => a < b).pop()
+    if(this.pagination === '')
+      return Promise.resolve([])
 
-      return feeds
+    return this.api.fetchUserMedia(this.props.username, this.pagination)
+    .then((res) => {
+      this.pagination = res.pagination
+      return res.data
     })
   }
 

@@ -40,7 +40,7 @@ class CreateUserComponent extends Component {
     })
     .then((token) => {
       localStorage.setItem('user_token', token)
-      this.props.history.push('/profile-edit')
+      this.props.history.push('/')
     })
     .catch(() => {
       this.setState({registerDisabled: false})

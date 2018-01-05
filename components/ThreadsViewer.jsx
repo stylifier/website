@@ -7,9 +7,11 @@ import Viewer from './Viewer.jsx'
 class ThreadsViewer extends Component {
   constructor(props) {
     super(props)
+    this.state = {}
   }
 
   render() {
+    console.log(this.state);
     return (
       <div>
         <div style={{maxHeight: 'calc(100% - 40px)', overflowY: 'auto'}}>
@@ -21,10 +23,10 @@ class ThreadsViewer extends Component {
             smallRowCount={1}
             styleOverwrite={{margin: 0}}
             fetcher={() => this.props.fetcher()}
-            baseItems={this.props.threads}
             component="div"
             gutter={0}
             ItemView={ThreadItem}
+            ref={ref => !this.state.viewer && this.setState({viewer: ref})}
             ItemViewProps={{
               onClick:(i) => {
                 this.props.history.push('/messages/' + i.id + (this.props.query ? `?query=${encodeURIComponent(this.props.query)}` : ''))

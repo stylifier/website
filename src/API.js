@@ -61,49 +61,43 @@ class API {
   }
 
   register(info) {
-    const fn = info.fullname.trim()
-    const lastName = fn.split(' ').length > 1 ? fn.split(' ')[fn.split(' ').length - 1] : ''
-    const firstName = fn.split(' ').length > 1 ? fn.split(' ').slice(0, fn.split(' ').length - 1).join(' ') : fn
-
-    return this.post('/register', {
-      username: info.username,
-      password: info.password,
-      lastName: lastName,
-      firstName: firstName,
-      email: info.email
-    })
+    return this.post('/register', info)
   }
 
-  fetchBrands(q, from) {
-    return this.get(`/brands?q=${encodeURIComponent(q)}`, from ? ['from=' + from] : [])
+  fetchBrands(q, pagination) {
+    return this.get(`/brands?q=${encodeURIComponent(q)}`, pagination ? ['pagination=' + pagination] : [])
   }
 
-  fetchUsers(q, from) {
-    return this.get(`/users?q=${encodeURIComponent(q)}`, from ? ['from=' + from] : [])
+  fetchUsers(q, pagination) {
+    return this.get(`/users?q=${encodeURIComponent(q)}`, pagination ? ['pagination=' + pagination] : [])
   }
 
-  fetchFeeds(from) {
-    return this.get('/feeds', from ? ['from=' + from] : [])
+  fetchFeeds(pagination) {
+    return this.get('/feeds', pagination ? ['pagination=' + pagination] : [])
   }
 
   fetchUserInfo() {
-    return this.get('/user-info')
+    return this.get('/user/self')
   }
 
   fetchUser(username) {
     return this.get('/users/' + username)
   }
 
-  fetchUserImages(username, from) {
-    return this.get(`/users/${username}/images`, from ? ['from=' + from] : [])
+  fetchUserFollowers(username, pagination) {
+    return this.get(`/users/${username}/followers`, pagination ? ['pagination=' + pagination] : [])
   }
 
-  fetchThreads(q, from) {
-    return this.get(`/threads?q=${encodeURIComponent(q)}`, from ? ['from=' + from] : [])
+  fetchUserMedia(username, pagination) {
+    return this.get(`/users/${username}/media`, pagination ? ['pagination=' + pagination] : [])
   }
 
-  fetchMessages(threadId, from) {
-    return this.get(`/threads/${threadId}/messages`, from ? ['from=' + from] : [])
+  fetchThreads(q, pagination) {
+    return this.get(`/threads?q=${encodeURIComponent(q)}`, pagination ? ['pagination=' + pagination] : [])
+  }
+
+  fetchMessages(threadId, pagination) {
+    return this.get(`/threads/${threadId}/messages`, pagination ? ['pagination=' + pagination] : [])
   }
 }
 

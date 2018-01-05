@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
-import StackGrid from 'react-stack-grid'
 import {isMobile} from 'react-device-detect'
+import ScrollArea from 'react-scrollbar'
 
 class Viewer extends Component {
   constructor(props) {
@@ -9,60 +9,55 @@ class Viewer extends Component {
       items: this.props.baseItems ? [...this.props.baseItems] : [],
       loadedItemCounts: 0,
       loading: true,
-      noMoreFetch: false
+      fetchOnEnd: true,
+      stayAtBottom: true
     }
     this.count = 0
-    this.oldestFetchDate = (new Date()).toISOString()
     this.resized = this.resized.bind(this);
-    this.handleScroll = this.handleScroll.bind(this);
-
-    this.fetcher()
   }
 
   resized() {
     this.forceUpdate()
   }
 
-  handleScroll() {
-    const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight;
-    const body = document.body;
-    const html = document.documentElement;
-    const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight,  html.scrollHeight, html.offsetHeight);
-    const windowBottom = windowHeight + window.pageYOffset;
-    if (windowBottom >= docHeight && !this.state.loading && !this.state.noMoreFetch) {
+  keepAtBottom() {
+    this.scrollArea.scrollBottom()
+    // if(this.scrollArea && this.state.stayAtBottom && !this.keepAtBottomInterval)
+    //   this.keepAtBottomInterval = setInterval(() => this.scrollArea.scrollBottom(), 300)
+  }
+
+  handleScroll(value) {
+    if ((value.topPosition + value.containerHeight == value.realHeight) && this.state.loading === false && this.state.fetchOnEnd) {
       this.setState({loading: true})
       this.fetcher()
     }
   }
 
-
   refreshStats() {
   }
 
   componentDidMount() {
+    this.fetcher()
     window.addEventListener('resize', this.resized)
-    window.addEventListener('scroll', this.handleScroll);
   }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.resized)
-    window.removeEventListener('scroll', this.handleScroll);
   }
 
   fetcher() {
-    if(!this.props.fetcher)
-      return setTimeout(() => this.setState({loading: false}), 500)
-
+    if(typeof this.props.fetcher !== 'function') {
+      setTimeout(() => this.setState({loading: false}), 500)
+      return
+    }
     this.props.fetcher()
     .then((items) => {
-      if(items.length === 0) {
-        this.setState({noMoreFetch: false, loading: false})
-        return
-      }
       this.setState({items: [...this.state.items, ...items]})
-      setTimeout(() => this.setState({loading: false}), 500)
+      setTimeout(() => this.setState({loading: false}), 200)
     })
-    .catch(() => this.setState({loading: false}))
+    .catch(() => {
+      this.setState({loading: false})
+    })
   }
 
   renderItems() {
@@ -78,12 +73,9 @@ class Viewer extends Component {
 
     return (
       <div style={{height: this.state.items.length > 0 ? 'inherit' : '0'}}>
-        <StackGrid
+        <div
           columnWidth={gridWidth}
-          style={this.props.styleOverwrite || {margin: 5, marginTop: 30}}
-          component={this.props.component}
-          gutterWidth={this.props.gutter}
-          gutterHeight={this.props.gutter}>
+          style={this.props.styleOverwrite || {margin: 5, marginTop: 30}}>
 
           {
             (this.state.items &&
@@ -92,8 +84,8 @@ class Viewer extends Component {
                 onLoaded={() => {
                   this.setState({loadedItemCounts: this.state.loadedItemCounts + 1})
                   if(this.props.onLoaded && this.state.loadedItemCounts + 1 === this.state.items.length) {
-                    this.forceUpdate()
                     setTimeout(() => {
+                      this.resized()
                       this.props.onLoaded()
                     }, 500)
                   }
@@ -103,18 +95,27 @@ class Viewer extends Component {
               )
             ))
           }
-        </StackGrid>
+        </div>
       </div>
     )
   }
 
   render() {
     return (
-      <div>
-        {this.renderItems()}
-        <div style={{textAlign: 'center'}}>
-          {this.state.loading ? (<i className="fa fa-circle-o-notch fa-spin fa-3x fa-fw" style={{marginBottom: 60, marginTop: 20}}></i>) : ''}
-        </div>
+      <div style={{height: '100%'}}>
+        <ScrollArea
+            ref={s => s ? this.scrollArea = s.scrollArea : ''}
+            className="area"
+            contentClassName="content"
+            horizontal={false}
+            onScroll={(value) => this.handleScroll(value)}
+            style={{height: '100%'}}
+            >
+          {this.renderItems()}
+        </ScrollArea>
+        {this.state.loading && (<div style={{textAlign: 'center', width: '100%', height: 150, color: 'white', textShadow: '0px 0px 10px #000000'}} className='overlay'>
+          <i className="fa fa-circle-o-notch fa-spin fa-3x fa-fw" style={{marginBottom: 60, marginTop: 20}}></i>
+        </div>)}
       </div>
     )
   }
@@ -131,7 +132,9 @@ Viewer.propTypes = {
   styleOverwrite: React.PropTypes.object,
   component: React.PropTypes.string,
   onLoaded: React.PropTypes.func,
-  gutter: React.PropTypes.number
+  gutter: React.PropTypes.number,
+  height: React.PropTypes.string,
+  prepend: React.PropTypes.bool
 }
 
 

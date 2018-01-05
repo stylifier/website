@@ -8,21 +8,44 @@ class FeedViewer extends Component {
   constructor(props) {
     super(props)
     this.api = new API()
-    this.state = {followers: []}
-    this.fetchUserInfo()
+    this.state = {currentUser: {}}
+  }
+
+  getCurrentUser() {
+    try {
+      return Promise.resolve(JSON.parse(localStorage.getItem('user_info')))
+    } catch (e) {
+      return this.api.fetchUserInfo()
+    }
   }
 
   fetchUserInfo() {
-    return this.api.fetchUserInfo(this.oldestFetchDate)
-    .then((userInfo) => {
-      this.state.followers.push(...userInfo.followers)
-      this.setState({followers: this.state.followers})
+    if(this.pagination === '')
+      return Promise.resolve([])
+
+    return this.api.fetchUserFollowers(this.state.currentUser.username, this.pagination)
+    .then((res) => {
+      this.pagination = res.pagination
+      return res.data
     })
   }
 
   render() {
     return (
-      <Viewer largeRowCount={8} mediomRowCount={5} smallRowCount={3.5} fetcher={() => Promise.resolve([])} baseItems={this.state.followers} ItemView={ProfileImage} ItemViewProps={{showUser: true, showLike:true}}/>
+      <Viewer
+        largeRowCount={8}
+        mediomRowCount={5}
+        smallRowCount={3.5}
+        fetcher={() =>
+          this.state.currentUser.username ?
+          this.fetchUserInfo() :
+          this.getCurrentUser().then((currentUser) => {
+            this.setState(Object.assign({currentUser: currentUser}))
+            return this.fetchUserInfo()
+          })
+        }
+        ItemView={ProfileImage}
+        ItemViewProps={{showUser: true, showLike:true}}/>
     )
   }
 }

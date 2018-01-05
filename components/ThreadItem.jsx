@@ -4,11 +4,6 @@ require('../styles/Messages.scss')
 class ProfileImage extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-    }
-  }
-
-  refreshStats() {
   }
 
   componentDidMount() {
@@ -41,13 +36,13 @@ class ProfileImage extends Component {
           <div style={{padding: 4}}>
             <div className={'row' + (isSelected ? ' selected': ' contact')} style={{textAlign: 'center'}}>
               <div className="col-lg-4 col-md-4 col-sm-12 col-xs-4" style={{textAlign: 'center'}}>
-                <img src={userToShow.avatar} className="img-circle" style={{height: 100, objectFit: 'cover',width: 100}}/>
+                <img src={userToShow.profile_picture} className="img-circle" style={{height: 100, objectFit: 'cover',width: 100}}/>
               </div>
               <div className="col-lg-8 col-md-8 col-sm-12 col-xs-8" style={{textAlign: 'left'}}>
                 <div>
-                  {userToShow.firstName} {userToShow.lastName} ({userToShow.username})
+                  {userToShow.full_name} ({userToShow.username})
                 </div>
-                <div>{(new Date(Date.parse(this.props.base.createdAt))).toString()}</div>
+                <div>{(new Date(this.props.base.created_time)).toString()}</div>
               </div>
             </div>
           </div>

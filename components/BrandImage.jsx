@@ -23,8 +23,8 @@ class BrandImage extends Component {
   }
 
   render() {
-    const href = '/profile/' + this.props.base.name.toString()
-    const img = this.props.base.avatar.toString()
+    const href = '/profile/' + this.props.base.username.toString()
+    const img = this.props.base.profile_picture
     return (
       <div className="containerItem" style={{visibility: this.state.loaded ? 'visible' : 'hidden', margin: 20}}>
       <div className='box'>

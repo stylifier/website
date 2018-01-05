@@ -10,15 +10,10 @@ class Messages extends Component {
     super(props)
     this.api = new API()
 
-    this.oldestFetchedThread = (new Date()).toISOString()
-    this.oldestFetchedMessage = (new Date()).toISOString()
-
     this.resized = this.resized.bind(this);
 
     this.state = {
       username:  '',
-      messages: [],
-      threads: [],
       query: '',
       threadId: this.props.location.pathname.split('/')[2],
       currentUser: {}
@@ -36,36 +31,27 @@ class Messages extends Component {
       query: args.query ? decodeURIComponent(args.query) : '',
       threadId: location.pathname.split('/')[2]
     })
-
-    if(this.state.threadId) {
-      while(this.state.messages.length > 0)
-        this.state.messages.pop()
-
-      this.fetchMessages()
-    }
   }
 
   fetchMessages() {
-    return this.api.fetchMessages(this.state.threadId, this.oldestFetchedMessage)
-    .then((messages) => {
-      this.oldestFetchedMessage = messages
-      .map((i) => i.createdAt)
-      .sort((a, b) => a < b).pop()
+    if(this.messagePagination === '')
+      return Promise.resolve([])
 
-      this.state.messages.push(...messages)
-      this.setState({messages: this.state.messages})
+    return this.api.fetchMessages(this.state.threadId, this.messagePagination)
+    .then((res) => {
+      this.messagePagination = res.pagination
+      return res.data
     })
   }
 
   fetchThreads() {
-    return this.api.fetchThreads(this.state.query, this.oldestFetchedThread)
-    .then((threads) => {
-      this.oldestFetchedThread = threads
-      .map((i) => i.createdAt)
-      .sort((a, b) => a < b).pop()
+    if(this.threadPagination === '')
+      return Promise.resolve([])
 
-      this.state.threads.push(...threads)
-      this.setState({threads: this.state.threads})
+    return this.api.fetchThreads(this.state.query, this.oldestFetchedThread)
+    .then((res) => {
+      this.threadPagination = res.pagination
+      return res.data
     })
   }
 
@@ -98,11 +84,11 @@ class Messages extends Component {
   searchClicked(e) {
     e.preventDefault()
 
-    while(this.state.threads.length > 0)
-      this.state.threads.pop()
+    console.log(this.threadsViewer);
+
+    this.threadsViewer.viewer.setSetate({items: []})
 
     this.oldestFetchedThread = (new Date()).toISOString()
-
     this.setState({threads: this.state.threads})
     this.fetchThreads()
     .then(() => this.forceUpdate())
@@ -115,7 +101,7 @@ class Messages extends Component {
 
   renderMessages() {
     return (<div className="col-lg-9 col-md-8 col-sm-9 col-xs-12" style={{padding: 0}}>
-      <MessagingView threadId={this.state.threadId} messages={this.state.messages} fetcher={() => this.fetchMessages()} currentUser={this.state.currentUser}/>
+      <MessagingView ref={ref => this.messageingViewer = ref} threadId={this.state.threadId} messages={this.state.messages} fetcher={() => this.fetchMessages()} currentUser={this.state.currentUser}/>
     </div>)
   }
 
@@ -127,7 +113,12 @@ class Messages extends Component {
           <span className="btn input-group-addon" id="basic-addon1" onClick={(e) => this.searchClicked(e)}><i className="fa fa-search"></i></span>
         </div>
       </form>
-      <ThreadsViewer threadId={this.state.threadId} currentUser={this.state.currentUser} threads={this.state.threads} query={this.state.query} fetcher={() => this.fetchThreads()}/>
+      <ThreadsViewer
+        ref={(v) => {console.log(v);}} 
+        threadId={this.state.threadId}
+        currentUser={this.state.currentUser}
+        query={this.state.query}
+        fetcher={() => this.fetchThreads()}/>
     </div>)
   }
   render() {

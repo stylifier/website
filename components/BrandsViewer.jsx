@@ -8,38 +8,36 @@ class BrandsViewer extends Component {
   constructor(props) {
     super(props)
     this.api = new API()
-    this.state = {brands: []}
-    this.oldestFetchDate = (new Date()).toISOString()
-    this.fetchBrands()
+    this.infinitUpdate = true
   }
 
   fetchBrands() {
-    return this.api.fetchBrands(this.props.phrase, this.oldestFetchDate)
-    .then((brands) => {
-      this.oldestFetchDate = brands
-      .map((i) => i.createdAt)
-      .sort((a, b) => a < b).pop()
+    if(this.pagination === '')
+      return Promise.resolve([])
 
-      this.state.brands.push(...brands)
-      this.setState({brands: this.state.brands})
+    return this.api.fetchBrands(this.props.phrase, this.pagination)
+    .then((res) => {
+      if(!this.props.scrollToUpdate)
+        this.infinitUpdate = false
+      this.pagination = res.pagination
+      return res.data
     })
   }
 
   render() {
     return (
       <div>
-        {this.state.brands.length > 0 && <h3 style={{marginLeft:50}}>results for brands with phrase "{this.props.phrase}"</h3>}
+        {<h3 style={{marginLeft:50}}>results for brands with phrase "{this.props.phrase}"</h3>}
         <Viewer
           largeRowCount={8}
           mediomRowCount={5}
           smallRowCount={3.5}
-          fetcher={() => this.props.scrollToUpdate ? this.fetchBrands() : Promise.resolve([])}
-          baseItems={this.state.brands}
+          fetcher={() => this.infinitUpdate ? this.fetchBrands() : Promise.resolve([])}
           ItemView={BrandImage}
           ItemViewProps={{showUser: true, showLike:true}}
         />
         <div style={{paddingRight: 50, marginBottom: 50}}>
-        {this.state.brands.length > 0 && <a href={`/search?brand=${this.props.phrase}`} style={{width: '100%', display: 'inline-block', textAlign: 'right'}}>see more results</a>}
+        {<a href={`/search?brand=${this.props.phrase}`} style={{width: '100%', display: 'inline-block', textAlign: 'right'}}>see more results</a>}
         </div>
       </div>
     )
