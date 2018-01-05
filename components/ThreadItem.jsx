@@ -36,7 +36,7 @@ class ProfileImage extends Component {
           <div style={{padding: 4}}>
             <div className={'row' + (isSelected ? ' selected': ' contact')} style={{textAlign: 'center'}}>
               <div className="col-lg-4 col-md-4 col-sm-12 col-xs-4" style={{textAlign: 'center'}}>
-                <img src={userToShow.profile_picture} className="img-circle" style={{height: 100, objectFit: 'cover',width: 100}}/>
+                <img src={userToShow.profile_picture} className="img-circle" style={{objectFit: 'scale-down', height: 100,width: 100}}/>
               </div>
               <div className="col-lg-8 col-md-8 col-sm-12 col-xs-8" style={{textAlign: 'left'}}>
                 <div>

@@ -6,6 +6,7 @@ import Login from '../pages/Login.jsx'
 import Profile from '../pages/Profile.jsx'
 import Followers from '../pages/Followers.jsx'
 import Search from '../pages/Search.jsx'
+import InstagramCallback from '../pages/InstagramCallback.jsx'
 import Messages from '../pages/Messages.jsx'
 import LogoutComponent from '../components/Logout.jsx'
 import { Switch, Route } from 'react-router-dom'
@@ -31,6 +32,7 @@ class App extends Component {
         <Route exact path='/followers' component={followers}/>
         <Route exact path='/search*' component={search}/>
         <Route exact path='/messages*' component={messages}/>
+        <Route exact path='/instagram_callback*' component={InstagramCallback}/>
       </Switch>
     )
   }

@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import {isMobile} from 'react-device-detect'
 import ScrollArea from 'react-scrollbar'
 
 class Viewer extends Component {
@@ -22,8 +21,6 @@ class Viewer extends Component {
 
   keepAtBottom() {
     this.scrollArea.scrollBottom()
-    // if(this.scrollArea && this.state.stayAtBottom && !this.keepAtBottomInterval)
-    //   this.keepAtBottomInterval = setInterval(() => this.scrollArea.scrollBottom(), 300)
   }
 
   handleScroll(value) {
@@ -61,20 +58,18 @@ class Viewer extends Component {
   }
 
   renderItems() {
-    let gridWidth = this.props.smallRowCount ? 100 / this.props.smallRowCount + '%' : '100%'
-
-    if(window.innerWidth > 1200 && !isMobile) {
-      gridWidth = this.props.largeRowCount ? 100 / this.props.largeRowCount + '%' : '33.33%'
-    } else if(window.innerWidth > 768 && !isMobile) {
-      gridWidth = this.props.mediomRowCount ? 100 / this.props.mediomRowCount + '%' : '50%'
-    }
-
     const ItemView = this.props.ItemView
+
+    if(this.props.onLoaded && !this.loaded && this.state.loadedItemCounts + 1 === this.state.items.length) {
+      this.loaded = true
+      setTimeout(() => {
+        this.props.onLoaded()
+      }, 500)
+    }
 
     return (
       <div style={{height: this.state.items.length > 0 ? 'inherit' : '0'}}>
         <div
-          columnWidth={gridWidth}
           style={this.props.styleOverwrite || {margin: 5, marginTop: 30}}>
 
           {
@@ -83,12 +78,6 @@ class Viewer extends Component {
               <ItemView {...this.props.ItemViewProps}
                 onLoaded={() => {
                   this.setState({loadedItemCounts: this.state.loadedItemCounts + 1})
-                  if(this.props.onLoaded && this.state.loadedItemCounts + 1 === this.state.items.length) {
-                    setTimeout(() => {
-                      this.resized()
-                      this.props.onLoaded()
-                    }, 500)
-                  }
                 }}
                 key={i}
                 base={f}/>

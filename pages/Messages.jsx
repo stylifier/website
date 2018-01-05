@@ -32,29 +32,7 @@ class Messages extends Component {
       threadId: location.pathname.split('/')[2]
     })
   }
-
-  fetchMessages() {
-    if(this.messagePagination === '')
-      return Promise.resolve([])
-
-    return this.api.fetchMessages(this.state.threadId, this.messagePagination)
-    .then((res) => {
-      this.messagePagination = res.pagination
-      return res.data
-    })
-  }
-
-  fetchThreads() {
-    if(this.threadPagination === '')
-      return Promise.resolve([])
-
-    return this.api.fetchThreads(this.state.query, this.oldestFetchedThread)
-    .then((res) => {
-      this.threadPagination = res.pagination
-      return res.data
-    })
-  }
-
+  
   refreshStats() {
   }
 
@@ -84,8 +62,6 @@ class Messages extends Component {
   searchClicked(e) {
     e.preventDefault()
 
-    console.log(this.threadsViewer);
-
     this.threadsViewer.viewer.setSetate({items: []})
 
     this.oldestFetchedThread = (new Date()).toISOString()
@@ -114,11 +90,10 @@ class Messages extends Component {
         </div>
       </form>
       <ThreadsViewer
-        ref={(v) => {console.log(v);}} 
+        changeCurrentThread={(id) => this.setState({threadId: id})}
         threadId={this.state.threadId}
         currentUser={this.state.currentUser}
-        query={this.state.query}
-        fetcher={() => this.fetchThreads()}/>
+        query={this.state.query}/>
     </div>)
   }
   render() {

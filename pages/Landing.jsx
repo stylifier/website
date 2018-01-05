@@ -39,12 +39,15 @@ class Landing extends Component {
                 Ever struggled finding the right style for the right occasion?
             </p>
             <br/>
-            <p data-scroll-reveal="enter from the bottom after 0s">
-                <a role="button" href="/login" style={{fontSize: '1.7em', textAlign: 'center'}} className="btn btn-default btn-transparent btn-lg">Join Sylifier Now!</a>
+            <p data-scroll-reveal="enter from the bottom after 0s" style={{text: 'center'}}>
+                <a role="button" href="/login" style={{fontSize: '1.4em', textAlign: 'center'}} className="btn btn-default btn-transparent btn-lg">Join Sylifier Now!</a>
+                <a href={`https://api.instagram.com/oauth/authorize/?client_id=5818518da819445c85250c7637b7eb4c&redirect_uri=${document.location.origin}/instagram_callback&response_type=code&scope=basic`} className="btn btn-default btn-transparent btn-lg btn-social btn-instagram" style={{fontSize: '1.4em', marginTop: 20, textAlign: 'center'}}>
+                  <span className="fa fa-instagram"></span> Continue with instagram
+                </a>
             </p>
             <br/>
             <p data-scroll-reveal="enter from the bottom after 2s" style={{fontSize: '1.2em', textAlign: 'center'}}>
-                Join as a styler if you believe other people appriciate your advises.
+                Join as a styler if you believe other people appreciate your advises.
             </p>
           </div>
           <div className="col-lg-3 col-md-0 col-sm-0 col-xs-0"/>

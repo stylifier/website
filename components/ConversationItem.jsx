@@ -3,10 +3,12 @@ import SimpleImage from './SimpleImage.jsx'
 require('../styles/Messages.scss')
 
 
-class ProfileImage extends Component {
+class ConversationItem extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      loadedItemCounts: 0,
+      loaded: false
     }
   }
 
@@ -20,6 +22,9 @@ class ProfileImage extends Component {
   }
 
   render() {
+    if(!this.state.loaded && this.props.base.media.length === this.state.loadedItemCounts)
+      this.props.onLoaded && setTimeout(() => this.props.onLoaded(), 100)
+
     const fromMe = this.props.currentUserUsername === this.props.base.from
     const border = fromMe ? '15px 15px 15px 3px' : '15px 15px 3px 15px'
     return (
@@ -37,7 +42,7 @@ class ProfileImage extends Component {
           float: fromMe ? 'left' : 'right'
         }}>
           {this.props.base.text.split(/(?:\r\n|\r|\n)/g).map((t, i) => (<p key={i} style={{textAlign: 'left'}}> {t} </p>))}
-          {this.props.base.media.map(i => <SimpleImage style={{marginBottom: 10}} base={i}/>)}
+          {this.props.base.media.map((o, i) => <SimpleImage key={i} style={{marginBottom: 10}} onLoaded={() => this.setState({loadedItemCounts: this.state.loadedItemCounts + 1})} base={o}/>)}
         <div id="footer" style={{fontSize: '.8em', margin: 0, padding: 0}}>
           {this.props.base.createdAt}
         </div>
@@ -46,10 +51,10 @@ class ProfileImage extends Component {
   }
 }
 
-ProfileImage.propTypes = {
+ConversationItem.propTypes = {
   base: PropTypes.object,
   currentUserUsername: React.PropTypes.string,
   onLoaded: React.PropTypes.func
 }
 
-export default ProfileImage
+export default ConversationItem

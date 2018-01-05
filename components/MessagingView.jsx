@@ -51,7 +51,6 @@ class MessagingView extends Component {
   }
 
   componentDidMount() {
-
   }
 
   componentWillUnmount() {
@@ -97,7 +96,12 @@ class MessagingView extends Component {
           padding: 10,
           paddingTop: 0 ,
           paddingBottom: 0}}>
-          <ConversationViewer fetcher={() => this.props.fetcher()} messages={this.props.messages} currentUser={this.props.currentUser}/>
+          <ConversationViewer
+            onLoaded={() => setTimeout(() => this.forceUpdate(), 20)} 
+            key={this.props.threadId}
+            threadId={this.props.threadId}
+            messages={this.props.messages}
+            currentUser={this.props.currentUser}/>
         </div>
         <div id="msgcomposition" style={{zIndex: 99999, verticalAlign: 'bottom', width: '100%',backgroundColor: '#718dc4', padding: 5}}>
           {this.renderMessageCompositionArea()}
@@ -126,7 +130,6 @@ class MessagingView extends Component {
 MessagingView.propTypes = {
   threadId: PropTypes.string,
   messages: PropTypes.array,
-  fetcher: PropTypes.func,
   currentUser: PropTypes.object
 }
 

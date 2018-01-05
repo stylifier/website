@@ -62,6 +62,11 @@ class API {
 
   register(info) {
     return this.post('/register', info)
+    .then((res) => {
+      if(!res.jwt)
+        return Promise.reject(new Error('could not fetch token from api'))
+      return res.jwt
+    })
   }
 
   fetchBrands(q, pagination) {
