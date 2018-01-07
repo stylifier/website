@@ -30,7 +30,7 @@ class CreateUserComponent extends Component {
       username: this.state.username,
       password: this.state.password,
       email: this.state.email,
-      fullname: this.state.fullname
+      full_name: this.state.fullname
     })
     .then(() => {
       return this.api.login({

@@ -56,7 +56,7 @@ class Viewer extends Component {
     this.props.fetcher()
     .then((items) => {
       if(items.length === 0) {
-        this.setState({noMoreFetch: false, loading: false})
+        this.setState({noMoreFetch: true, loading: false})
         return
       }
       this.setState({items: [...this.state.items, ...items]})

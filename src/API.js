@@ -3,7 +3,7 @@ import Promise from 'bluebird'
 
 class API {
   constructor() {
-    this.baseAddress = 'https://mock.stylifier.com'
+    this.baseAddress = 'https://cloud.stylifier.com'
     this.userToken = localStorage.getItem('user_token') || ''
   }
 
@@ -48,11 +48,8 @@ class API {
     })
   }
 
-  login(username, password) {
-    return this.post('/login', {
-      username: username,
-      password: password
-    })
+  login(info) {
+    return this.post('/login', info)
     .then((res) => {
       if(!res.jwt)
         return Promise.reject(new Error('could not fetch token from api'))
@@ -70,11 +67,11 @@ class API {
   }
 
   fetchBrands(q, pagination) {
-    return this.get(`/brands?q=${encodeURIComponent(q)}`, pagination ? ['pagination=' + pagination] : [])
+    return this.get('/brands', ['q=' + encodeURIComponent(q), ...(pagination ? ['pagination=' + pagination] : [])])
   }
 
   fetchUsers(q, pagination) {
-    return this.get(`/users?q=${encodeURIComponent(q)}`, pagination ? ['pagination=' + pagination] : [])
+    return this.get('/users', ['q=' + encodeURIComponent(q), ...(pagination ? ['pagination=' + pagination] : [])])
   }
 
   fetchFeeds(pagination) {
@@ -98,7 +95,7 @@ class API {
   }
 
   fetchThreads(q, pagination) {
-    return this.get(`/threads?q=${encodeURIComponent(q)}`, pagination ? ['pagination=' + pagination] : [])
+    return this.get('/threads', ['q=' + encodeURIComponent(q), ...(pagination ? ['pagination=' + pagination] : [])])
   }
 
   fetchMessages(threadId, pagination) {

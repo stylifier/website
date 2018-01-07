@@ -33,7 +33,7 @@ class Navbar extends Component {
           enabled: false
         },
         request: {
-          endpoint: this.api.baseAddress + '/images',
+          endpoint: this.api.baseAddress + '/media',
           customHeaders: {
             Authorization: 'Bearer '+ this.api.userToken,
             'X-Is-Public': false
