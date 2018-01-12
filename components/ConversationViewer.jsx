@@ -43,8 +43,7 @@ class Conversation extends Component {
         ref={ref => this.viewer = ref}
         ItemViewProps={{
           currentUserUsername: this.props.currentUser.username
-        }}
-      />
+        }}/>
     )
   }
 }

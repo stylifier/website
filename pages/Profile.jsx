@@ -12,7 +12,8 @@ class Profile extends Component {
     const parts = this.props.location.pathname.split('/')
     this.state = {
       username:  parts[parts.length - 1],
-      currentUser: {}
+      currentUser: {},
+      followedByUser: false
     }
 
     this.getCurrentUser()
@@ -20,7 +21,13 @@ class Profile extends Component {
       this.setState(Object.assign({currentUser: currentUser}))
       return this.api.fetchUser(this.state.username)
     })
-    .then(res => this.setState(Object.assign({}, res)))
+    .then(res => {
+      this.setState(Object.assign({}, res))
+      return this.api.fetchUserFollowers(this.state.currentUser.username, 0, this.state.username)
+    })
+    .then(res => {
+      this.setState(Object.assign({followedByUser: res.data.length > 0}))
+    })
   }
 
   getCurrentUser() {
@@ -37,6 +44,38 @@ class Profile extends Component {
   componentWillUnmount() {
   }
 
+  followClicked(e) {
+    e.preventDefault()
+
+    this.api.followUser(this.state.username)
+    .then(() =>
+      this.api.fetchUserFollowers(this.state.currentUser.username, 0, this.state.username))
+    .then(res =>
+      this.setState(Object.assign({followedByUser: res.data.length > 0})))
+  }
+
+  renderFollowMessageBtn() {
+    if(!this.state.currentUser)
+      return
+
+    if(this.state.username === this.state.currentUser.username) {
+      return (<a className='btn btn-primary' style={{color: 'white', width: '100%'}} >
+        edit profile
+      </a>)
+    }
+    else if(this.state.followedByUser) {
+      return (<a className='btn btn-primary' style={{color: 'white', width: '100%'}} >
+        ask for advice
+      </a>)
+    }
+    else {
+      return (<a className='btn btn-primary' onClick={(e) => this.followClicked(e)} style={{color: 'white', width: '100%'}} >
+        follow
+      </a>)
+    }
+
+  }
+
   render() {
     const isCurrentUser = this.state.username === this.state.currentUser.username
     return (
@@ -47,8 +86,9 @@ class Profile extends Component {
               <img src={this.state.profile_picture} className="img-circle" style={{height: 300, objectFit: 'cover',width: 300}}/>
             </div>
             <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12" style={{textAlign: 'left'}}>
+              {this.renderFollowMessageBtn()}
               <div>
-              {this.state.firstName} {this.state.lastName} ({this.state.username})
+              {this.state.full_name} <a href={'/profile/'+this.state.username}>@{this.state.username}</a>
               </div>
               <div style={{textAlign: 'left'}}>
               {this.state.bio && this.state.bio.split(/(?:\r\n|\r|\n)/g).map((t, i) => (<p key={i} style={{textAlign: 'left'}}> {t} </p>))}

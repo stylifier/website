@@ -19,7 +19,8 @@ class API {
       .get(this.baseAddress + path + paramsStr)
       .set(Object.assign({
         accept: 'json',
-        Authorization: 'Bearer '+ this.userToken
+        Authorization: 'Bearer '+ this.userToken,
+        'X-Consumer-Username': 'al_kh31'
       }, extraHeaders))
       .end((error, res) => {
         if(error)
@@ -37,7 +38,8 @@ class API {
       .send(Object.assign({}, body))
       .set({
         accept: 'json',
-        Authorization: 'Bearer '+ this.userToken
+        Authorization: 'Bearer '+ this.userToken,
+        'X-Consumer-Username': 'al_kh31'
       })
       .end((error, res) => {
         if(error)
@@ -86,8 +88,16 @@ class API {
     return this.get('/users/' + username)
   }
 
-  fetchUserFollowers(username, pagination) {
-    return this.get(`/users/${username}/followers`, pagination ? ['pagination=' + pagination] : [])
+  followUser(username) {
+    return this.post(`/users/${username}/follow`, {})
+  }
+
+  fetchUserFollowers(username, pagination, quary) {
+    return this.get(`/users/${username}/followers`,
+      [
+        ...(quary ? ['q=' + quary] : []),
+        ...(pagination ? ['pagination=' + pagination] : [])
+      ])
   }
 
   fetchUserMedia(username, pagination) {

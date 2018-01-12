@@ -26,9 +26,6 @@ class Navbar extends Component {
 
     this.uploader = new FineUploaderTraditional({
       options: {
-        chunking: {
-          enabled: true
-        },
         deleteFile: {
           enabled: false
         },
@@ -36,8 +33,14 @@ class Navbar extends Component {
           endpoint: this.api.baseAddress + '/media',
           customHeaders: {
             Authorization: 'Bearer '+ this.api.userToken,
-            'X-Is-Public': false
+            'X-Consumer-Username': 'AliKhoramshahi'
           }
+        },
+        scaling: {
+          sendOriginal: false,
+          sizes: [
+            {name: 'large', maxSize: 2000}
+          ]
         },
         retry: {
           enableAuto: true
