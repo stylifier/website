@@ -19,8 +19,7 @@ class API {
       .get(this.baseAddress + path + paramsStr)
       .set(Object.assign({
         accept: 'json',
-        Authorization: 'Bearer '+ this.userToken,
-        'X-Consumer-Username': 'al_kh31'
+        Authorization: 'Bearer '+ this.userToken
       }, extraHeaders))
       .end((error, res) => {
         if(error)
@@ -38,8 +37,7 @@ class API {
       .send(Object.assign({}, body))
       .set({
         accept: 'json',
-        Authorization: 'Bearer '+ this.userToken,
-        'X-Consumer-Username': 'al_kh31'
+        Authorization: 'Bearer '+ this.userToken
       })
       .end((error, res) => {
         if(error)

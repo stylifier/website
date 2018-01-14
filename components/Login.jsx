@@ -23,7 +23,10 @@ class LoginComponent extends Component {
     this.setState({loginDisabled: true})
     e.preventDefault()
 
-    this.api.login(this.state.username, this.state.password)
+    this.api.login({
+      username: this.state.username,
+      password: this.state.password
+    })
     .then((token) => {
       localStorage.setItem('user_token', token)
       this.api.setToken(token)
