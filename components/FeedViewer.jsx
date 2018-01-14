@@ -14,7 +14,7 @@ class FeedViewer extends Component {
     if(this.pagination === '')
       return Promise.resolve([])
 
-    return this.api.fetchFeeds(this.oldestFetchDate, this.pagination)
+    return this.api.fetchFeeds(this.pagination)
     .then((res) => {
       this.pagination = res.pagination
       return res.data
