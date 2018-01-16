@@ -1,9 +1,9 @@
 import React, {Component, PropTypes} from 'react'
 import ConversationViewer from './ConversationViewer.jsx'
-import FineUploaderTraditional from 'fine-uploader-wrappers'
 import API from '../src/API'
-import Gallery from 'react-fine-uploader'
-import 'react-fine-uploader/gallery/gallery.css'
+import { withRouter } from 'react-router-dom'
+import ComposeThreadModal from './ComposeThreadModal.jsx'
+import ImageUploader from '../components/ImageUploader.jsx'
 
 class MessagingView extends Component {
   constructor(props) {
@@ -11,46 +11,20 @@ class MessagingView extends Component {
     this.state = {
       message: '',
       showUploader: false,
+      toUsername: undefined,
+      disableToUsernameEdit: false,
+      showComposeModal: false,
       assets: []
     }
 
     this.api = new API()
+  }
 
-    this.uploader = new FineUploaderTraditional({
-      options: {
-        chunking: {
-          enabled: true
-        },
-        deleteFile: {
-          enabled: false
-        },
-        request: {
-          endpoint: this.api.baseAddress + '/images',
-          customHeaders: {
-            Authorization: 'Bearer '+ this.api.userToken,
-            'X-Is-Public': false,
-            'X-Thread-Id': this.props.threadId
-          }
-        },
-        retry: {
-          enableAuto: true
-        }
-      }
-    })
-
-    this.uploader.on('submit', () => {
-      this.forceUpdate()
-    })
-
-    this.uploader.on('complete', (id, name, response) => {
-      this.state.assets.push(response.id)
-    })
-
-    this.uploader.on('onAllComplete', () => {
-    })
+  componentWillReceiveProps() {
   }
 
   componentDidMount() {
+
   }
 
   componentWillUnmount() {
@@ -81,7 +55,7 @@ class MessagingView extends Component {
           </div>
         </span>
       </div>
-      {this.state.showUploader && <Gallery uploader={ this.uploader } />}
+      {this.state.showUploader && <ImageUploader />}
     </div>)
   }
 
@@ -97,7 +71,7 @@ class MessagingView extends Component {
           paddingTop: 0 ,
           paddingBottom: 0}}>
           <ConversationViewer
-            onLoaded={() => setTimeout(() => this.forceUpdate(), 20)} 
+            onLoaded={() => setTimeout(() => this.forceUpdate(), 20)}
             key={this.props.threadId}
             threadId={this.props.threadId}
             messages={this.props.messages}
@@ -114,8 +88,14 @@ class MessagingView extends Component {
     return(
       <div style={{backgroundColor: '#809dd6', display: 'table', width: '100%',height: '100%', textAlign: 'center'}}>
         <div style={{verticalAlign: 'middle', display: 'table-cell'}}>
-          <a className='btn btn-primary' style={{color: 'white'}}>
-            Make a new conversation
+          <a
+            className='btn btn-primary'
+            onClick={(e) => {
+              e.preventDefault()
+              this.setState({showComposeModal: true})
+            }}
+            style={{color: 'white'}}>
+            Ask for advice
           </a>
         </div>
       </div>
@@ -123,14 +103,27 @@ class MessagingView extends Component {
   }
 
   render() {
-    return this.props.threadId ? this.renderMessageSelected(): this.renderNoMessageSelected()
+    return (
+      <div>
+        {this.state.showComposeModal &&
+          (<ComposeThreadModal
+            currentUser={this.props.currentUser}
+            onClose={() => this.setState({showComposeModal: false})}/>)}
+        {this.props.threadId ? this.renderMessageSelected(): this.renderNoMessageSelected()}
+      </div>
+    )
   }
 }
 
 MessagingView.propTypes = {
   threadId: PropTypes.string,
   messages: PropTypes.array,
-  currentUser: PropTypes.object
+  toUsername: PropTypes.string,
+  currentUser: PropTypes.object,
+  history: React.PropTypes.shape({
+    push: React.PropTypes.func.isRequired,
+    listen: React.PropTypes.func.isRequired
+  }).isRequired
 }
 
-export default MessagingView
+export default withRouter(MessagingView)

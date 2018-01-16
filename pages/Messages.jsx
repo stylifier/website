@@ -16,7 +16,10 @@ class Messages extends Component {
       username:  '',
       query: '',
       threadId: this.props.location.pathname.split('/')[2],
-      currentUser: {}
+      currentUser: {},
+      hash: '',
+      followersSuggestionList: [],
+      assets: []
     }
   }
 
@@ -25,15 +28,18 @@ class Messages extends Component {
     location.search
     .substring(1)
     .split('&')
-    .forEach(i => args[i.split('=')[0]] = i.split('=')[1])
+    .forEach(i => args[i.split('=')[0]] = i.split('=')[1] || '')
 
     this.setState({
       query: args.query ? decodeURIComponent(args.query) : '',
       threadId: location.pathname.split('/')[2]
     })
   }
-  
+
   refreshStats() {
+  }
+
+  componentDidUpdate() {
   }
 
   componentDidMount() {
@@ -102,9 +108,9 @@ class Messages extends Component {
     return (
       <div>
         <div id="home-sec" className="container" style={{padding: 0, margin: 0, width: '100%', height: 'calc(100% - 50px)', maxHeight: 'calc(100% - 400px) !important'}}>
+
           <div className="row clr-white" style={{padding: 0, margin: 0, width: '100%'}}>
             {showContacts ? this.renderContacts() : ''}
-
             {showMessages ? this.renderMessages() : ''}
           </div>
         </div>

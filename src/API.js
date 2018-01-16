@@ -48,6 +48,24 @@ class API {
     })
   }
 
+  put(path, body) {
+    return new Promise((resolve, reject) => {
+      request
+      .put(this.baseAddress + path)
+      .send(Object.assign({}, body))
+      .set({
+        accept: 'json',
+        Authorization: 'Bearer '+ this.userToken
+      })
+      .end((error, res) => {
+        if(error)
+          return reject(error)
+
+        return resolve(res.body)
+      })
+    })
+  }
+
   login(info) {
     return this.post('/login', info)
     .then((res) => {
@@ -88,6 +106,14 @@ class API {
 
   followUser(username) {
     return this.post(`/users/${username}/follow`, {})
+  }
+
+  createThread(toUsername) {
+    return this.post('/threads', {to: {username: toUsername}})
+  }
+
+  createMessage(threadId, text, media) {
+    return this.put(`/threads/${threadId}/messages`, {text: text, media: media})
   }
 
   fetchUserFollowers(username, pagination, quary) {

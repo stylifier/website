@@ -4,6 +4,7 @@ import SimpleImageViewer from '../components/SimpleImageViewer.jsx'
 import { withRouter } from 'react-router-dom'
 import API from '../src/API'
 import Promise from 'bluebird'
+import ComposeThreadModal from '../components/ComposeThreadModal.jsx'
 
 class Profile extends Component {
   constructor(props) {
@@ -13,6 +14,7 @@ class Profile extends Component {
     this.state = {
       username:  parts[parts.length - 1],
       currentUser: {},
+      showComposeModal: false,
       followedByUser: false
     }
 
@@ -64,7 +66,10 @@ class Profile extends Component {
       </a>)
     }
     else if(this.state.followedByUser) {
-      return (<a className='btn btn-primary' style={{color: 'white', width: '100%'}} >
+      return (<a className='btn btn-primary' onClick={(e) => {
+        e.preventDefault()
+        this.setState({showComposeModal: true})
+      }} style={{color: 'white', width: '100%'}} >
         ask for advice
       </a>)
     }
@@ -80,6 +85,11 @@ class Profile extends Component {
     const isCurrentUser = this.state.username === this.state.currentUser.username
     return (
       <div>
+        {this.state.showComposeModal &&
+          (<ComposeThreadModal
+            defaultValue={this.state.username}
+            currentUser={this.state.currentUser}
+            onClose={() => this.setState({showComposeModal: false})}/>)}
         <div id="home-sec" className="container" style={{padding: 50}}>
           <div className="row clr-white" style={{textAlign: 'center'}}>
             <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12" style={{textAlign: 'center'}}>

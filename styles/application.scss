@@ -1,6 +1,14 @@
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic");
 // @import url('https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css');
 
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+
 * {
     -webkit-overflow-scrolling: touch;
 }

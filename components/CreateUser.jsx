@@ -32,12 +32,6 @@ class CreateUserComponent extends Component {
       email: this.state.email,
       full_name: this.state.fullname
     })
-    .then(() => {
-      return this.api.login({
-        username: this.state.username,
-        password: this.state.password
-      })
-    })
     .then((token) => {
       localStorage.setItem('user_token', token)
       this.props.history.push('/')
@@ -63,7 +57,7 @@ class CreateUserComponent extends Component {
         <div className="form-group">
           <label htmlFor="email">Email Address</label>
           <input type="email" className="form-control" value={this.state.email} onChange={e => this.setState({email: e.target.value})} id="email" aria-describedby="emailHelp" placeholder="Enter email" required/>
-          <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
+          <small id="emailHelp" className="form-text text-muted">We will never share your email with anyone else.</small>
         </div>
         <div className="form-group">
           <label htmlFor="exampleInputPassword1">Password</label>

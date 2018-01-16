@@ -1,9 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import API from '../src/API'
 import { withRouter } from 'react-router-dom'
-import FineUploaderTraditional from 'fine-uploader-wrappers'
-import Gallery from 'react-fine-uploader'
-import 'react-fine-uploader/gallery/gallery.css'
+import ImageUploader from '../components/ImageUploader.jsx'
 require('../styles/Navbar.scss')
 
 class Navbar extends Component {
@@ -22,38 +20,6 @@ class Navbar extends Component {
     .then((info) => {
       localStorage.setItem('user_info', JSON.stringify(info))
       this.setState({userInfo: Object.assign({}, info)})
-    })
-
-    this.uploader = new FineUploaderTraditional({
-      options: {
-        deleteFile: {
-          enabled: false
-        },
-        request: {
-          endpoint: this.api.baseAddress + '/media',
-          customHeaders: {
-            Authorization: 'Bearer '+ this.api.userToken,
-            'X-Consumer-Username': 'AliKhoramshahi'
-          }
-        },
-        scaling: {
-          sendOriginal: false,
-          sizes: [
-            {name: 'large', maxSize: 2000}
-          ]
-        },
-        retry: {
-          enableAuto: true
-        }
-      }
-    })
-
-    this.uploader.on('complete', (id, name, response) => {
-    })
-
-    this.uploader.on('onAllComplete', (succeeded, failed) => {
-      this.props.history.push('/profile/' + this.state.userInfo.username)
-      window.location.reload()
     })
   }
 
@@ -146,7 +112,10 @@ class Navbar extends Component {
         </div>
       </div>
       <div style={{display: 'block', margin: '50px 0'}}/>
-      {this.state.showUploader && <Gallery uploader={ this.uploader } />}
+      {this.state.showUploader && <ImageUploader isPublic={true} onComplete={() => {
+        this.props.history.push('/profile/' + this.state.userInfo.username)
+        window.location.reload()
+      }}/>}
       </div>
     )
   }
