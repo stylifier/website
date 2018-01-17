@@ -47,7 +47,7 @@
     "fine-uploader": "^5.15.5",
     "fine-uploader-wrappers": "^1.0.1",
     "jquery": "^3.2.1",
-    "moment": "^2.18.1",
+    "moment": "^2.20.1",
     "pondjs": "^0.8.5",
     "react": "15.3.1",
     "react-addons-shallow-compare": "^15.5.2",

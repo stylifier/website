@@ -14,7 +14,9 @@ class MessagingView extends Component {
       toUsername: undefined,
       disableToUsernameEdit: false,
       showComposeModal: false,
-      assets: []
+      media: [],
+      uploaderLoading: false,
+      send: false
     }
 
     this.api = new API()
@@ -34,10 +36,21 @@ class MessagingView extends Component {
     this.forceUpdate()
   }
 
+  componentDidUpdate() {
+    if (this.state.send && !this.state.uploaderLoading) {
+      this.setState({send: false})
+      this.api.createMessage(this.props.threadId, this.state.message, this.state.media)
+      .then(() => {
+        this.setState({message: '', showUploader: false, media: []})
+        setTimeout(() => this.forceUpdate(), 200)
+        this.conversationViewer.viewer.fetcherOnTop.call(this.conversationViewer.viewer)
+      })
+    }
+  }
+
   messageSend(e) {
     e.preventDefault()
-    this.setState({message: '', showUploader: false, assets: []})
-    setTimeout(() => this.forceUpdate(), 200)
+    this.setState({send: true})
   }
 
   renderMessageCompositionArea() {
@@ -55,7 +68,10 @@ class MessagingView extends Component {
           </div>
         </span>
       </div>
-      {this.state.showUploader && <ImageUploader />}
+      {this.state.showUploader && <ImageUploader
+        isPublic={false}
+        onSubmit={() => this.setState({uploaderLoading: true})}
+        onComplete={(media) => this.setState({uploaderLoading: false, media: media})}/>}
     </div>)
   }
 
@@ -75,6 +91,7 @@ class MessagingView extends Component {
             key={this.props.threadId}
             threadId={this.props.threadId}
             messages={this.props.messages}
+            ref={ref => this.conversationViewer = ref}
             currentUser={this.props.currentUser}/>
         </div>
         <div id="msgcomposition" style={{zIndex: 99999, verticalAlign: 'bottom', width: '100%',backgroundColor: '#718dc4', padding: 5}}>

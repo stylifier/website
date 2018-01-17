@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react'
 import SimpleImage from './SimpleImage.jsx'
+import moment from 'moment'
 require('../styles/Messages.scss')
 
 
@@ -7,13 +8,15 @@ class ConversationItem extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      loadedItemCounts: 0,
-      loaded: false
+      loadedItemCounts: 0
     }
+    this.loaded = false
   }
 
   refreshStats() {
   }
+
+
 
   componentDidMount() {
   }
@@ -21,10 +24,15 @@ class ConversationItem extends Component {
   componentWillUnmount() {
   }
 
-  render() {
-    if(!this.state.loaded && this.props.base.media.length === this.state.loadedItemCounts)
-      this.props.onLoaded && setTimeout(() => this.props.onLoaded(), 100)
+  componentDidUpdate() {
+    if(!this.loaded &&
+      (this.props.base.media.length === this.state.loadedItemCounts || this.props.base.media.length === 0)) {
+      this.loaded = true
+      this.props.onLoaded && this.props.onLoaded()
+    }
+  }
 
+  render() {
     const fromMe = this.props.currentUserUsername === this.props.base.from
     const border = fromMe ? '15px 15px 15px 3px' : '15px 15px 3px 15px'
     return (
@@ -32,19 +40,19 @@ class ConversationItem extends Component {
         style={{
           width: 'auto',
           maxWidth: '80%',
-          color: 'darkblue',
-          display: 'inline-block',
+          color: 'black',
+          display: 'block',
           backgroundColor: 'white',
           borderRadius: border,
           marginTop: 10,
           marginBottom: 10,
           padding: 10,
-          float: fromMe ? 'left' : 'right'
+          marginLeft: !fromMe ? 'auto' : '0'
         }}>
           {this.props.base.text.split(/(?:\r\n|\r|\n)/g).map((t, i) => (<p key={i} style={{textAlign: 'left'}}> {t} </p>))}
           {this.props.base.media.map((o, i) => <SimpleImage key={i} style={{marginBottom: 10}} onLoaded={() => this.setState({loadedItemCounts: this.state.loadedItemCounts + 1})} base={o}/>)}
         <div id="footer" style={{fontSize: '.8em', margin: 0, padding: 0}}>
-          {this.props.base.createdAt}
+          {moment(this.props.base.created_time).fromNow()}
         </div>
       </div>
     )

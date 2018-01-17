@@ -6,13 +6,14 @@ class Viewer extends Component {
     super(props)
     this.state = {
       items: this.props.baseItems ? [...this.props.baseItems] : [],
-      loadedItemCounts: 0,
       loading: true,
-      fetchOnEnd: true,
-      stayAtBottom: true
+      fetchOnEnd: true
     }
+    this.loadedItemCounts = 0
     this.count = 0
     this.resized = this.resized.bind(this);
+    this.stayOnBotton = true
+    this.initializing = true
   }
 
   resized() {
@@ -20,13 +21,24 @@ class Viewer extends Component {
   }
 
   keepAtBottom() {
-    this.scrollArea.scrollBottom()
+    this.initializing = false
+
+    // this.scrollArea.scrollBottom()
+    // setTimeout(() => this.scrollArea.scrollBottom(), 100)
+    setTimeout(() => this.scrollArea.scrollBottom(), 100)
   }
 
   handleScroll(value) {
-    if ((value.topPosition + value.containerHeight == value.realHeight) && this.state.loading === false && this.state.fetchOnEnd) {
+    if(value.topPosition + value.containerHeight == value.realHeight) {
+      this.stayOnBotton = true
+    } else if(!this.initializing && value.topPosition && value.containerHeight && value.realHeight){
+      this.stayOnBotton = false
+    }
+
+    if ((value.topPosition == 0) && this.state.loading === false && this.state.fetchOnEnd) {
       this.setState({loading: true})
       this.fetcher()
+
     }
   }
 
@@ -49,6 +61,27 @@ class Viewer extends Component {
     }
     this.props.fetcher()
     .then((items) => {
+      const currentItemIds = this.state.items.map(i => i.id)
+      items = items.filter((item) => currentItemIds.indexOf(item.id) === -1)
+      this.loaded = false
+      this.setState({items: [...items, ...this.state.items]})
+      setTimeout(() => this.setState({loading: false}), 200)
+    })
+    .catch(() => {
+      this.setState({loading: false})
+    })
+  }
+
+  fetcherOnTop() {
+    if(typeof this.props.fetcher !== 'function') {
+      setTimeout(() => this.setState({loading: false}), 500)
+      return
+    }
+    this.props.fetcherOnTop()
+    .then((items) => {
+      const currentItemIds = this.state.items.map(i => i.id)
+      items = items.filter((item) => currentItemIds.indexOf(item.id) === -1)
+      this.loaded = false
       this.setState({items: [...this.state.items, ...items]})
       setTimeout(() => this.setState({loading: false}), 200)
     })
@@ -57,32 +90,37 @@ class Viewer extends Component {
     })
   }
 
+  itemLoaded() {
+    console.log(this.loadedItemCounts, this.state.items.length);
+    this.loadedItemCounts += 1
+
+    if(!this.loaded && this.loadedItemCounts === this.state.items.length) {
+      this.loaded = true
+
+      console.log(this.stayOnBotton);
+
+      if(this.stayOnBotton)
+        this.keepAtBottom()
+
+      this.props.onLoaded && this.props.onLoaded()
+    }
+  }
+
   renderItems() {
     const ItemView = this.props.ItemView
 
-    if(this.props.onLoaded && !this.loaded && this.state.loadedItemCounts + 1 === this.state.items.length) {
-      this.loaded = true
-      setTimeout(() => {
-        this.props.onLoaded()
-      }, 500)
-    }
-
     return (
       <div style={{height: this.state.items.length > 0 ? 'inherit' : '0'}}>
-        <div
-          style={this.props.styleOverwrite || {margin: 5, marginTop: 30}}>
-
+        <div style={this.props.styleOverwrite || {margin: 5, marginTop: 30}}>
           {
             (this.state.items &&
-            this.state.items.map((f, i) => (
-              <ItemView {...this.props.ItemViewProps}
-                onLoaded={() => {
-                  this.setState({loadedItemCounts: this.state.loadedItemCounts + 1})
-                }}
-                key={i}
-                base={f}/>
-              )
-            ))
+              this.state.items.map((f, i) => (
+                <ItemView {...this.props.ItemViewProps}
+                  onLoaded={() => this.itemLoaded() }
+                  key={i}
+                  base={f}/>
+                )
+              ))
           }
         </div>
       </div>
@@ -102,7 +140,7 @@ class Viewer extends Component {
             >
           {this.renderItems()}
         </ScrollArea>
-        {this.state.loading && (<div style={{textAlign: 'center', width: '100%', height: 150, color: 'white', textShadow: '0px 0px 10px #000000'}} className='overlay'>
+        {this.state.loading && (<div style={{textAlign: 'center', width: '100%', height: '100%', color: 'white', textShadow: '0px 0px 10px #000000'}} className='overlay'>
           <i className="fa fa-circle-o-notch fa-spin fa-3x fa-fw" style={{marginBottom: 60, marginTop: 20}}></i>
         </div>)}
       </div>
@@ -112,6 +150,7 @@ class Viewer extends Component {
 
 Viewer.propTypes = {
   fetcher: React.PropTypes.func,
+  fetcherOnTop: React.PropTypes.func,
   ItemView: React.PropTypes.func,
   ItemViewProps: React.PropTypes.object,
   baseItems: React.PropTypes.array,

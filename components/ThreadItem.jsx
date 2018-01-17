@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react'
+import moment from 'moment'
 require('../styles/Messages.scss')
 
 class ProfileImage extends Component {
@@ -23,6 +24,7 @@ class ProfileImage extends Component {
       <div
         className={isSelected ? 'selected': 'contact'}
         style={{
+          overflow: 'hidden',
           width: '100%',
           margin: 0,
           color: 'white',
@@ -42,7 +44,17 @@ class ProfileImage extends Component {
                 <div>
                   {userToShow.full_name} ({userToShow.username})
                 </div>
-                <div>{(new Date(this.props.base.created_time)).toString()}</div>
+                <div
+                  style={{
+                    position: 'fixed',
+                    right: 0,
+                    bottom: 0,
+                    float: 'right',
+                    marginRight: 10,
+                    fontSize:'0.8em'}}>
+                  {moment(this.props.base.created_time).fromNow()}
+                </div>
+
               </div>
             </div>
           </div>

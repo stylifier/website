@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import { withRouter } from 'react-router-dom'
 import ConversationItem from './ConversationItem.jsx'
 import ViewerScrolled from './ViewerScrolled.jsx'
 import Promise from 'bluebird'
@@ -12,6 +11,14 @@ class Conversation extends Component {
     this.api = new API()
   }
 
+  componentDidMount() {
+    this.pullingInterval = setInterval(() => this.viewer.fetcherOnTop.call(this.viewer), 2000)
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.pullingInterval)
+  }
+
   fetcher() {
     if(this.messagePagination === '')
       return Promise.resolve([])
@@ -19,6 +26,13 @@ class Conversation extends Component {
     return this.api.fetchMessages(this.props.threadId, this.messagePagination)
     .then((res) => {
       this.messagePagination = res.pagination
+      return res.data.reverse()
+    })
+  }
+
+  fetcherOnTop() {
+    return this.api.fetchMessages(this.props.threadId, 0)
+    .then((res) => {
       return res.data.reverse()
     })
   }
@@ -33,10 +47,10 @@ class Conversation extends Component {
         smallRowCount={1}
         styleOverwrite={{margin: 0}}
         onLoaded={() => {
-          setTimeout(() => this.viewer.keepAtBottom(), 70)
           this.props.onLoaded && this.props.onLoaded()
         }}
         fetcher={() => this.fetcher()}
+        fetcherOnTop={() => this.fetcherOnTop()}
         baseItems={this.props.messages}
         ItemView={ConversationItem}
         height={this.props.height}
@@ -53,11 +67,8 @@ Conversation.propTypes = {
   currentUser: React.PropTypes.object,
   height: React.PropTypes.string,
   onLoaded: React.PropTypes.func,
-  history: React.PropTypes.shape({
-    push: React.PropTypes.func.isRequired
-  }).isRequired,
   query: React.PropTypes.string,
   threadId: React.PropTypes.string
 }
 
-export default withRouter(Conversation)
+export default Conversation
