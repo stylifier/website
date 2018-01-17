@@ -33,7 +33,8 @@ class ConversationItem extends Component {
   }
 
   render() {
-    const fromMe = this.props.currentUserUsername === this.props.base.from
+    console.log(this.props.base);
+    const fromMe = this.props.currentUserUsername === this.props.base.senderUsername
     const border = fromMe ? '15px 15px 15px 3px' : '15px 15px 3px 15px'
     return (
       <div
@@ -47,7 +48,7 @@ class ConversationItem extends Component {
           marginTop: 10,
           marginBottom: 10,
           padding: 10,
-          marginLeft: !fromMe ? 'auto' : '0'
+          marginLeft: fromMe ? 'auto' : '0'
         }}>
           {this.props.base.text.split(/(?:\r\n|\r|\n)/g).map((t, i) => (<p key={i} style={{textAlign: 'left'}}> {t} </p>))}
           {this.props.base.media.map((o, i) => <SimpleImage key={i} style={{marginBottom: 10}} onLoaded={() => this.setState({loadedItemCounts: this.state.loadedItemCounts + 1})} base={o}/>)}
