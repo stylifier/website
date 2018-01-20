@@ -54,13 +54,12 @@ class Navbar extends Component {
 
             <li className="nav-item dropdown">
               <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style={{padding: 6}}>
-                {this.state.userInfo.firstName}
-                <img src={this.state.userInfo.profile_picture} className="img-circle" style={{width: 40, objectFit: 'cover', height: 40, marginLeft: 10}}/>
+                <img src={this.state.userInfo.profile_picture} className="img-circle" style={{width: 40, objectFit: 'cover', height: 40}}/>
               </a>
               <div className="dropdown-menu">
                 <a className="dropdown-item" href={profileLink}>profile</a>
                 <br/>
-                <a className="dropdown-item" href="/followers">followers</a>
+                <a className="dropdown-item" href="/followers">following</a>
                 <div className="divider"></div>
                 <a className="dropdown-item" href="/logout">logout</a>
               </div>
