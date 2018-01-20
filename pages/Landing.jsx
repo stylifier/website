@@ -32,7 +32,7 @@ class Landing extends Component {
               <LandingTopSection message="BECOME A PROFESSIONAL STYLIST" image="assets/img/landing-1-2.jpeg"/>
             </div>
             <div className="item" style={{height: '100%', maxHeight: '1342px'}}>
-              <LandingTopSection message="ASK FASHION ADVICES FROM YOU FAVORITE BRANDS" image="assets/img/landing-1-4.jpeg"/>
+              <LandingTopSection message="ASK FASHION ADVICES FROM YOUR FAVORITE BRANDS" image="assets/img/landing-1-4.jpeg"/>
             </div>
             <div className="item" style={{height: '100%', maxHeight: '1342px'}}>
               <LandingTopSection message="MAKE A DIFFERENCE FOR YOURSELLF AND OTHERS" image="assets/img/landing-1-3.jpeg"/>

@@ -33,9 +33,8 @@ class ConversationItem extends Component {
   }
 
   render() {
-    console.log(this.props.base);
     const fromMe = this.props.currentUserUsername === this.props.base.senderUsername
-    const border = fromMe ? '15px 15px 15px 3px' : '15px 15px 3px 15px'
+    const border = !fromMe ? '15px 15px 15px 3px' : '15px 15px 3px 15px'
     return (
       <div
         style={{

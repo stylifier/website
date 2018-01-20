@@ -16,6 +16,9 @@ class Navbar extends Component {
       userInfo: JSON.parse(localStorage.getItem('user_info')) || {}
     }
 
+    if(!this.api.token)
+      return
+
     this.api.fetchUserInfo()
     .then((info) => {
       localStorage.setItem('user_info', JSON.stringify(info))
