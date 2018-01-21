@@ -33,7 +33,7 @@ class CreateUserComponent extends Component {
       full_name: this.state.fullname
     })
     .then((token) => {
-      localStorage.setItem('user_token', token)
+      this.api.setToken(token)
       this.props.history.push('/')
     })
     .catch(() => {

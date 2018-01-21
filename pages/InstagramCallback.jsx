@@ -23,7 +23,7 @@ class InstagramCallback extends Component {
       instagram_code: this.state.code
     })
     .then((token) => {
-      localStorage.setItem('user_token', token)
+      this.api.setToken(token)
       this.props.history.push('/')
     })
   }

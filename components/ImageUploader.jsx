@@ -19,7 +19,7 @@ class ImageUploader extends Component {
         request: {
           endpoint: this.api.baseAddress + '/media',
           customHeaders: {
-            Authorization: 'Bearer '+ this.api.userToken,
+            Authorization: 'Bearer '+ this.api.token,
             'x-is-public': this.props.isPublic ? 'true' : 'false'
           }
         },

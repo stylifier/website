@@ -3,12 +3,14 @@ import Promise from 'bluebird'
 
 class API {
   constructor() {
-    this.baseAddress = 'https://cloud.stylifier.com'
-    this.userToken = localStorage.getItem('user_token') || ''
+    this.baseAddress = 'http://localhost:3000'
+    this.token = localStorage.getItem('user_token')
+    this.userInfo = JSON.parse(localStorage.getItem('user_info')) || {}
   }
 
   setToken(token) {
-    this.userToken = token
+    localStorage.setItem('user_token', token)
+    this.token = token
   }
 
   get(path, params, extraHeaders) {
@@ -19,7 +21,8 @@ class API {
       .get(this.baseAddress + path + paramsStr)
       .set(Object.assign({
         accept: 'json',
-        Authorization: 'Bearer '+ this.userToken
+        Authorization: 'Bearer '+ this.token,
+        'x-consumer-username': this.userInfo.username
       }, extraHeaders))
       .end((error, res) => {
         if(error)
@@ -37,7 +40,8 @@ class API {
       .send(Object.assign({}, body))
       .set({
         accept: 'json',
-        Authorization: 'Bearer '+ this.userToken
+        Authorization: 'Bearer '+ this.token,
+        'x-consumer-username': this.userInfo.username
       })
       .end((error, res) => {
         if(error)
@@ -55,7 +59,8 @@ class API {
       .send(Object.assign({}, body))
       .set({
         accept: 'json',
-        Authorization: 'Bearer '+ this.userToken
+        Authorization: 'Bearer '+ this.token,
+        'x-consumer-username': this.userInfo.username
       })
       .end((error, res) => {
         if(error)
@@ -67,6 +72,7 @@ class API {
   }
 
   login(info) {
+    this.userInfo.username = info.username
     return this.post('/login', info)
     .then((res) => {
       if(!res.jwt)
@@ -76,6 +82,7 @@ class API {
   }
 
   register(info) {
+    this.userInfo.username = info.username
     return this.post('/register', info)
     .then((res) => {
       if(!res.jwt)
@@ -102,6 +109,10 @@ class API {
 
   fetchUser(username) {
     return this.get('/users/' + username)
+  }
+
+  closeThread(threadId, reviewObj) {
+    return this.post(`/threads/${threadId}/close`, reviewObj)
   }
 
   followUser(username) {

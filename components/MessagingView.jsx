@@ -134,6 +134,7 @@ class MessagingView extends Component {
 
 MessagingView.propTypes = {
   threadId: PropTypes.string,
+  threadStatus: PropTypes.string,
   messages: PropTypes.array,
   toUsername: PropTypes.string,
   currentUser: PropTypes.object,

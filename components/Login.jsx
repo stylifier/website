@@ -28,7 +28,6 @@ class LoginComponent extends Component {
       password: this.state.password
     })
     .then((token) => {
-      localStorage.setItem('user_token', token)
       this.api.setToken(token)
       return this.api.fetchUserInfo()
     })

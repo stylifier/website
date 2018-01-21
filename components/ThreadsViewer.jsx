@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import { withRouter } from 'react-router-dom'
 import ThreadItem from './ThreadItem.jsx'
+import CloseThreadModal from './CloseThreadModal.jsx'
 import Viewer from './Viewer.jsx'
 import Promise from 'bluebird'
 import API from '../src/API'
@@ -8,7 +9,10 @@ import API from '../src/API'
 class ThreadsViewer extends Component {
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = {
+      showRatingModal: false,
+      itemToClose: {}
+    }
     this.api = new API()
   }
 
@@ -26,6 +30,7 @@ class ThreadsViewer extends Component {
   render() {
     return (
       <div>
+        {this.state.showRatingModal && <CloseThreadModal base={this.state.itemToClose} onClose={() => this.setState({showRatingModal: false})}/>}
         <div style={{maxHeight: 'calc(100% - 40px)', overflowY: 'auto'}}>
           <Viewer
             className="btn-group-vertical"
@@ -43,6 +48,12 @@ class ThreadsViewer extends Component {
               onClick:(i) => {
                 this.props.changeCurrentThread(i.id)
                 this.props.history.push('/messages/' + i.id + (this.props.query ? `?query=${encodeURIComponent(this.props.query)}` : ''))
+              },
+              onClose:(i) => {
+                if(i.status === 'REQUESTED') {
+                  return this.api.closeThread(i.id, {rating: 0, review: ''})
+                }
+                this.setState({showRatingModal: true, itemToClose: i})
               },
               currentUserUsername: this.props.currentUser.username,
               activeThreadId: this.props.threadId
