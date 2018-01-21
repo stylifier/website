@@ -3,7 +3,7 @@ import Promise from 'bluebird'
 
 class API {
   constructor() {
-    this.baseAddress = 'http://localhost:3000'
+    this.baseAddress = 'https://cloud.stylifier.com'
     this.token = localStorage.getItem('user_token')
     this.userInfo = JSON.parse(localStorage.getItem('user_info')) || {}
   }
