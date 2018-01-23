@@ -33,6 +33,25 @@ class API {
     })
   }
 
+  delete(path, extraHeaders) {
+    extraHeaders = extraHeaders || {}
+    return new Promise((accept, reject) => {
+      request
+      .delete(this.baseAddress + path)
+      .set(Object.assign({
+        accept: 'json',
+        Authorization: 'Bearer '+ this.token,
+        'x-consumer-username': this.userInfo.username
+      }, extraHeaders))
+      .end((error, res) => {
+        if(error)
+          return reject(error)
+
+        accept(res.body)
+      })
+    })
+  }
+
   post(path, body) {
     return new Promise((resolve, reject) => {
       request
@@ -145,6 +164,14 @@ class API {
 
   fetchMessages(threadId, pagination) {
     return this.get(`/threads/${threadId}/messages`, pagination ? ['pagination=' + pagination] : [])
+  }
+
+  addSubsctiption(id) {
+    return this.post(`/subscriptions/${id}`, {})
+  }
+
+  removeSubsctiption(id) {
+    return this.delete(`/subscriptions/${id}`, {})
   }
 }
 

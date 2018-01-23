@@ -21,21 +21,19 @@ class Navbar extends Component {
 
     var OneSignal = window.OneSignal || [];
     OneSignal.push(['init', {
-      appId: '32e810a8-17ec-46ce-92c8-852abd3df96f',
-      notifyButton: {
-        prenotify: true,
-        showCredit: false,
-        size: 'medium',
-        position: 'bottom-right',
-        enable: true,
-        displayPredicate: function() {
-          return OneSignal.isPushNotificationsEnabled()
-          .then(function(isPushEnabled) {
-            return !isPushEnabled;
-          });
-        }
-      }
+      appId: '32e810a8-17ec-46ce-92c8-852abd3df96f'
     }])
+
+    OneSignal.push(() => {
+      OneSignal.on('subscriptionChange', (isSubscribed) => {
+        OneSignal.getUserId().then(id => isSubscribed ?
+          this.api.addSubsctiption(id) :
+          this.api.removeSubsctiption(id)
+        )
+      });
+    });
+
+    OneSignal.push(() => OneSignal.getUserId().then(id => this.api.addSubsctiption(id)))
 
     this.api.fetchUserInfo()
     .then((info) => {
