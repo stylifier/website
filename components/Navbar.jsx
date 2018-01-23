@@ -19,6 +19,24 @@ class Navbar extends Component {
     if(!this.api.token)
       return
 
+    var OneSignal = window.OneSignal || [];
+    OneSignal.push(['init', {
+      appId: '32e810a8-17ec-46ce-92c8-852abd3df96f',
+      notifyButton: {
+        prenotify: true,
+        showCredit: false,
+        size: 'medium',
+        position: 'bottom-right',
+        enable: true,
+        displayPredicate: function() {
+          return OneSignal.isPushNotificationsEnabled()
+          .then(function(isPushEnabled) {
+            return !isPushEnabled;
+          });
+        }
+      }
+    }])
+
     this.api.fetchUserInfo()
     .then((info) => {
       localStorage.setItem('user_info', JSON.stringify(info))
