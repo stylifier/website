@@ -19,6 +19,8 @@ script:
   - mkdir syncdist
   - mkdir syncdist/build
   - cp -R assets syncdist
+  - cp -R assets/*.js syncdist
+  - cp -R assets/*.json syncdist
   - cp dist/* syncdist/build
   - cp index.html syncdist
   - cd syncdist
