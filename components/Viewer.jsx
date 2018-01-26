@@ -59,6 +59,11 @@ class Viewer extends Component {
         this.setState({noMoreFetch: true, loading: false})
         return
       }
+      const currentItemIds = this.state.items.map(i => i.id).filter(t => !!t)
+      if(currentItemIds.length > 0) {
+        items = items.filter((item) => currentItemIds.indexOf(item.id) === -1)
+      }
+
       this.setState({items: [...this.state.items, ...items]})
       setTimeout(() => this.setState({loading: false}), 500)
     })
