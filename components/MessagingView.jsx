@@ -60,7 +60,7 @@ class MessagingView extends Component {
         <textarea value={this.state.message} onChange={e => this.setState({message: e.target.value})} style={{resize: 'none', minHeight: '100%'}} onKeyPress={(e) => e.key === 'Enter' && this.messageSend(e)} id="btn-input" className="form-control input-sm" placeholder="Write your message here..." />
         <span className="input-group-btn">
           <div className="btn-group-vertical">
-            <button type="button" className="btn btn-primary">Send</button>
+            <button type="button" className="btn btn-primary" onClick={(e) => this.messageSend(e)}>Send</button>
             <button type="button" className="btn btn-primary" onClick={() => {
               this.setState({showUploader:!this.state.showUploader})
               setTimeout(() => this.forceUpdate(), 200)
