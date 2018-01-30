@@ -9,12 +9,6 @@ class ProfileImage extends Component {
     }
   }
 
-  componentDidMount() {
-  }
-
-  componentWillUnmount() {
-  }
-
   resize(){
     this.render()
   }

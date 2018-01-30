@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import { withRouter } from 'react-router-dom'
 import ThreadItem from './ThreadItem.jsx'
 import CloseThreadModal from './CloseThreadModal.jsx'
-import Viewer from './Viewer.jsx'
+import Viewer from './ViewerScrolled.jsx'
 import Promise from 'bluebird'
 import API from '../src/API'
 
@@ -14,6 +14,14 @@ class ThreadsViewer extends Component {
       itemToClose: {}
     }
     this.api = new API()
+  }
+
+  componentDidMount() {
+    this.pullingInterval = setInterval(() => this.viewer.fetcher.call(this.viewer), 2000)
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.pullingInterval)
   }
 
   fetcher() {
@@ -41,9 +49,10 @@ class ThreadsViewer extends Component {
             styleOverwrite={{margin: 0}}
             fetcher={() => this.fetcher()}
             component="div"
+            hideLoading={true}
             gutter={0}
             ItemView={ThreadItem}
-            ref={ref => !this.state.viewer && this.setState({viewer: ref})}
+            ref={ref => this.viewer = ref}
             ItemViewProps={{
               onClick:(i) => {
                 this.props.changeCurrentThread(i.id)

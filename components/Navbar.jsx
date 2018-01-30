@@ -124,7 +124,18 @@ class Navbar extends Component {
                     <span className="icon-bar"></span>
                     <span className="icon-bar"></span>
                 </button>
-                <a className="navbar-brand" href="/"> <img style={{width: 30, objectFit: 'cover', height: 30, float: 'left', marginTop: -7, marginRight: 10}} src="/assets/img/favicon.png"/> Stylifier</a>
+                <a className="navbar-brand" style={{marginTop: 4}} href="/">
+                  <img style={{
+                      width: 40,
+                      height: 40,
+                      objectFit: 'cover',
+                      float: 'left',
+                      marginTop: -11,
+                      marginRight: 10,
+                      marginBottom: 0}}
+                      src="/assets/img/favicon.png"/>
+                  Stylifier
+                </a>
             </div>
             {!this.emptyRender && navElements}
         </div>

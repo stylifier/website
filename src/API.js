@@ -159,7 +159,7 @@ class API {
   }
 
   fetchThreads(q, pagination) {
-    return this.get('/threads', ['q=' + encodeURIComponent(q), ...(pagination ? ['pagination=' + pagination] : [])])
+    return this.get('/threads', [ ...(q ? ['q=' + encodeURIComponent(q)] : []), ...(pagination ? ['pagination=' + pagination] : [])])
   }
 
   fetchMessages(threadId, pagination) {

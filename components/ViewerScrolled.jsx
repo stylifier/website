@@ -62,6 +62,13 @@ class Viewer extends Component {
     this.props.fetcher()
     .then((items) => {
       const currentItemIds = this.state.items.map(i => i.id)
+      items.map((item) => ({status: item.status,index: currentItemIds.indexOf(item.id)}))
+      .filter(t => t.index !== -1 && this.state.items[t.index].status !== t.status)
+      .map(t => {
+        this.state.items[t.index].status = t.status
+        this.forceUpdate()
+      })
+
       items = items.filter((item) => currentItemIds.indexOf(item.id) === -1)
       this.loaded = false
       this.setState({items: [...items, ...this.state.items]})
@@ -140,7 +147,7 @@ class Viewer extends Component {
             >
           {this.renderItems()}
         </ScrollArea>
-        {this.state.loading && (<div style={{textAlign: 'center', width: '100%', height: '100%', color: 'white', textShadow: '0px 0px 10px #000000'}} className='overlay'>
+        {!this.props.hideLoading && this.state.loading && (<div style={{textAlign: 'center', width: '100%', height: '100%', color: 'white', textShadow: '0px 0px 10px #000000'}} className='overlay'>
           <i className="fa fa-circle-o-notch fa-spin fa-3x fa-fw" style={{marginBottom: 60, marginTop: 20}}></i>
         </div>)}
       </div>
@@ -162,6 +169,7 @@ Viewer.propTypes = {
   onLoaded: React.PropTypes.func,
   gutter: React.PropTypes.number,
   height: React.PropTypes.string,
+  hideLoading: React.PropTypes.bool,
   prepend: React.PropTypes.bool
 }
 

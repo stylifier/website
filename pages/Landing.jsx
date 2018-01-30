@@ -26,16 +26,16 @@ class Landing extends Component {
           </ol>
           <div className="carousel-inner">
             <div className="item active" style={{height: '100%', maxHeight: '1342px'}}>
-              <LandingTopSection message="FIND YOUR PERSONAL STYLIST" image="assets/img/landing-1-1.jpeg"/>
+              <LandingTopSection message="GET YOUR OWN PERSONAL STYLIST" image="assets/img/landing-1-1.jpeg"/>
             </div>
             <div className="item" style={{height: '100%', maxHeight: '1342px'}}>
               <LandingTopSection message="BECOME A PROFESSIONAL STYLIST" image="assets/img/landing-1-2.jpeg"/>
             </div>
             <div className="item" style={{height: '100%', maxHeight: '1342px'}}>
-              <LandingTopSection message="ASK FASHION ADVICES FROM YOUR FAVORITE BRANDS" image="assets/img/landing-1-4.jpeg"/>
+              <LandingTopSection message="ASK FASHION ADVICE FROM YOUR FAVORITE BRANDS" image="assets/img/landing-1-4.jpeg"/>
             </div>
             <div className="item" style={{height: '100%', maxHeight: '1342px'}}>
-              <LandingTopSection message="MAKE A DIFFERENCE FOR YOURSELLF AND OTHERS" image="assets/img/landing-1-3.jpeg"/>
+              <LandingTopSection message="MAKE A DIFFERENCE FOR YOURSELF AND OTHERS" image="assets/img/landing-1-3.jpeg"/>
             </div>
           </div>
         </div>
