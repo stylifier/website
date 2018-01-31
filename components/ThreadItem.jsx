@@ -32,11 +32,12 @@ class ProfileImage extends Component {
           e.preventDefault()
           this.props.onClick(this.props.base)
         }}>
-          <div style={{padding: 4}}>
-            <a type="button" className="close" onClick={(e) => {
+          <div style={{padding: 4, marginRight: 10}}>
+
+            {(this.props.base.status !== 'CLOSED' && (this.props.base.status !== 'RATING' || isFromMe)) && <a type="button" className="close fa-2x" onClick={(e) => {
               e.preventDefault()
               this.props.onClose && this.props.onClose(Object.assign({}, this.props.base))
-            }}>×</a>
+            }}>×</a>}
             <div className={'row' + (isSelected ? ' selected': ' contact')} style={{textAlign: 'center'}}>
               <div className="col-lg-4 col-md-4 col-sm-12 col-xs-4" style={{textAlign: 'center'}}>
                 <img src={userToShow.profile_picture} className="img-circle" style={{objectFit: 'scale-down', height: 100,width: 100}}/>
@@ -48,30 +49,27 @@ class ProfileImage extends Component {
 
                 {this.props.base.status === 'REQUESTED' &&
                   <div style={{float: 'right', color: 'green', marginRight: 20}}>
-                    <i className={'fa ' + (isFromMe ? 'fa-arrow-right' : 'fa-arrow-left')} aria-hidden="true"></i>
+                    <i className={'fa fa-2x ' + (isFromMe ? 'fa-arrow-right' : 'fa-arrow-left')} aria-hidden="true"></i>
                   </div>}
 
                 {this.props.base.status === 'OPENED' &&
                   <div style={{float: 'right', color: 'green', marginRight: 20}}>
-                    <i className='fa fa-check' aria-hidden="true"></i>
+                    <i className='fa fa-2x fa-check' aria-hidden="true"></i>
                   </div>}
 
                 {this.props.base.status === 'CLOSED' &&
                   <div style={{float: 'right', color: 'darkgray', marginRight: 20}}>
-                    <i className='fa fa-archive' aria-hidden="true"></i>
+                    <i className='fa fa-2x fa-archive' aria-hidden="true"></i>
                   </div>}
 
                 {this.props.base.status === 'RATING' &&
                   <div style={{float: 'right', color: 'green', marginRight: 20}}>
-                    <i className={'fa ' + (isFromMe ? 'fa-question-circle' : 'fa-archive')} aria-hidden="true"></i>
+                    <i className={'fa fa-2x ' + (isFromMe ? 'fa-question-circle' : 'fa-archive')} aria-hidden="true"></i>
                   </div>}
 
                 <div
                   style={{
-                    position: 'fixed',
-                    right: 0,
-                    bottom: 0,
-                    float: 'right',
+                    float: 'left',
                     marginRight: 10,
                     fontSize:'0.8em'}}>
                   {moment(this.props.base.created_time).fromNow()}

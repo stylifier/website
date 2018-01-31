@@ -98,13 +98,10 @@ class Viewer extends Component {
   }
 
   itemLoaded() {
-    console.log(this.loadedItemCounts, this.state.items.length);
     this.loadedItemCounts += 1
 
     if(!this.loaded && this.loadedItemCounts === this.state.items.length) {
       this.loaded = true
-
-      console.log(this.stayOnBotton);
 
       if(this.stayOnBotton)
         this.keepAtBottom()
@@ -148,7 +145,7 @@ class Viewer extends Component {
           {this.renderItems()}
         </ScrollArea>
         {!this.props.hideLoading && this.state.loading && (<div style={{textAlign: 'center', width: '100%', height: '100%', color: 'white', textShadow: '0px 0px 10px #000000'}} className='overlay'>
-          <i className="fa fa-circle-o-notch fa-spin fa-3x fa-fw" style={{marginBottom: 60, marginTop: 20}}></i>
+          <i className="fa fa-circle-o-notch fa-spin fa-3x fa-fw" style={{marginBottom: 60, marginTop: 80}}></i>
         </div>)}
       </div>
     )

@@ -40,7 +40,7 @@ class Feed extends Component {
   render() {
     return (
       <div className="containerItem" style={{visibility: this.state.loaded ? 'visible' : 'hidden'}}>
-        <img src={this.props.base.images.standard_resolution.url} style={{width: '100%'}} onClick={() => this.likeClicked()} onLoad={() => {
+        <img src={this.props.base.images.standard_resolution.url} style={Object.assign({width: '100%'}, this.props.styleOverwrite || {})} onClick={() => this.likeClicked()} onLoad={() => {
           this.setState({loaded: true})
           this.props.onLoaded()
         }}/>
@@ -59,7 +59,8 @@ Feed.propTypes = {
   base: PropTypes.object,
   onLoaded: PropTypes.func,
   showUser: PropTypes.bool,
-  showLike: PropTypes.bool
+  showLike: PropTypes.bool,
+  styleOverwrite: PropTypes.object
 }
 
 export default Feed

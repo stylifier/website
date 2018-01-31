@@ -26,7 +26,6 @@ class MessagingView extends Component {
   }
 
   componentDidMount() {
-
   }
 
   componentWillUnmount() {
@@ -50,7 +49,8 @@ class MessagingView extends Component {
 
   messageSend(e) {
     e.preventDefault()
-    this.setState({send: true})
+    if(this.state.message.trim() !== '' || this.state.media.length > 0)
+      this.setState({send: true})
   }
 
   renderMessageCompositionArea() {
@@ -75,10 +75,17 @@ class MessagingView extends Component {
     </div>)
   }
 
+  renderConversationHeader() {
+
+  }
+
   renderMessageSelected() {
-    const height = document.getElementById('msgcomposition') ? document.getElementById('msgcomposition').clientHeight : 0
+    const height = document.getElementById('msgcomposition') ? document.getElementById('msgcomposition').clientHeight + 60 : 200
     return (
       <div style={{backgroundColor: '#809dd6', width: '100%',height: '100%'}}>
+        <div style={{zIndex: 99999, verticalAlign: 'bottom', width: '100%',backgroundColor: '#718dc4', padding: 5, height: 60}}>
+          {this.renderConversationHeader()}
+        </div>
         <div style={{
           verticalAlign: 'top',
           width: '100%',

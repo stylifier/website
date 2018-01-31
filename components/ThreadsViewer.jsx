@@ -28,7 +28,7 @@ class ThreadsViewer extends Component {
     if(this.pagination === '')
       return Promise.resolve([])
 
-    return this.api.fetchThreads(this.state.query, this.oldestFetchedThread)
+    return this.api.fetchThreads(this.props.query, this.oldestFetchedThread)
     .then((res) => {
       this.pagination = res.pagination
       return res.data

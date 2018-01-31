@@ -67,13 +67,6 @@ class Messages extends Component {
 
   searchClicked(e) {
     e.preventDefault()
-
-    this.threadsViewer.viewer.setSetate({items: []})
-
-    this.oldestFetchedThread = (new Date()).toISOString()
-    this.setState({threads: this.state.threads})
-    this.fetchThreads()
-    .then(() => this.forceUpdate())
     this.props.history.push('/messages' + (this.state.threadId ? `/${this.state.threadId}` : '') + `?query=${encodeURIComponent(this.state.query)}`)
   }
 
@@ -96,6 +89,7 @@ class Messages extends Component {
         </div>
       </form>
       <ThreadsViewer
+        key={this.state.query}
         changeCurrentThread={(id) => this.setState({threadId: id})}
         threadId={this.state.threadId}
         currentUser={this.state.currentUser}

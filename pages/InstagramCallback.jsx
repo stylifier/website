@@ -14,7 +14,8 @@ class InstagramCallback extends Component {
     .forEach(i => args[i.split('=')[0]] = i.split('=')[1])
 
     this.state = {
-      code: args.code ? decodeURIComponent(args.code) : null
+      code: args.code ? decodeURIComponent(args.code) : null,
+      message: 'Please wait...'
     }
   }
 
@@ -25,6 +26,9 @@ class InstagramCallback extends Component {
     .then((token) => {
       this.api.setToken(token)
       this.props.history.push('/')
+    })
+    .catch((e) => {
+      this.setState({message: 'failed, ' + e.message})
     })
   }
 
@@ -40,6 +44,7 @@ class InstagramCallback extends Component {
         <div id="home-sec" className="container">
           <div className="row clr-white" >
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              {this.state.message}
             </div>
           </div>
         </div>

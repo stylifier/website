@@ -15,6 +15,7 @@ class ComposeThreadModal extends Component {
       followersSuggestionList: [],
       media: [],
       uploaderLoading: false,
+      sendButtonDisabled: false,
       send: false,
       message: ''
     }
@@ -34,6 +35,7 @@ class ComposeThreadModal extends Component {
         this.props.history.push('/messages/' + r.id)
         window.location.reload()
       })
+      .catch(() => this.setState({sendButtonDisabled: false, send: false}))
     }
   }
 
@@ -128,9 +130,10 @@ class ComposeThreadModal extends Component {
             <button
               onClick={(e) => {
                 e.preventDefault()
-                this.setState({send: true})
+                this.setState({send: true, sendButtonDisabled: true})
               }}
-              className="btn btn-primary">
+              className="btn btn-primary"
+              disabled={this.state.sendButtonDisabled}>
 
               Ask for advice
             </button>

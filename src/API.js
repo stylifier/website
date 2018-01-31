@@ -167,6 +167,7 @@ class API {
   }
 
   addSubsctiption(id) {
+    if(!id) return Promise.resolve()
     return this.post(`/subscriptions/${id}`, {})
   }
 
