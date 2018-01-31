@@ -139,7 +139,6 @@ class MessagingView extends Component {
           aria-hidden="true"
           style={{
             marginTop: 8,
-            marginLeft: '5%',
             color: 'white',
             padding: 0,
             paddingRight: 5,
