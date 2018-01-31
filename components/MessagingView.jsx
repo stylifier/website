@@ -116,8 +116,9 @@ class MessagingView extends Component {
               marginLeft: '20',
               color: 'white',
               padding: 0,
-              paddingRight: 10,
-              paddingLeft: 10,
+              paddingRight: 5,
+              fontSize: 12,
+              paddingLeft: 5,
               borderRadius: 3,
               backgroundColor: 'Transparent',
               backgroundRepeat:'no-repeat',
@@ -130,7 +131,7 @@ class MessagingView extends Component {
             onClick={() => this.setState({showRatingModal: true})}> End advice</button>}
 
         <img src={recipient.profile_picture} className="img-circle" style={{width: 50, objectFit: 'cover', height: 50, marginTop: 3, float: 'right'}}/>
-        <div style={{color: 'white', fontSize: 18, margin: 10, float: 'right'}}>
+        <div style={{color: 'white', fontSize: 12, margin: 10, float: 'right'}}>
           {recipient.full_name} ({recipient.username})
         </div>
         {(this.props.thread.status !== 'CLOSED' && (this.props.thread.status !== 'RATING' || isFromMe)) && <button
@@ -141,8 +142,9 @@ class MessagingView extends Component {
             marginLeft: '5%',
             color: 'white',
             padding: 0,
-            paddingRight: 10,
-            paddingLeft: 10,
+            paddingRight: 5,
+            fontSize: 12,
+            paddingLeft: 5,
             borderRadius: 3,
             backgroundColor: 'Transparent',
             backgroundRepeat:'no-repeat',
