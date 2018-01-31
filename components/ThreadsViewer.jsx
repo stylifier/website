@@ -30,6 +30,8 @@ class ThreadsViewer extends Component {
 
     return this.api.fetchThreads(this.props.query, this.oldestFetchedThread)
     .then((res) => {
+      res.data.filter(t => t.id === this.props.threadId)
+      .map(t => this.props.changeCurrentThread(t.id, t))
       this.pagination = res.pagination
       return res.data
     })
@@ -55,7 +57,7 @@ class ThreadsViewer extends Component {
             ref={ref => this.viewer = ref}
             ItemViewProps={{
               onClick:(i) => {
-                this.props.changeCurrentThread(i.id)
+                this.props.changeCurrentThread(i.id, i)
                 this.props.history.push('/messages/' + i.id + (this.props.query ? `?query=${encodeURIComponent(this.props.query)}` : ''))
               },
               onClose:(i) => {

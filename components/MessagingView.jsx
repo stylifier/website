@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react'
 import ConversationViewer from './ConversationViewer.jsx'
+import CloseThreadModal from './CloseThreadModal.jsx'
 import API from '../src/API'
 import { withRouter } from 'react-router-dom'
 import ComposeThreadModal from './ComposeThreadModal.jsx'
@@ -13,6 +14,7 @@ class MessagingView extends Component {
       showUploader: false,
       toUsername: undefined,
       disableToUsernameEdit: false,
+      showRatingModal: false,
       showComposeModal: false,
       media: [],
       uploaderLoading: false,
@@ -76,7 +78,83 @@ class MessagingView extends Component {
   }
 
   renderConversationHeader() {
+    const {thread} = this.props
+    let showBack = window.innerWidth < 768 && this.state.threadId? false : true
 
+    if(!thread.from)
+      return
+    const recipient = thread.from.username === this.props.currentUser.username ?
+      thread.to : thread.from
+    const isFromMe = this.props.thread.from.username === this.props.currentUser.username
+    return (
+      <div>
+        <button
+          type="button"
+          className='fa fa-3x fa-arrow-circle-o-left'
+          aria-hidden="true"
+          style={{
+            marginTop: 5,
+            color: 'white',
+            backgroundColor: 'Transparent',
+            backgroundRepeat:'no-repeat',
+            border: 'none',
+            cursor:'pointer',
+            overflow: 'hidden',
+            outline:'none',
+            float: 'left',
+            visibility: showBack ? 'visible': 'hidden'
+          }}
+          onClick={() => {
+            this.props.history.push('/messages/' + (this.props.query ? `?query=${encodeURIComponent(this.props.query)}` : ''))
+          }}></button>
+
+          {(this.props.thread.status !== 'CLOSED' && (this.props.thread.status !== 'RATING' || isFromMe)) && <button
+            type="button"
+            aria-hidden="true"
+            style={{
+              marginTop: 8,
+              marginLeft: '20',
+              color: 'white',
+              padding: 0,
+              paddingRight: 10,
+              paddingLeft: 10,
+              borderRadius: 3,
+              backgroundColor: 'Transparent',
+              backgroundRepeat:'no-repeat',
+              cursor:'pointer',
+              overflow: 'hidden',
+              outline:'none',
+              float: 'left',
+              visibility: showBack ? 'visible': 'hidden'
+            }}
+            onClick={() => this.setState({showRatingModal: true})}> End advice</button>}
+
+        <img src={recipient.profile_picture} className="img-circle" style={{width: 50, objectFit: 'cover', height: 50, marginTop: 3, float: 'right'}}/>
+        <div style={{color: 'white', fontSize: 18, margin: 10, float: 'right'}}>
+          {recipient.full_name} ({recipient.username})
+        </div>
+        {(this.props.thread.status !== 'CLOSED' && (this.props.thread.status !== 'RATING' || isFromMe)) && <button
+          type="button"
+          aria-hidden="true"
+          style={{
+            marginTop: 8,
+            marginLeft: '5%',
+            color: 'white',
+            padding: 0,
+            paddingRight: 10,
+            paddingLeft: 10,
+            borderRadius: 3,
+            backgroundColor: 'Transparent',
+            backgroundRepeat:'no-repeat',
+            cursor:'pointer',
+            overflow: 'hidden',
+            outline:'none',
+            float: 'right',
+            visibility: showBack ? 'visible': 'hidden'
+          }}
+          onClick={() => ({})}> Add contribution</button>}
+      </div>
+    )
   }
 
   renderMessageSelected() {
@@ -129,6 +207,7 @@ class MessagingView extends Component {
   render() {
     return (
       <div>
+        {this.state.showRatingModal && <CloseThreadModal base={this.props.thread} onClose={() => this.setState({showRatingModal: false})}/>}
         {this.state.showComposeModal &&
           (<ComposeThreadModal
             currentUser={this.props.currentUser}
@@ -141,10 +220,13 @@ class MessagingView extends Component {
 
 MessagingView.propTypes = {
   threadId: PropTypes.string,
+  thread: PropTypes.object,
   threadStatus: PropTypes.string,
   messages: PropTypes.array,
   toUsername: PropTypes.string,
   currentUser: PropTypes.object,
+  query: React.PropTypes.string,
+  changeCurrentThread: React.PropTypes.func,
   history: React.PropTypes.shape({
     push: React.PropTypes.func.isRequired,
     listen: React.PropTypes.func.isRequired

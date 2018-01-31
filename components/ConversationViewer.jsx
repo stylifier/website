@@ -45,7 +45,7 @@ class Conversation extends Component {
         largeRowCount={1}
         mediomRowCount={1}
         smallRowCount={1}
-        styleOverwrite={{margin: 0}}
+        styleOverwrite={{margin: 0, width: '100%'}}
         onLoaded={() => {
           this.props.onLoaded && this.props.onLoaded()
         }}

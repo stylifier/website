@@ -17,6 +17,7 @@ class Messages extends Component {
       query: '',
       threadId: this.props.location.pathname.split('/')[2],
       currentUser: {},
+      thread: {},
       hash: '',
       followersSuggestionList: [],
       assets: []
@@ -76,7 +77,15 @@ class Messages extends Component {
 
   renderMessages() {
     return (<div className="col-lg-9 col-md-8 col-sm-9 col-xs-12" style={{padding: 0}}>
-      <MessagingView ref={ref => this.messageingViewer = ref} threadId={this.state.threadId} messages={this.state.messages} fetcher={() => this.fetchMessages()} currentUser={this.state.currentUser}/>
+      <MessagingView
+        ref={ref => this.messageingViewer = ref}
+        threadId={this.state.threadId}
+        thread={this.state.thread}
+        messages={this.state.messages}
+        fetcher={() => this.fetchMessages()}
+        currentUser={this.state.currentUser}
+        changeCurrentThread={(id, i) => this.setState({threadId: id, thread: i})}
+        query={this.state.query}/>
     </div>)
   }
 
@@ -90,7 +99,7 @@ class Messages extends Component {
       </form>
       <ThreadsViewer
         key={this.state.query}
-        changeCurrentThread={(id) => this.setState({threadId: id})}
+        changeCurrentThread={(id, i) => this.setState({threadId: id, thread: i})}
         threadId={this.state.threadId}
         currentUser={this.state.currentUser}
         query={this.state.query}/>

@@ -133,14 +133,14 @@ class Viewer extends Component {
 
   render() {
     return (
-      <div style={{height: '100%'}}>
+      <div style={{height: '100%', width: '100%'}}>
         <ScrollArea
             ref={s => s ? this.scrollArea = s.scrollArea : ''}
             className="area"
             contentClassName="content"
             horizontal={false}
             onScroll={(value) => this.handleScroll(value)}
-            style={{height: '100%'}}
+            style={{height: '100%', width: '100%'}}
             >
           {this.renderItems()}
         </ScrollArea>
