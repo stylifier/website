@@ -76,7 +76,8 @@ class Messages extends Component {
   }
 
   renderMessages() {
-    return (<div className="col-lg-9 col-md-8 col-sm-9 col-xs-12" style={{padding: 0}}>
+    let showMessages = window.innerWidth < 768 && !this.state.threadId ? false : true
+    return (<div className="col-lg-9 col-md-8 col-sm-9 col-xs-12" style={{padding: 0, width: showMessages ? '' : '0', display: showMessages ? '' : 'none'}}>
       <MessagingView
         ref={ref => this.messageingViewer = ref}
         threadId={this.state.threadId}
@@ -90,7 +91,8 @@ class Messages extends Component {
   }
 
   renderContacts() {
-    return (<div className="col-lg-3 col-md-4 col-sm-3 col-xs-12" style={{padding: 0, margin: 0, height: '100%', maxHeight: '100%'}}>
+    let showContacts = window.innerWidth < 768 && this.state.threadId? false : true
+    return (<div className="col-lg-3 col-md-4 col-sm-3 col-xs-12" style={{padding: 0, margin: 0, height: '100%', width: showContacts ? '' : '0', display: showContacts ? '' : 'none'}}>
       <form className="form-inline" style={{marginTop: 5,marginBottom: 0, width: '100%'}} onSubmit={(e) => this.searchClicked(e)}>
         <div className="input-group" style={{width: '100%'}}>
           <input type="text" value={this.state.query} onChange={e => this.setState({query: e.target.value})} className="form-control" placeholder="Search people" aria-label="Username" aria-describedby="basic-addon1"/>
@@ -106,15 +108,13 @@ class Messages extends Component {
     </div>)
   }
   render() {
-    let showContacts = window.innerWidth < 768 && this.state.threadId? false : true
-    let showMessages = window.innerWidth < 768 && !this.state.threadId ? false : true
     return (
       <div>
         <div id="home-sec" className="container" style={{padding: 0, margin: 0, width: '100%', height: 'calc(100% - 50px)', maxHeight: 'calc(100% - 400px) !important'}}>
 
           <div className="row clr-white" style={{padding: 0, margin: 0, width: '100%'}}>
-            {showContacts ? this.renderContacts() : ''}
-            {showMessages ? this.renderMessages() : ''}
+            {this.renderContacts()}
+            {this.renderMessages()}
           </div>
         </div>
       </div>
