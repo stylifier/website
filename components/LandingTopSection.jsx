@@ -14,7 +14,7 @@ class LandingTopSection extends Component {
       <div style={{position: 'absolute', bottom: 0, width: '100%'}}>
         <p style={{text: 'center', width: '100%', marginBottom: 70}}>
           <p className={window.innerWidth > 768 ? 'btn-group' : 'btn-group-vertical'} role="group">
-            <a role="button" href="/login" style={{fontSize: '1.4em',textAlign: 'center'}} className="btn btn-default btn-transparent btn-lg">Join Sylifier Now!</a>
+            <a role="button" href="/login" style={{fontSize: '1.4em',textAlign: 'center'}} className="btn btn-default btn-transparent btn-lg">Join Stylifier Now!</a>
             <a href={`https://api.instagram.com/oauth/authorize/?client_id=5818518da819445c85250c7637b7eb4c&redirect_uri=${document.location.origin}/instagram_callback&response_type=code&scope=basic`} className="btn btn-default btn-transparent btn-lg btn-social btn-instagram" style={{fontSize: '1.4em', textAlign: 'center'}}>
               <span className="fa fa-instagram"></span> Continue with instagram
             </a>
