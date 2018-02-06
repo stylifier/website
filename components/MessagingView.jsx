@@ -134,26 +134,6 @@ class MessagingView extends Component {
         <div style={{color: 'white', fontSize: 12, margin: 10, float: 'right'}}>
           {recipient.full_name} ({recipient.username})
         </div>
-        {(this.props.thread.status !== 'CLOSED' && (this.props.thread.status !== 'RATING' || isFromMe)) && <button
-          type="button"
-          aria-hidden="true"
-          style={{
-            marginTop: 8,
-            color: 'white',
-            padding: 0,
-            paddingRight: 5,
-            fontSize: 12,
-            paddingLeft: 5,
-            borderRadius: 3,
-            backgroundColor: 'Transparent',
-            backgroundRepeat:'no-repeat',
-            cursor:'pointer',
-            overflow: 'hidden',
-            outline:'none',
-            float: 'right',
-            visibility: showBack ? 'visible': 'hidden'
-          }}
-          onClick={() => ({})}> Add contribution</button>}
       </div>
     )
   }
