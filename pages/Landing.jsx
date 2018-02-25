@@ -26,7 +26,7 @@ class Landing extends Component {
           </ol>
           <div className="carousel-inner">
             <div className="item active" style={{height: '100%', maxHeight: '1342px'}}>
-              <LandingTopSection message="GET YOUR OWN PERSONAL STYLIST" image="assets/img/landing-1-1.jpeg"/>
+              <LandingTopSection message="FIND YOUR OWN PERSONAL STYLIST" image="assets/img/landing-1-1.jpeg"/>
             </div>
             <div className="item" style={{height: '100%', maxHeight: '1342px'}}>
               <LandingTopSection message="BECOME A PROFESSIONAL STYLIST" image="assets/img/landing-1-2.jpeg"/>
