@@ -104,7 +104,10 @@ class Messages extends Component {
         changeCurrentThread={(id, i) => this.setState({threadId: id, thread: i})}
         threadId={this.state.threadId}
         currentUser={this.state.currentUser}
-        query={this.state.query}/>
+        query={this.state.query}
+        updateThread={(t) => {
+          this.setState({thread: Object.assign({}, t)})
+        }}/>
     </div>)
   }
   render() {

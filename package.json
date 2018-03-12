@@ -59,6 +59,7 @@
     "react-dom": "15.2.1",
     "react-fine-uploader": "^1.0.8",
     "react-native-analog-clock": "^0.2.1",
+    "react-rating": "^1.0.6",
     "react-responsive-carousel": "^3.1.30",
     "react-router-dom": "^4.2.2",
     "react-scrollbar": "^0.5.1",

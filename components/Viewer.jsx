@@ -67,7 +67,7 @@ class Viewer extends Component {
       this.setState({items: [...this.state.items, ...items]})
       setTimeout(() => this.setState({loading: false}), 500)
     })
-    .catch(() => this.setState({loading: false}))
+    .catch(() => setTimeout(() => this.setState({loading: false})), 2000)
   }
 
   renderItems() {
@@ -80,9 +80,10 @@ class Viewer extends Component {
     }
 
     const ItemView = this.props.ItemView
+    const items = this.props.dommy ? this.props.baseItems : this.state.items
 
     return (
-      <div style={{height: this.state.items.length > 0 ? 'inherit' : '0'}}>
+      <div style={{height: items.length > 0 ? 'inherit' : '0'}}>
         <StackGrid
           columnWidth={gridWidth}
           style={this.props.styleOverwrite || {margin: 5, marginTop: 30}}
@@ -91,12 +92,12 @@ class Viewer extends Component {
           gutterHeight={this.props.gutter}>
 
           {
-            (this.state.items &&
-            this.state.items.map((f, i) => (
+            (items &&
+            items.map((f, i) => (
               <ItemView {...this.props.ItemViewProps}
                 onLoaded={() => {
                   this.setState({loadedItemCounts: this.state.loadedItemCounts + 1})
-                  if(this.props.onLoaded && this.state.loadedItemCounts + 1 === this.state.items.length) {
+                  if(this.props.onLoaded && this.state.loadedItemCounts + 1 === items.length) {
                     this.forceUpdate()
                     setTimeout(() => {
                       this.props.onLoaded()
@@ -136,6 +137,7 @@ Viewer.propTypes = {
   styleOverwrite: React.PropTypes.object,
   component: React.PropTypes.string,
   onLoaded: React.PropTypes.func,
+  dommy: React.PropTypes.bool,
   gutter: React.PropTypes.number
 }
 

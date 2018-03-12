@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom'
 import API from '../src/API'
 import Promise from 'bluebird'
 import ComposeThreadModal from '../components/ComposeThreadModal.jsx'
+import Rating from 'react-rating'
 
 class Profile extends Component {
   constructor(props) {
@@ -61,9 +62,10 @@ class Profile extends Component {
       return
 
     if(this.state.username === this.state.currentUser.username) {
-      return (<a className='btn btn-primary' style={{color: 'white', width: '100%'}} >
-        edit profile
-      </a>)
+      return
+      // return (<a className='btn btn-primary' style={{color: 'white', width: '100%'}} >
+      //   edit profile
+      // </a>)
     }
     else if(this.state.followedByUser) {
       return (<a className='btn btn-primary' onClick={(e) => {
@@ -100,14 +102,24 @@ class Profile extends Component {
               <div>
               {this.state.full_name} <a href={'/profile/'+this.state.username}>@{this.state.username}</a>
               </div>
+              <div style={{float: 'left'}}>
+                {this.state.rating > 0 ?
+                  <Rating
+                    initialRating={this.state.rating}
+                    readonly
+                    emptySymbol="fa fa-star-o fa-2x"
+                    fullSymbol="fa fa-star fa-2x fullstar"
+                  /> :
+                  <p> User does not have a rating yet. </p>}
+              </div>
               <div style={{textAlign: 'left'}}>
-              {this.state.bio && this.state.bio.split(/(?:\r\n|\r|\n)/g).map((t, i) => (<p key={i} style={{textAlign: 'left'}}> {t} </p>))}
+                {this.state.bio && this.state.bio.split(/(?:\r\n|\r|\n)/g).map((t, i) => (<p key={i} style={{textAlign: 'left'}}> {t} </p>))}
               </div>
             </div>
           </div>
         </div>
         <div>
-          <SimpleImageViewer username={this.state.username} ItemViewProps={{showUser: false, showLike: !isCurrentUser}}/>
+          <SimpleImageViewer username={this.state.username} ItemViewProps={{showUser: false, showLike: !isCurrentUser, showTag: true}}/>
         </div>
         <Footer whiteBackground={true}/>
       </div>

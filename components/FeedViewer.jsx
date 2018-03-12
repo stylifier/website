@@ -23,7 +23,7 @@ class FeedViewer extends Component {
 
   render() {
     return (
-      <Viewer fetcher={() => this.fetchFeeds()} ItemView={SimpleImage} ItemViewProps={{showUser: true, showLike:true}}/>
+      <Viewer fetcher={() => this.fetchFeeds()} ItemView={SimpleImage} ItemViewProps={{showUser: true, showLike:true, showTag: true}}/>
     )
   }
 }

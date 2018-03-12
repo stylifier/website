@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import Rating from 'react-rating'
 require('../styles/feed.scss')
 
 class ProfileImage extends Component {
@@ -47,6 +48,15 @@ class ProfileImage extends Component {
         </div>
         <div>
           <div style={{textAlign: 'center', width: '100%'}}><a href={href}>{this.props.base.username}</a></div>
+        </div>
+        <div style={{textAlign: 'center', width: '100%'}}>
+          {this.props.base.rating > 0 &&
+            <Rating
+              initialRating={this.props.base.rating}
+              readonly
+              emptySymbol="fa fa-star-o fa-2x"
+              fullSymbol="fa fa-star fa-2x fullstar"
+            />}
         </div>
       </div>
     )

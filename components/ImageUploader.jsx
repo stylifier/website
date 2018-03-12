@@ -10,6 +10,7 @@ class ImageUploader extends Component {
 
     this.api = new API()
     this.state = {images: []}
+    this.userInfo = JSON.parse(localStorage.getItem('user_info')) || {}
 
     this.uploader = new FineUploaderTraditional({
       options: {
@@ -20,7 +21,9 @@ class ImageUploader extends Component {
           endpoint: this.api.baseAddress + '/media',
           customHeaders: {
             Authorization: 'Bearer '+ this.api.token,
-            'x-is-public': this.props.isPublic ? 'true' : 'false'
+            'x-is-public': this.props.isPublic ? 'true' : 'false',
+            'x-consumer-username': this.userInfo.username,
+            'x-tagged-users': this.props.taggedUsers
           }
         },
         scaling: {
@@ -60,6 +63,7 @@ class ImageUploader extends Component {
 ImageUploader.propTypes = {
   isPublic: React.PropTypes.bool,
   onComplete: React.PropTypes.func,
+  taggedUsers: React.PropTypes.array,
   onSubmit: React.PropTypes.func
 }
 

@@ -4,7 +4,10 @@ import CloseThreadModal from './CloseThreadModal.jsx'
 import API from '../src/API'
 import { withRouter } from 'react-router-dom'
 import ComposeThreadModal from './ComposeThreadModal.jsx'
-import ImageUploader from '../components/ImageUploader.jsx'
+import ImageUploader from './ImageUploader.jsx'
+import Viewer from './Viewer.jsx'
+import SimpleImage from './SimpleImage.jsx'
+import ScrollArea from 'react-scrollbar'
 
 class MessagingView extends Component {
   constructor(props) {
@@ -55,11 +58,46 @@ class MessagingView extends Component {
       this.setState({send: true})
   }
 
-  renderMessageCompositionArea() {
+  renderUploadphotoToBeShared(recipient) {
     return(
     <div>
       <div className="input-group">
-        <textarea value={this.state.message} onChange={e => this.setState({message: e.target.value})} style={{resize: 'none', minHeight: '100%'}} onKeyPress={(e) => e.key === 'Enter' && this.messageSend(e)} id="btn-input" className="form-control input-sm" placeholder="Write your message here..." />
+        <p style={{color: 'white', textAlign: 'left'}}> {`Your advice has been closed, you can ask ${recipient.full_name} to share your look on his profile. Just upload photos you want to be shared.`} </p>
+        <span className="input-group-btn">
+          <div className="btn-group-vertical">
+            <button type="button" className="btn btn-primary" onClick={() => {
+              this.setState({showUploader:!this.state.showUploader})
+              setTimeout(() => this.forceUpdate(), 200)
+            }}> <span className="fa fa-plus fa-lg"/></button>
+          </div>
+        </span>
+      </div>
+      {this.state.showUploader && <ImageUploader
+        isPublic={false}
+        taggedUsers={[this.props.currentUser.username]}
+        onSubmit={() => this.setState({uploaderLoading: true})}
+        onComplete={(media) => {
+          this.setState({uploaderLoading: false})
+          this.api.addMediaToThread(this.props.threadId, media)
+          .then(() => this.setState({message: '', showUploader: false, media: []}))
+        }}/>}
+    </div>)
+  }
+
+  renderMessageWritingArea() {
+    return(
+    <div>
+      <div className="input-group">
+        <textarea
+          value={this.state.message}
+          onChange={e => this.setState({message: e.target.value})}
+          style={{
+            resize: 'none',
+            minHeight: '100%'}}
+          onKeyPress={(e) => e.key === 'Enter' && this.messageSend(e)}
+          id="btn-input"
+          className="form-control input-sm"
+          placeholder="Write your message here..."/>
         <span className="input-group-btn">
           <div className="btn-group-vertical">
             <button type="button" className="btn btn-primary" onClick={(e) => this.messageSend(e)}>Send</button>
@@ -77,9 +115,50 @@ class MessagingView extends Component {
     </div>)
   }
 
+  renderAcceptToBeSharedPhoto(recipient) {
+    const hasPhoto = this.props.thread.media && this.props.thread.media.length > 0
+    return(
+    <div>
+      <p style={{color: 'white', textAlign: 'left'}}> {'Your advice has been closed' + (hasPhoto && `, ${recipient.full_name} asked you to share these photos on you profile. Just click on the one you want to share.`)} </p>
+      {hasPhoto &&
+        <ScrollArea
+            className="area"
+            contentClassName="content"
+            horizontal={false}
+            style={{height: '350px', width: '100%'}}
+            >
+            <Viewer
+              largeRowCount={6}
+              mediomRowCount={4}
+              smallRowCount={2}
+              ItemViewProps={{onClick: (m) => this.api.shareMedia(m.id)}}
+              dommy={true}
+              styleOverwrite={{margin: 0, width: '100%'}}
+              baseItems={[...this.props.thread.media]}
+              ItemView={SimpleImage}
+              height={100}/>
+        </ScrollArea>}
+    </div>)
+  }
+
+  renderMessageCompositionArea() {
+    const {thread} = this.props
+    if(!thread.from)
+      return
+    const isFromMe = thread.from.username === this.props.currentUser.username
+    const recipient = isFromMe ? thread.to : thread.from
+    if(thread.status !== 'CLOSED' && thread.status !== 'RATING')
+      return this.renderMessageWritingArea()
+
+    if(isFromMe)
+      return this.renderUploadphotoToBeShared(recipient)
+
+    return this.renderAcceptToBeSharedPhoto(recipient)
+  }
+
   renderConversationHeader() {
     const {thread} = this.props
-    let showBack = window.innerWidth < 768 && this.state.threadId? false : true
+    let showBack = window.innerWidth < 768 && this.props.threadId? false : true
 
     if(!thread.from)
       return
@@ -108,7 +187,8 @@ class MessagingView extends Component {
             this.props.history.push('/messages/' + (this.props.query ? `?query=${encodeURIComponent(this.props.query)}` : ''))
           }}></button>
 
-          {(this.props.thread.status !== 'CLOSED' && (this.props.thread.status !== 'RATING' || isFromMe)) && <button
+          {(this.props.thread.status !== 'CLOSED' && (this.props.thread.status !== 'RATING' || isFromMe)) &&
+          <button
             type="button"
             aria-hidden="true"
             style={{

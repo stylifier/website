@@ -4,6 +4,7 @@ import Promise from 'bluebird'
 class API {
   constructor() {
     this.baseAddress = 'https://cloud.stylifier.com'
+    // this.baseAddress = 'http://localhost:3000'
     this.token = localStorage.getItem('user_token')
     this.userInfo = JSON.parse(localStorage.getItem('user_info')) || {}
   }
@@ -146,6 +147,10 @@ class API {
     return this.put(`/threads/${threadId}/messages`, {text: text, media: media})
   }
 
+  addMediaToThread(threadId, media) {
+    return this.put(`/threads/${threadId}/media`, {media: media})
+  }
+
   fetchUserFollowers(username, pagination, quary) {
     return this.get(`/users/${username}/followers`,
       [
@@ -169,6 +174,10 @@ class API {
   addSubsctiption(id) {
     if(!id) return Promise.resolve()
     return this.post(`/subscriptions/${id}`, {})
+  }
+
+  shareMedia(id) {
+    return this.post(`/media/${id}/share`, {})
   }
 
   removeSubsctiption(id) {

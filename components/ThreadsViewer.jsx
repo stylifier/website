@@ -31,7 +31,10 @@ class ThreadsViewer extends Component {
     return this.api.fetchThreads(this.props.query, this.oldestFetchedThread)
     .then((res) => {
       res.data.filter(t => t.id === this.props.threadId)
-      .map(t => this.props.changeCurrentThread(t.id, t))
+      .forEach(t => {
+        this.props.updateThread && this.props.updateThread(t)
+        this.props.changeCurrentThread(t.id, t)
+      })
       this.pagination = res.pagination
       return res.data
     })
@@ -84,7 +87,8 @@ ThreadsViewer.propTypes = {
   }).isRequired,
   query: React.PropTypes.string,
   threadId: React.PropTypes.string,
-  changeCurrentThread: React.PropTypes.func
+  changeCurrentThread: React.PropTypes.func,
+  updateThread: React.PropTypes.func
 }
 
 export default withRouter(ThreadsViewer)

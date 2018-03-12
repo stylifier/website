@@ -20,7 +20,7 @@ class LoginComponent extends Component {
   }
 
   loginClicked(e) {
-    this.setState({loginDisabled: true})
+    this.setState({loginDisabled: true, errMessage: undefined})
     e.preventDefault()
 
     this.api.login({
@@ -35,6 +35,7 @@ class LoginComponent extends Component {
       localStorage.setItem('user_info', JSON.stringify(info))
       this.props.history.push('/')
     })
+    .catch(() => this.setState({loginDisabled: false, errMessage: 'Please check your username and password and try again'}))
   }
 
   render() {
@@ -51,6 +52,11 @@ class LoginComponent extends Component {
           <input type="password" value={this.state.password} onChange={e => this.setState({password: e.target.value})} className="form-control" id="loginPassword" placeholder="Password" pattern="^.{8,400}$" required/>
           <small id="loginPassword" className="form-text text-muted">Your password must be more that 8 letter long.</small>
         </div>
+        {this.state.errMessage &&
+          <div>
+            <small id="loginPassword" className="form-text text-muted" style={{color: 'red'}}> {this.state.errMessage} </small>
+          </div>
+        }
         <button type="submit" value="submit" disabled={this.state.loginDisabled} className="btn btn-default">Login</button>
       </form>
     )
