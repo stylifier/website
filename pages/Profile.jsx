@@ -6,6 +6,8 @@ import API from '../src/API'
 import Promise from 'bluebird'
 import ComposeThreadModal from '../components/ComposeThreadModal.jsx'
 import Rating from 'react-rating'
+import Viewer from '../components/Viewer.jsx'
+import BrandImage from '../components/BrandImage.jsx'
 
 class Profile extends Component {
   constructor(props) {
@@ -28,6 +30,23 @@ class Profile extends Component {
       this.setState(Object.assign({}, res))
       return this.api.fetchUserFollowers(this.state.currentUser.username, 0, this.state.username)
     })
+    .then(res => {
+      if(!this.state.is_brand)
+        return res
+
+      return this.api.fetchUserSponsors(this.state.currentUser.username, 0, this.state.username)
+      .then(t => {
+        this.setState({sponsorshipStatus: t.data[0] ? t.data[0].status : undefined})
+        return res
+      })
+    })
+    .then(res =>
+      this.api.fetchUserSponsors(this.state.username)
+      .then(t => {
+        this.setState({sponsors: t.data})
+        return res
+      })
+    )
     .then(res => {
       this.setState(Object.assign({followedByUser: res.data.length > 0}))
     })
@@ -55,6 +74,35 @@ class Profile extends Component {
       this.api.fetchUserFollowers(this.state.currentUser.username, 0, this.state.username))
     .then(res =>
       this.setState(Object.assign({followedByUser: res.data.length > 0})))
+  }
+
+  rendersponsorshipBtn() {
+    const {currentUser, username, is_brand, sponsorshipStatus} = this.state
+
+    if(!currentUser)
+      return
+
+    if(username === currentUser.username
+      || !is_brand) {
+      return
+    }
+
+    if(sponsorshipStatus === 'REQUESTED')
+      return (<a className='btn btn-info' disabled style={{color: 'white', width: '30%', minWidth: '150px',  float: 'right'}} >
+        Sponsorship requested
+      </a>)
+    else if(sponsorshipStatus === 'ACCEPTED')
+      return (<a className='btn btn-success' disabled style={{color: 'white', width: '30%', minWidth: '150px',  float: 'right'}} >
+        Sponsorship accepted
+      </a>)
+    else
+      return (<a className='btn btn-primary' onClick={(e) => {
+        e.preventDefault()
+        this.setState({sponsorshipStatus: 'REQUESTED'})
+        this.api.sponsorUser(username)
+      }} style={{color: 'white', width: '30%', minWidth: '150px',  float: 'right'}} >
+        Ask for sponsorship
+      </a>)
   }
 
   renderFollowMessageBtn() {
@@ -110,13 +158,26 @@ class Profile extends Component {
                     emptySymbol="fa fa-star-o fa-2x"
                     fullSymbol="fa fa-star fa-2x fullstar"
                   /> :
-                  <p> User does not have a rating yet. </p>}
+                  <p> {this.state.full_name} does not have a rating yet. </p>}
               </div>
               <div style={{textAlign: 'left'}}>
                 {this.state.bio && this.state.bio.split(/(?:\r\n|\r|\n)/g).map((t, i) => (<p key={i} style={{textAlign: 'left'}}> {t} </p>))}
               </div>
+              <br/>
+              {this.rendersponsorshipBtn()}
             </div>
           </div>
+        </div>
+        <div>
+        {this.state.sponsors&&console.log(this.state.sponsors.map(t => t.sponsor))}
+          {this.state.sponsors && (<Viewer
+            largeRowCount={6}
+            mediomRowCount={4}
+            smallRowCount={2}
+            dommy={true}
+            styleOverwrite={{margin: 0, width: '100%'}}
+            baseItems={[...this.state.sponsors.map(t => t.sponsor)]}
+            ItemView={BrandImage}/>)}
         </div>
         <div>
           <SimpleImageViewer username={this.state.username} ItemViewProps={{showUser: false, showLike: !isCurrentUser, showTag: true}}/>

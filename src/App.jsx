@@ -9,6 +9,7 @@ import Search from '../pages/Search.jsx'
 import InstagramCallback from '../pages/InstagramCallback.jsx'
 import Messages from '../pages/Messages.jsx'
 import LogoutComponent from '../components/Logout.jsx'
+import Sponsorship from '../pages/Sponsorship.jsx'
 import { Switch, Route } from 'react-router-dom'
 
 require('../styles/application.scss')
@@ -33,9 +34,19 @@ class App extends Component {
         <Route exact path='/search*' component={search}/>
         <Route exact path='/messages*' component={messages}/>
         <Route exact path='/instagram_callback*' component={InstagramCallback}/>
+        <Route exact path='/sponsorship' component={sponsorship}/>
       </Switch>
     )
   }
+}
+
+function sponsorship() {
+  return (
+    <div>
+      <Navbar isLogedIn={userToken ? true : false}/>
+      <Sponsorship/>
+    </div>
+  )
 }
 
 function messages() {

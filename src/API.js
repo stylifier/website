@@ -183,6 +183,26 @@ class API {
   removeSubsctiption(id) {
     return this.delete(`/subscriptions/${id}`, {})
   }
+
+  fetchUserSponsoredBy(username, pagination, quary) {
+    return this.get(`/users/${username}/sponsored_by`,
+      [
+        ...(quary ? ['q=' + quary] : []),
+        ...(pagination ? ['pagination=' + pagination] : [])
+      ])
+  }
+
+  fetchUserSponsors(username, pagination, quary) {
+    return this.get(`/users/${username}/sponsors`,
+      [
+        ...(quary ? ['q=' + quary] : []),
+        ...(pagination ? ['pagination=' + pagination] : [])
+      ])
+  }
+
+  sponsorUser(username, accept) {
+    return this.post(`/users/${username}/sponsor`, accept ? {accept: true} : {})
+  }
 }
 
 export default API

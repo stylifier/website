@@ -24,8 +24,10 @@ class ProfileImage extends Component {
   }
 
   render() {
-    const href = '/profile/' + this.props.base.username.toString()
-    const img = this.props.base.profile_picture
+    const {customButtonLable, customButtonOnClick, base, customButtonShowChecker} = this.props
+    const href = '/profile/' + base.username.toString()
+    const img = base.profile_picture
+
     return (
       <div className="containerItem" style={{visibility: this.state.loaded ? 'visible' : 'hidden', margin: 20}}>
       <div className='box'>
@@ -47,12 +49,22 @@ class ProfileImage extends Component {
         </a>
         </div>
         <div>
-          <div style={{textAlign: 'center', width: '100%'}}><a href={href}>{this.props.base.username}</a></div>
+          <div style={{textAlign: 'center', width: '100%'}}>
+            {customButtonOnClick && customButtonLable && customButtonShowChecker && customButtonShowChecker(base) && (
+              <a className='btn btn-primary' onClick={(e) => {
+                e.preventDefault()
+                customButtonOnClick(base)
+              }} style={{color: 'white'}} >{customButtonLable}</a>
+            )}
+          </div>
+        </div>
+        <div>
+          <div style={{textAlign: 'center', width: '100%'}}><a href={href}>{base.username}</a></div>
         </div>
         <div style={{textAlign: 'center', width: '100%'}}>
-          {this.props.base.rating > 0 &&
+          {base.rating > 0 &&
             <Rating
-              initialRating={this.props.base.rating}
+              initialRating={base.rating}
               readonly
               emptySymbol="fa fa-star-o fa-2x"
               fullSymbol="fa fa-star fa-2x fullstar"
@@ -65,7 +77,10 @@ class ProfileImage extends Component {
 
 ProfileImage.propTypes = {
   base: PropTypes.object,
-  onLoaded: PropTypes.func
+  onLoaded: PropTypes.func,
+  customButtonLable: PropTypes.string,
+  customButtonOnClick: PropTypes.func,
+  customButtonShowChecker: PropTypes.func
 }
 
 export default ProfileImage

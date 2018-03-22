@@ -67,6 +67,11 @@ class Navbar extends Component {
                 </div>
               </form>
             </li>
+            {this.state.userInfo.is_brand &&
+              (<li className="nav-item">
+              <a className="nav-link" href="/sponsorship">sponsorship</a>
+              </li>)
+            }
             <li className="nav-item">
               <a className="nav-link" href="/messages">messages</a>
             </li>

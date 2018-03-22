@@ -119,7 +119,7 @@ class Viewer extends Component {
       <div>
         {this.renderItems()}
         <div style={{textAlign: 'center'}}>
-          {this.state.loading ? (<i className="fa fa-circle-o-notch fa-spin fa-3x fa-fw" style={{marginBottom: 60, marginTop: 20}}></i>) : ''}
+          {(this.state.loading && !this.props.dommy) ? (<i className="fa fa-circle-o-notch fa-spin fa-3x fa-fw" style={{marginBottom: 60, marginTop: 20}}></i>) : ''}
         </div>
       </div>
     )
