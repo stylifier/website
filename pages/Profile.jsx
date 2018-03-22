@@ -43,7 +43,7 @@ class Profile extends Component {
     .then(res =>
       this.api.fetchUserSponsors(this.state.username)
       .then(t => {
-        this.setState({sponsors: t.data})
+        this.setState({sponsors: [...t.data.filter(t => t.status === 'ACCEPTED')]})
         return res
       })
     )
