@@ -1,4 +1,6 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component, PropTypes} from 'react'
+import API from '../src/API'
+import Autosuggest from 'react-autosuggest'
 require('../styles/feed.scss')
 
 class Feed extends Component {
@@ -7,11 +9,24 @@ class Feed extends Component {
     this.state = {
       heartColor: 'white',
       heartClass: 'fa fa-heart-o fa-lg',
-      loaded: false
+      loaded: false,
+      showStyleEditor: false,
+      stylesSuggestions: [],
+      style: '',
+      currentUser: JSON.parse(localStorage.getItem('user_info')),
+      base: Object.assign({}, this.props.base)
     }
+    this.api = new API()
   }
 
   refreshStats() {
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    if (nextState.showStyleEditor && !this.state.base.style && nextState.showStyleEditor !== this.state.showStyleEditor) {
+      this.api.getStyles()
+      .then(s => this.setState({stylesSuggestions: [...s]}))
+    }
   }
 
   componentDidMount() {
@@ -28,48 +43,112 @@ class Feed extends Component {
     if(this.state.heartColor === 'white')
       this.setState({
         heartColor: 'red',
-        heartClass: 'fa fa-heart fa-lg'
+        heartClass: 'fa fa-heart fa-lg',
+        showStyleEditor: false
       })
     else
       this.setState({
         heartColor: 'white',
-        heartClass: 'fa fa-heart-o fa-lg'
+        heartClass: 'fa fa-heart-o fa-lg',
+        showStyleEditor: false
       })
   }
 
+  renderStyleArea() {
+    const {base, currentUser, showStyleEditor, stylesSuggestions} = this.state
+    const style = {position: 'absolute', top: 0, left: 0, color: 'black', margin: 10, backgroundColor: 'lightGray', borderRadius: 20}
+    const isMe = base.user ? base.user.username.toLowerCase() === currentUser.username.toLowerCase() : false
+
+    if (base.style && !showStyleEditor)
+      return (<a className="btn shadowed" onClick={(e) => {
+        e.preventDefault()
+        if(isMe)
+          this.setState({showStyleEditor: true, style: base.style})
+      }} style={Object.assign(style, {color: 'white', backgroundColor: 'blue'})}>
+        {base.style}
+      </a>)
+
+    if (isMe) {
+      return showStyleEditor ?
+      (
+        <form className="form-inline" style={style} onSubmit={(e) => {
+          e.preventDefault()
+          this.api.setStyle(base.id, this.state.style.toLowerCase())
+          .then(() => this.setState({showStyleEditor: false, base: Object.assign({}, base, {style: this.state.style})}))
+          .catch(() => this.setState({showStyleEditor: false}))
+        }}>
+          <div className="form-group mx-sm-3 mb-2">
+            <Autosuggest
+              alwaysRenderSuggestions={true}
+              suggestions={stylesSuggestions}
+              onSuggestionsFetchRequested={(value) => {
+                this.api.getStyles(value.value).then(s => this.setState({stylesSuggestions: [...s]}))}
+              }
+              onSuggestionsClearRequested={() => {
+                if(this.state.style.trim().length >= 1)
+                  return this.setState({stylesSuggestions: []})
+
+                return this.api.getStyles().then(s => this.setState({stylesSuggestions: [...s]}))
+              }}
+              getSuggestionValue={t => t}
+              renderSuggestion={t => (<div> {t} </div>)}
+              inputProps={{
+                style: {height: 35},
+                placeholder: 'Vintage, Tomboy ...',
+                value: this.state.style,
+                onChange: (e, value) => this.setState({style: value.newValue})
+              }}
+            />
+          </div>
+          <button type="submit" className="btn btn-primary mb-2">+</button>
+        </form>
+      ) :
+      (<a className="btn shadowed" onClick={() => this.setState({showStyleEditor: true})} style={style}>
+        + add a style
+      </a>)
+    }
+  }
+
   render() {
+    const {onClick, styleOverwrite, onLoaded, showTag, showUser, showLike, hideStyle} = this.props
+    const {loaded, base,heartColor, heartClass} = this.state
+
     return (
       <div
         className="containerItem"
-        style={{visibility: this.state.loaded ? 'visible' : 'hidden'}}
-        onClick={() => this.props.onClick && this.props.onClick(this.props.base)}>
-        <img src={this.props.base.images.standard_resolution.url} style={Object.assign({width: '100%'}, this.props.styleOverwrite || {})} onClick={() => this.likeClicked()} onLoad={() => {
+        style={{visibility: loaded ? 'visible' : 'hidden'}}
+        onClick={() => onClick && onClick(base)}>
+        <img src={base.images.standard_resolution.url} style={Object.assign({width: '100%'}, styleOverwrite || {})} onClick={() => this.likeClicked()} onLoad={() => {
           this.setState({loaded: true})
-          this.props.onLoaded()
+          onLoaded()
         }}/>
-        <div className="overlay" style={{height: '100%'}}>
-          {this.props.showTag && this.props.base.usersInPhoto.map((user, i) => (
-            <div key={i} style={{float: 'left'}}>
-              <div className="text">
-                <a href={'/profile/' + user.username}>
-                <img
-                  src={user.profile_picture}
-                  style={{
-                    marginLeft: '10px',
-                    objectFit: 'cover',
-                    width: '40px',
-                    height: '40px',
-                    float: 'left'
-                  }}
-                  className="img-circle"
-                /></a>
-              </div>
-            </div>))}
-          {this.props.showUser ? (<div style={{position: 'absolute', bottom: 0}} className="text"><a href={'/profile/' + this.props.base.user.username}>{this.props.base.user.username}</a></div>) : ''}
-          {this.props.showLike ? (<a style={{float: 'right'}} className="btn shadowed" onClick={() => this.likeClicked()} style={{float: 'right', margin: 2, color: this.state.heartColor}}>
-            <i className={this.state.heartClass}></i>
-          </a>) : ''}
-        </div>
+
+        {showTag && base.usersInPhoto.map((user, i) => (
+          <div key={i} style={{float: 'left'}}>
+            <div className="text" style={{
+              bottom: 0,
+              right: 0,
+              position: 'absolute'
+            }}>
+              <a href={'/profile/' + user.username}>
+              <img
+                src={user.profile_picture}
+                style={{
+                  marginLeft: '10px',
+                  objectFit: 'cover',
+                  width: '40px',
+                  height: '40px'
+                }}
+                className="img-circle"
+              /></a>
+            </div>
+          </div>))}
+        {showUser ? (<div style={{position: 'absolute', bottom: 0}} className="text"><a href={'/profile/' + base.user.username}>{base.user.username}</a></div>) : ''}
+        {showLike ? (<a className="btn shadowed" onClick={() => this.likeClicked()} style={{position: 'absolute', top: 0, right: 0, margin: 2, color: heartColor}}>
+          <i className={heartClass}></i>
+        </a>) : ''}
+
+        {!hideStyle && this.renderStyleArea()}
       </div>
     )
   }
@@ -82,6 +161,7 @@ Feed.propTypes = {
   showUser: PropTypes.bool,
   showTag: PropTypes.bool,
   showLike: PropTypes.bool,
+  hideStyle: PropTypes.bool,
   styleOverwrite: PropTypes.object
 }
 

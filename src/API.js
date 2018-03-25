@@ -203,6 +203,19 @@ class API {
   sponsorUser(username, accept) {
     return this.post(`/users/${username}/sponsor`, accept ? {accept: true} : {})
   }
+
+  setStyle(mediaId, style) {
+    if(!mediaId || !style) return Promise.resolve()
+    return this.post(`/media/${mediaId}/style/${style}`, {})
+  }
+
+  getStyles(q) {
+    return this.get('/styles', [ ...(q ? ['q=' + encodeURIComponent(q)] : [])])
+  }
+
+  getUserStyles(user, q) {
+    return this.get(`/users/${user}/styles`, [ ...(q ? ['q=' + encodeURIComponent(q)] : [])])
+  }
 }
 
 export default API

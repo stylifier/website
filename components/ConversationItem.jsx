@@ -50,7 +50,7 @@ class ConversationItem extends Component {
           marginLeft: fromMe ? 'auto' : '0'
         }}>
           {this.props.base.text.split(/(?:\r\n|\r|\n)/g).map((t, i) => (<p key={i} style={{textAlign: 'left'}}> {t} </p>))}
-          {this.props.base.media.map((o, i) => <SimpleImage key={i} styleOverwrite={{marginBottom: 5, borderRadius: 5}} onLoaded={() => this.setState({loadedItemCounts: this.state.loadedItemCounts + 1})} base={o}/>)}
+          {this.props.base.media.map((o, i) => <SimpleImage hideStyle={true} key={i} styleOverwrite={{marginBottom: 5, borderRadius: 5}} onLoaded={() => this.setState({loadedItemCounts: this.state.loadedItemCounts + 1})} base={o}/>)}
         <div id="footer" style={{fontSize: '.8em', margin: 0, padding: 0}}>
           {moment(this.props.base.created_time).fromNow()}
         </div>

@@ -74,7 +74,10 @@ class Viewer extends Component {
       this.setState({items: [...items, ...this.state.items]})
       setTimeout(() => this.setState({loading: false}), 200)
     })
-    .catch(() => setTimeout(() => this.setState({loading: false})), 2000)
+    .catch((e) => {
+      console.log(e);
+      setTimeout(() => this.setState({loading: false})), 2000
+    })
   }
 
   fetcherOnTop() {

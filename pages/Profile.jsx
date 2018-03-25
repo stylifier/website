@@ -17,6 +17,7 @@ class Profile extends Component {
     this.state = {
       username:  parts[parts.length - 1],
       currentUser: {},
+      styles: [],
       showComposeModal: false,
       followedByUser: false
     }
@@ -27,6 +28,8 @@ class Profile extends Component {
       return this.api.fetchUser(this.state.username)
     })
     .then(res => {
+      this.api.getUserStyles(this.state.username)
+      .then(s => this.setState({styles: [...s]}))
       this.setState(Object.assign({}, res))
       return this.api.fetchUserFollowers(this.state.currentUser.username, 0, this.state.username)
     })
@@ -168,8 +171,19 @@ class Profile extends Component {
             </div>
           </div>
         </div>
+        {this.state.styles.length > 0 && (
+          <div style={{paddingLeft: 100, paddingRight: 100, paddingTop: 20, paddingBottom: 20}}>
+          <hr/>
+          <h4> User's Styles: </h4>
+            {this.state.styles.map((s,i) => (
+              <a className="btn shadowed" key={i} onClick={(e) => e.preventDefault()} style={{color: 'white', backgroundColor: 'blue', borderRadius: 20, float: 'left', margin: 10}}>
+                {s}
+              </a>)
+            )}
+            <br/>
+          </div>
+        )}
         <div>
-        {this.state.sponsors&&console.log(this.state.sponsors.map(t => t.sponsor))}
           {this.state.sponsors && (<Viewer
             largeRowCount={6}
             mediomRowCount={4}

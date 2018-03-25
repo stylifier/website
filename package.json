@@ -53,6 +53,7 @@
     "react": "15.3.1",
     "react-addons-shallow-compare": "^15.5.2",
     "react-autocomplete": "^1.7.2",
+    "react-autosuggest": "^9.3.4",
     "react-blur": "^0.5.2",
     "react-bootstrap": "^0.30.8",
     "react-device-detect": "^0.1.0",
