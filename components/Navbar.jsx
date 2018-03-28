@@ -69,11 +69,11 @@ class Navbar extends Component {
             </li>
             {this.state.userInfo.is_brand &&
               (<li className="nav-item">
-              <a className="nav-link" href="/sponsorship">sponsorship</a>
+              <a className="nav-link" href="/sponsorship">Sponsorship</a>
               </li>)
             }
             <li className="nav-item">
-              <a className="nav-link" href="/messages">messages</a>
+              <a className="nav-link" href="/messages">Messages</a>
             </li>
 
             <li className="nav-item dropdown">
@@ -81,11 +81,11 @@ class Navbar extends Component {
                 <img src={this.state.userInfo.profile_picture} className="img-circle" style={{width: 40, objectFit: 'cover', height: 40}}/>
               </a>
               <div className="dropdown-menu">
-                <a className="dropdown-item" href={profileLink}>profile</a>
+                <a className="dropdown-item" href={profileLink}>Profile</a>
                 <br/>
-                <a className="dropdown-item" href="/followers">following</a>
+                <a className="dropdown-item" href="/followers">Following</a>
                 <div className="divider"></div>
-                <a className="dropdown-item" href="/logout">logout</a>
+                <a className="dropdown-item" href="/logout">Logout</a>
               </div>
             </li>
             <li className="nav-item">

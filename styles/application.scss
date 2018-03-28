@@ -8,6 +8,9 @@
   left: 0;
 }
 
+.dropdown-item {
+  display: block
+}
 
 * {
     -webkit-overflow-scrolling: touch;
@@ -82,9 +85,7 @@ hr.small {
 
 
 body {
-    font-family: 'Signika', sans-serif;
-    font-size: 16px;
-    line-height: 35px;
+    font-family: 'Quattrocento Sans', sans-serif;
     background-color: white;
 }
 
