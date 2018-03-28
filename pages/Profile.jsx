@@ -153,7 +153,7 @@ class Profile extends Component {
               <div>
               {this.state.full_name} <a href={'/profile/'+this.state.username}>@{this.state.username}</a>
               </div>
-              <div style={{float: 'left'}}>
+              <div style={{clear: 'left'}}>
                 {this.state.rating > 0 ?
                   <Rating
                     initialRating={this.state.rating}
@@ -163,7 +163,7 @@ class Profile extends Component {
                   /> :
                   <p> {this.state.full_name} does not have a rating yet. </p>}
               </div>
-              <div style={{textAlign: 'left'}}>
+              <div style={{textAlign: 'left', float: 'none'}}>
                 {this.state.bio && this.state.bio.split(/(?:\r\n|\r|\n)/g).map((t, i) => (<p key={i} style={{textAlign: 'left'}}> {t} </p>))}
               </div>
               <br/>
@@ -171,8 +171,23 @@ class Profile extends Component {
             </div>
           </div>
         </div>
+
+        {this.state.sponsors && this.state.sponsors.length > 0 && (
+          <div  style={{float: 'none',paddingLeft: 100, paddingRight: 100, paddingTop: 20, paddingBottom: 20}}>
+            <hr/>
+            <h4> User's Sponsors: </h4>
+            <Viewer
+              largeRowCount={6}
+              mediomRowCount={4}
+              smallRowCount={2}
+              dommy={true}
+              styleOverwrite={{margin: 0, width: '100%'}}
+              baseItems={[...this.state.sponsors.map(t => t.sponsor)]}
+            ItemView={BrandImage}/>
+          </div>)}
+
         {this.state.styles.length > 0 && (
-          <div style={{paddingLeft: 100, paddingRight: 100, paddingTop: 20, paddingBottom: 20}}>
+          <div style={{float: 'none',paddingLeft: 100, paddingRight: 100, paddingTop: 20, paddingBottom: 20}}>
           <hr/>
           <h4> User's Styles: </h4>
             {this.state.styles.map((s,i) => (
@@ -183,16 +198,7 @@ class Profile extends Component {
             <br/>
           </div>
         )}
-        <div>
-          {this.state.sponsors && (<Viewer
-            largeRowCount={6}
-            mediomRowCount={4}
-            smallRowCount={2}
-            dommy={true}
-            styleOverwrite={{margin: 0, width: '100%'}}
-            baseItems={[...this.state.sponsors.map(t => t.sponsor)]}
-            ItemView={BrandImage}/>)}
-        </div>
+
         <div>
           <SimpleImageViewer username={this.state.username} ItemViewProps={{showUser: false, showLike: !isCurrentUser, showTag: true}}/>
         </div>

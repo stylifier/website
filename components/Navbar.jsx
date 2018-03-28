@@ -129,13 +129,13 @@ class Navbar extends Component {
                     <span className="icon-bar"></span>
                     <span className="icon-bar"></span>
                 </button>
-                <a className="navbar-brand" style={{marginTop: 4}} href="/">
+                <a className="navbar-brand" style={{marginTop: 4, fontFamily: "'Julius Sans One', sans-serif"}} href="/">
                   <img style={{
-                      width: 40,
-                      height: 40,
+                      width: 30,
+                      height: 30,
                       objectFit: 'cover',
                       float: 'left',
-                      marginTop: -11,
+                      marginTop: -5,
                       marginRight: 10,
                       marginBottom: 0}}
                       src="/assets/img/favicon.png"/>
