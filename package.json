@@ -4,7 +4,7 @@
   "description": "website for stylifier",
   "scripts": {
     "lint": "eslint src",
-    "start": "webpack-dev-server",
+    "start": "webpack-dev-server --port 8080 --hot --host 0.0.0.0",
     "build": "webpack -p --config ./webpack.production.config.js --env production"
   },
   "repository": {

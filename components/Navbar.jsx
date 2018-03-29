@@ -59,12 +59,9 @@ class Navbar extends Component {
     return (
       <div className="navbar-collapse collapse move-me">
         <ul className="nav navbar-nav navbar-right">
-            <li>
+            <li className="nav-item">
               <form className="form-inline" style={{margin: 9}} onSubmit={(e) => this.searchClicked(e)}>
-                <div className="input-group">
-                  <span className="input-group-addon" id="basic-addon1">@</span>
-                  <input type="text" value={this.state.searchPhrase} onChange={e => this.setState({searchPhrase: e.target.value})} className="form-control" placeholder="Search brand or people" aria-label="Username" aria-describedby="basic-addon1"/>
-                </div>
+                <input type="text" value={this.state.searchPhrase} style={{minWidth: '16em'}} onChange={e => this.setState({searchPhrase: e.target.value})} className="form-control" placeholder="Search for Style, Brand or People" aria-label="Username" aria-describedby="basic-addon1"/>
               </form>
             </li>
             {this.state.userInfo.is_brand &&
@@ -72,28 +69,27 @@ class Navbar extends Component {
               <a className="nav-link" href="/sponsorship">Sponsorship</a>
               </li>)
             }
+
+            <li className="nav-item">
+              <a className="nav-link dropdown-toggle" href={profileLink} style={{padding: 6}}>
+                <img src={this.state.userInfo.profile_picture} className="img-circle" style={{width: 40, objectFit: 'cover', height: 40}}/>
+              </a>
+            </li>
             <li className="nav-item">
               <a className="nav-link" href="/messages">Messages</a>
             </li>
-
-            <li className="nav-item dropdown">
-              <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style={{padding: 6}}>
-                <img src={this.state.userInfo.profile_picture} className="img-circle" style={{width: 40, objectFit: 'cover', height: 40}}/>
-              </a>
-              <div className="dropdown-menu">
-                <a className="dropdown-item" href={profileLink}>Profile</a>
-                <br/>
-                <a className="dropdown-item" href="/followers">Following</a>
-                <div className="divider"></div>
-                <a className="dropdown-item" href="/logout">Logout</a>
-              </div>
+            <li className="nav-item">
+              <a className="dropdown-item" href="/followers">Following</a>
+            </li>
+            <li className="nav-item">
+              <a className="dropdown-item" href="/logout">Logout</a>
             </li>
             <li className="nav-item">
                 <a href="javascript:void(0)" onClick={(e) => {
                   e.preventDefault()
                   $(".navbar-collapse").collapse('hide');
                   this.setState({showUploader:!this.state.showUploader})
-                }} className="fa fa-plus fa-lg" style={{marginTop: 5,marginRight: 10, color: 'white'}}></a>
+                }} className="fa fa-plus fa-lg" style={{marginTop: 2,marginRight: 10, color: 'white'}}></a>
             </li>
         </ul>
       </div>

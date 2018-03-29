@@ -14,6 +14,8 @@ class ProfileImage extends Component {
   }
 
   render() {
+    if(!this.props.base.from) return (<div/>)
+
     const isSelected = this.props.activeThreadId && this.props.activeThreadId === this.props.base.id
     const isFromMe = this.props.base.from.username === this.props.currentUserUsername
     const userToShow = isFromMe ? this.props.base.to : this.props.base.from

@@ -8,7 +8,7 @@ class LoginComponent extends Component {
 
   componentDidMount() {
     localStorage.removeItem('user_token')
-    this.props.history.push('/')
+    setTimeout(() => this.props.history.push('/'), 500)
   }
 
   render() {
