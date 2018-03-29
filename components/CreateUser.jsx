@@ -34,6 +34,10 @@ class CreateUserComponent extends Component {
     })
     .then((token) => {
       this.api.setToken(token)
+      return this.api.fetchUserInfo()
+    })
+    .then((info) => {
+      localStorage.setItem('user_info', JSON.stringify(info))
       this.props.history.push('/')
     })
     .catch(() => {

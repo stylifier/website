@@ -50,7 +50,7 @@ class Navbar extends Component {
 
   searchClicked(e){
     e.preventDefault()
-    this.props.history.push(`/search?username=${encodeURIComponent(this.state.searchPhrase)}&brand=${encodeURIComponent(this.state.searchPhrase)}`)
+    this.props.history.push(`/search?username=${encodeURIComponent(this.state.searchPhrase)}&brand=${encodeURIComponent(this.state.searchPhrase)}&style=${encodeURIComponent(this.state.searchPhrase)}`)
     window.location.reload()
   }
 

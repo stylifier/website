@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom'
 import Footer from '../components/Footer.jsx'
 import UsersViewer from '../components/UsersViewer.jsx'
 import BrandsViewer from '../components/BrandsViewer.jsx'
+import StyledMediaViewer from '../components/StyledMediaViewer.jsx'
 
 class Search extends Component {
   constructor(props) {
@@ -16,7 +17,8 @@ class Search extends Component {
 
     this.state = {
       usernamePhrase: args.username ? decodeURIComponent(args.username) : null,
-      brandPhrase: args.brand ? decodeURIComponent(args.brand) : null
+      brandPhrase: args.brand ? decodeURIComponent(args.brand) : null,
+      stylePhrase: args.style ? decodeURIComponent(args.style) : null
     }
 
 
@@ -37,8 +39,9 @@ class Search extends Component {
             </div>
           </div>
         </div>
-        {this.state.brandPhrase && (<BrandsViewer phrase={this.state.brandPhrase} scrollToUpdate={!this.state.usernamePhrase}/>)}
-        {this.state.usernamePhrase && (<UsersViewer phrase={this.state.usernamePhrase} scrollToUpdate={!this.state.brandPhrase}/>)}
+        {this.state.brandPhrase && (<BrandsViewer phrase={this.state.brandPhrase} scrollToUpdate={!this.state.usernamePhrase && !this.state.stylePhrase}/>)}
+        {this.state.usernamePhrase && (<UsersViewer phrase={this.state.usernamePhrase} scrollToUpdate={!this.state.brandPhrase && !this.state.stylePhrase}/>)}
+        {this.state.stylePhrase && (<StyledMediaViewer phrase={this.state.stylePhrase}/>)}
         <Footer whiteBackground={true}/>
       </div>
     )

@@ -216,6 +216,14 @@ class API {
   getUserStyles(user, q) {
     return this.get(`/users/${user}/styles`, [ ...(q ? ['q=' + encodeURIComponent(q)] : [])])
   }
+
+  searchMedia(q, pagination) {
+    return this.get(`/media`,
+      [
+        ...(q ? ['q=' + q] : []),
+        ...(pagination ? ['pagination=' + pagination] : [])
+      ])
+  }
 }
 
 export default API

@@ -9,6 +9,9 @@ class BrandsViewer extends Component {
     super(props)
     this.api = new API()
     this.infinitUpdate = true
+    this.state = {
+      hasData: false
+    }
   }
 
   fetchBrands() {
@@ -20,6 +23,9 @@ class BrandsViewer extends Component {
       if(!this.props.scrollToUpdate)
         this.infinitUpdate = false
       this.pagination = res.pagination
+      if(res.data.length > 0 && !this.state.hasData) {
+        this.setState({hasData: true})
+      }
       return res.data
     })
   }
@@ -27,7 +33,7 @@ class BrandsViewer extends Component {
   render() {
     return (
       <div>
-        {<h3 style={{marginLeft:50}}>results for brands with phrase "{this.props.phrase}"</h3>}
+        {this.state.hasData && <h3 style={{marginLeft:50}}>Brands with phrase "{this.props.phrase}"</h3>}
         <Viewer
           largeRowCount={8}
           mediomRowCount={5}
@@ -37,7 +43,7 @@ class BrandsViewer extends Component {
           ItemViewProps={{showUser: true, showLike:true}}
         />
         <div style={{paddingRight: 50, marginBottom: 50}}>
-        {<a href={`/search?brand=${this.props.phrase}`} style={{width: '100%', display: 'inline-block', textAlign: 'right'}}>see more results</a>}
+        {this.state.hasData && <a href={`/search?brand=${this.props.phrase}`} style={{width: '100%', display: 'inline-block', textAlign: 'right'}}>see more results</a>}
         </div>
       </div>
     )

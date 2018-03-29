@@ -59,14 +59,20 @@ class Feed extends Component {
     const style = {position: 'absolute', top: 0, left: 0, color: 'black', margin: 10, backgroundColor: 'lightGray', borderRadius: 20}
     const isMe = base.user ? base.user.username.toLowerCase() === currentUser.username.toLowerCase() : false
 
-    if (base.style && !showStyleEditor)
-      return (<a className="btn shadowed" onClick={(e) => {
-        e.preventDefault()
-        if(isMe)
+    if (base.style && !showStyleEditor) {
+      if(isMe)
+        return (<a className="btn shadowed" onClick={(e) => {
+          e.preventDefault()
           this.setState({showStyleEditor: true, style: base.style})
-      }} style={Object.assign(style, {color: 'white', backgroundColor: 'blue'})}>
+        }} style={Object.assign(style, {color: 'white', backgroundColor: 'blue'})}>
+          {base.style}
+        </a>)
+
+      return (<a className="btn shadowed" href={`/search?style=${base.style}`} style={Object.assign(style, {color: 'white', backgroundColor: 'blue'})}>
         {base.style}
       </a>)
+    }
+
 
     if (isMe) {
       return showStyleEditor ?
