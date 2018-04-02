@@ -10,6 +10,7 @@ import InstagramCallback from '../pages/InstagramCallback.jsx'
 import Messages from '../pages/Messages.jsx'
 import LogoutComponent from '../components/Logout.jsx'
 import Sponsorship from '../pages/Sponsorship.jsx'
+import Campaigns from '../pages/Campaigns.jsx'
 import { Switch, Route } from 'react-router-dom'
 
 require('../styles/application.scss')
@@ -35,9 +36,19 @@ class App extends Component {
         <Route exact path='/messages*' component={messages}/>
         <Route exact path='/instagram_callback*' component={InstagramCallback}/>
         <Route exact path='/sponsorship' component={sponsorship}/>
+        <Route exact path='/campaigns' component={campaigns}/>
       </Switch>
     )
   }
+}
+
+function campaigns() {
+  return (
+    <div>
+      <Navbar isLogedIn={userToken ? true : false}/>
+      <Campaigns/>
+    </div>
+  )
 }
 
 function sponsorship() {

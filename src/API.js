@@ -55,6 +55,7 @@ class API {
 
   post(path, body) {
     return new Promise((resolve, reject) => {
+      console.log(body)
       request
       .post(this.baseAddress + path)
       .send(Object.assign({}, body))
@@ -159,6 +160,14 @@ class API {
       ])
   }
 
+  fetchSelfCampaigns() {
+    return this.get('/self_campaigns', [])
+  }
+
+  fetchCampaigns() {
+    return this.get('/campaigns', [])
+  }
+
   fetchUserMedia(username, pagination) {
     return this.get(`/users/${username}/media`, pagination ? ['pagination=' + pagination] : [])
   }
@@ -223,6 +232,12 @@ class API {
         ...(q ? ['q=' + q] : []),
         ...(pagination ? ['pagination=' + pagination] : [])
       ])
+  }
+
+  createCampaign(media, location, description) {
+    return this.post('/campaigns', {
+      media, location: location, description
+    })
   }
 }
 

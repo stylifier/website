@@ -64,17 +64,21 @@ class Navbar extends Component {
                 <input type="text" value={this.state.searchPhrase} style={{minWidth: '16em'}} onChange={e => this.setState({searchPhrase: e.target.value})} className="form-control" placeholder="Search for Style, Brand or People" aria-label="Username" aria-describedby="basic-addon1"/>
               </form>
             </li>
-            {this.state.userInfo.is_brand &&
-              (<li className="nav-item">
-              <a className="nav-link" href="/sponsorship">Sponsorship</a>
-              </li>)
-            }
-
             <li className="nav-item">
               <a className="nav-link dropdown-toggle" href={profileLink} style={{padding: 6}}>
                 <img src={this.state.userInfo.profile_picture} className="img-circle" style={{width: 40, objectFit: 'cover', height: 40}}/>
               </a>
             </li>
+            {this.state.userInfo.is_brand &&
+              (<li className="nav-item">
+              <a className="nav-link" href="/sponsorship">Sponsorship</a>
+              </li>)
+            }
+            {this.state.userInfo.is_brand &&
+              (<li className="nav-item">
+              <a className="nav-link" href="/campaigns">Campaigns</a>
+              </li>)
+            }
             <li className="nav-item">
               <a className="nav-link" href="/messages">Messages</a>
             </li>
