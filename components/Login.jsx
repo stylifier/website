@@ -44,7 +44,7 @@ class LoginComponent extends Component {
         <h2>Already have an account</h2>
         <div className="form-group">
           <label htmlFor="loginUsername">User Name</label>
-          <input className="form-control" value={this.state.username} onChange={e => this.setState({username: e.target.value})} id="loginUsername" pattern="^[a-zA-Z0-9]{3,25}$" placeholder="Enter your desired username" required/>
+          <input className="form-control" value={this.state.username} onChange={e => this.setState({username: e.target.value})} id="loginUsername" pattern="^[a-z0-9_]{3,25}$" placeholder="Enter your desired username" required/>
           <small id="usernameHelp" className="form-text text-muted">Your Username can only contain letters and numbers.</small>
         </div>
         <div className="form-group">

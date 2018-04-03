@@ -22,10 +22,25 @@ class BrandImage extends Component {
     this.render()
   }
 
+  renderApproved() {
+    const {base} = this.props
+    const href = '/profile/' + base.user.username.toString()
+
+    if(base.approved)
+      return
+
+    return (
+      base.approved === false ?
+      <h5> <a href={href} style={{textDecoration: 'none', color: 'black', float: 'right'}}> Not approved: {base['rejection_reason']} </a> </h5> :
+      <h5> <a href={href} style={{textDecoration: 'none', color: 'black', float: 'right'}}> (Waiting for approval) </a> </h5>
+    )
+  }
+
   render() {
     const {base, showApproval} = this.props
     const href = '/profile/' + base.user.username.toString()
     const img = base.media.images.standard_resolution.url
+
     return (
       <div className="containerItem"
         style={{
@@ -55,10 +70,7 @@ class BrandImage extends Component {
           </a>
         </div>
         <h4 style={{marginTop: 20}}> <a href={href} style={{textDecoration: 'none', color: 'black'}}> {base.description} </a> </h4>
-        {showApproval && ((!base.approved && base.approved === false) ?
-          <h5> <a href={href} style={{textDecoration: 'none', color: 'black', float: 'right'}}> Not approved: {base['rejection_reason']} </a> </h5> :
-          <h5> <a href={href} style={{textDecoration: 'none', color: 'black', float: 'right'}}> (Waiting for approval) </a> </h5>
-        )}
+        {(showApproval) && this.renderApproved()}
         <h5> <a href={href} style={{textDecoration: 'none', color: '#595959'}}> {base.user.username} </a> </h5>
       </div>
     )
