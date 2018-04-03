@@ -18,12 +18,12 @@ class Dashboard extends Component {
     return (
       <div className="container">
         <div className="row clr-white" >
-          <div className="col-lg-2 col-md-2 col-sm-12 col-xs-12"/>
-          <div className="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+          <div className="col-lg-1 col-md-1 col-sm-12 col-xs-12"/>
+          <div className="col-lg-10 col-md-10 col-sm-12 col-xs-12">
             <CampaignsViewer/>
             <hr/>
           </div>
-          <div className="col-lg-2 col-md-2 col-sm-12 col-xs-12"/>
+          <div className="col-lg-1 col-md-1 col-sm-12 col-xs-12"/>
         </div>
       </div>
     )
