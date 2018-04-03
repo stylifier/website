@@ -55,7 +55,7 @@ class CreateUserComponent extends Component {
         </div>
         <div className="form-group">
           <label htmlFor="username">User Name</label>
-          <input pattern="^[a-zA-Z0-9]{3,25}$" className="form-control" value={this.state.username} onChange={e => this.setState({username: e.target.value})} id="username" placeholder="Enter your desired username" required/>
+          <input pattern="^[a-z0-9_]{3,25}$" className="form-control" value={this.state.username} onChange={e => this.setState({username: e.target.value})} id="username" placeholder="Enter your desired username" required/>
           <small id="usernameHelp" className="form-text text-muted">Your Username can only contain letters and numbers.</small>
         </div>
         <div className="form-group">
