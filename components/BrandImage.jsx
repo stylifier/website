@@ -34,7 +34,9 @@ class BrandImage extends Component {
             style={{
               objectFit: 'scale-down',
               width: '100%',
-              height: '100%'
+              height: '100%',
+              boxShadow: '0px 1px 5px 1px gray',
+              borderRadius: 4
             }}
             className="overlay"
             onClick={() => this.likeClicked()}

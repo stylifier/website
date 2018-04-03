@@ -37,7 +37,8 @@ class ProfileImage extends Component {
             style={{
               objectFit: 'cover',
               width: '100%',
-              height: '100%'
+              height: '100%',
+              boxShadow: '0px 1px 5px 1px gray'
             }}
             className="img-circle overlay"
             onClick={() => this.likeClicked()}
@@ -49,7 +50,7 @@ class ProfileImage extends Component {
         </a>
         </div>
         <div>
-          <div style={{textAlign: 'center', width: '100%'}}>
+          <div style={{textAlign: 'center', width: '100%', marginTop: 10}}>
             {customButtonOnClick && customButtonLable && customButtonShowChecker && customButtonShowChecker(base) && (
               <a className='btn btn-primary' onClick={(e) => {
                 e.preventDefault()
