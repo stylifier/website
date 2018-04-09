@@ -78,6 +78,7 @@ class CreateUserComponent extends Component {
         <div className="form-group">
           <label htmlFor="inviteCode">Invite Code</label>
           <input type="text" className="form-control" value={this.state.inviteCode} onChange={e => this.setState({inviteCode: e.target.value})} id="inviteCode" placeholder="Invite Code" required/>
+          <small id="inviteCodeHelp" className="form-text text-muted"><a href='https://www.stylifier.com/'> Stylifire </a> is currently beta version, in case you want to be on the waiting list to join us please <a href="mailto:stylifier@gmail.com"> contact us </a></small>
         </div>
         <div className="form-check">
           <label className="form-check-label">
@@ -92,7 +93,7 @@ class CreateUserComponent extends Component {
               <small id="loginPassword" className="form-text text-muted" style={{color: 'red'}}> {this.state.errMessage} </small>
             </div>) :
             (<div>
-              <small id="loginPassword" className="form-text text-muted" style={{color: 'red'}}> Your invite code is note valid. <a href='https://www.stylifier.com/'> Stylifire </a> is currently beta version, in case you want to be on the waiting list to join us please <a href="mailto:stylifier@gmail.com"> contact us </a></small>
+              <small id="loginPassword" className="form-text text-muted" style={{color: 'red'}}> Your invite code is note valid.</small>
             </div>))
         }
       </form>
