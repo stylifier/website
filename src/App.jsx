@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {Component, PropTypes} from 'react'
 import Navbar from '../components/Navbar.jsx'
 import Dashboard from '../pages/Dashboard.jsx'
 import Landing from '../pages/Landing.jsx'
@@ -20,6 +20,27 @@ let userToken
 class App extends Component {
   constructor() {
     super()
+  }
+
+  componentDidMount() {
+    this.setURLElements(location)
+  }
+
+
+  setURLElements(location) {
+    const args = {}
+    location.search
+    .substring(1)
+    .split('&')
+    .forEach(i => args[i.split('=')[0]] = i.split('=')[1] || '')
+
+    if(!args.invite_code || args.invite_code.length <= 0)
+      return
+
+    localStorage.setItem('invite_code',
+      args.invite_code ?
+        decodeURIComponent(args.invite_code) :
+        '')
   }
 
   render() {
@@ -113,4 +134,13 @@ function Home() {
     </div>
   )
 }
+
+App.propTypes = {
+  location: PropTypes.object,
+  history: React.PropTypes.shape({
+    push: React.PropTypes.func.isRequired,
+    listen: React.PropTypes.func.isRequired
+  }).isRequired
+}
+
 export default App;

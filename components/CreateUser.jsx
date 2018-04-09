@@ -11,9 +11,15 @@ class CreateUserComponent extends Component {
       email: '',
       fullname: '',
       agreed: false,
-      registerDisabled: false
+      registerDisabled: false,
+      inviteCode: localStorage.getItem('invite_code')
     }
     this.api = new API()
+  }
+
+  componentDidMount() {
+    setTimeout(() =>
+      this.setState({inviteCode: localStorage.getItem('invite_code')}), 300)
   }
 
   refreshStats() {
@@ -23,14 +29,15 @@ class CreateUserComponent extends Component {
   }
 
   registerClicked(e) {
-    this.setState({registerDisabled: true})
+    this.setState({registerDisabled: true, errMessage: undefined})
     e.preventDefault()
 
     this.api.register({
       username: this.state.username,
       password: this.state.password,
       email: this.state.email,
-      full_name: this.state.fullname
+      full_name: this.state.fullname,
+      invite_code: this.state.inviteCode
     })
     .then((token) => {
       this.api.setToken(token)
@@ -40,8 +47,8 @@ class CreateUserComponent extends Component {
       localStorage.setItem('user_info', JSON.stringify(info))
       this.props.history.push('/')
     })
-    .catch(() => {
-      this.setState({registerDisabled: false})
+    .catch((e) => {
+      this.setState({registerDisabled: false, errMessage: e.response.body ? e.response.body.message : e.response.text})
     })
   }
 
@@ -68,6 +75,10 @@ class CreateUserComponent extends Component {
           <input type="password" pattern="^.{8,400}$" className="form-control" value={this.state.password} onChange={e => this.setState({password: e.target.value})} id="exampleInputPassword1" placeholder="Password" required/>
           <small id="passwordHelp" className="form-text text-muted">Your password must be more that 8 letter long.</small>
         </div>
+        <div className="form-group">
+          <label htmlFor="inviteCode">Invite Code</label>
+          <input type="text" className="form-control" value={this.state.inviteCode} onChange={e => this.setState({inviteCode: e.target.value})} id="inviteCode" placeholder="Invite Code" required/>
+        </div>
         <div className="form-check">
           <label className="form-check-label">
             <input type="checkbox" value={this.state.agreed} onChange={e => this.setState({agreed: e.target.value})} className="form-check-input" required/>
@@ -75,6 +86,15 @@ class CreateUserComponent extends Component {
           </label>
         </div>
         <button type="submit" disabled={this.state.registerDisabled} className="btn btn-default">Create User</button>
+        {this.state.errMessage &&
+          (this.state.errMessage !== 'INVITE_CODE_NOT_VALID' ?
+            (<div>
+              <small id="loginPassword" className="form-text text-muted" style={{color: 'red'}}> {this.state.errMessage} </small>
+            </div>) :
+            (<div>
+              <small id="loginPassword" className="form-text text-muted" style={{color: 'red'}}> Your invite code is note valid. <a href='https://www.stylifier.com/'> Stylifire </a> is currently beta version, in case you want to be on the waiting list to join us please <a href="mailto:stylifier@gmail.com"> contact us </a></small>
+            </div>))
+        }
       </form>
     )
   }

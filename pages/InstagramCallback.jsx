@@ -21,7 +21,8 @@ class InstagramCallback extends Component {
 
   componentDidMount() {
     this.api.register({
-      instagram_code: this.state.code
+      instagram_code: this.state.code,
+      invite_code: localStorage.getItem('invite_code')
     })
     .then((token) => {
       this.api.setToken(token)
