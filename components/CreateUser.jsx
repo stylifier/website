@@ -83,7 +83,7 @@ class CreateUserComponent extends Component {
         <div className="form-check">
           <label className="form-check-label">
             <input type="checkbox" value={this.state.agreed} onChange={e => this.setState({agreed: e.target.value})} className="form-check-input" required/>
-            I agree to terms and conditions
+            <span style={{paddingLeft: 5}}> I agree to <a href="/policy"> terms and conditions </a> </span>
           </label>
         </div>
         <button type="submit" disabled={this.state.registerDisabled} className="btn btn-default">Create User</button>
