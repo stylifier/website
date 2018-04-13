@@ -39,17 +39,33 @@ class Navbar extends Component {
     .then((info) => {
       localStorage.setItem('user_info', JSON.stringify(info))
       this.setState({userInfo: Object.assign({}, info)})
-      return this.api.fetchThreads()
-    })
-    .then((threads) => {
-      console.log(threads.data.filter(t => t.status === 'REQUESTED'));
+      return this.fetchThreads()
     })
   }
 
-  refreshStats() {
+  fetchThreads() {
+    if(!this.state.userInfo || !this.state.userInfo.username)
+      return
+
+    this.api.fetchThreads()
+    .then((threads) => {
+      const unreadThreads = threads.data.filter(t =>
+        t.status === 'REQUESTED' && t.from.username !== this.state.userInfo.username)
+
+      this.setState({unreadMessagesCount: unreadThreads.length})
+    })
+  }
+
+  componentDidMount() {
+    this.pullingInterval = setInterval(() => this.fetchThreads.call(this), 5000)
   }
 
   componentWillUnmount() {
+    clearInterval(this.pullingInterval)
+  }
+
+
+  refreshStats() {
   }
 
   searchClicked(e){
@@ -84,7 +100,18 @@ class Navbar extends Component {
               </li>)
             }
             <li className="nav-item">
-              <a className="nav-link" href="/messages">Messages</a>
+               <a className="nav-link" href="/messages">Messages</a>
+               {this.state.unreadMessagesCount > 0 && <span className="badge" style={{
+                    background: 'rgba(0,255,0,0.5)',
+                    width: 'auto',
+                    height: 'auto',
+                    margin: 0,
+                    borderRadius: '20%',
+                    position:'absolute',
+                    top:3,
+                    right:0,
+                    padding: '3 3 1 3'
+                }}>{this.state.unreadMessagesCount}</span>}
             </li>
             <li className="nav-item">
               <a className="dropdown-item" href="/followers">Following</a>

@@ -200,7 +200,7 @@ class Profile extends Component {
         )}
 
         <div>
-          <SimpleImageViewer username={this.state.username} ItemViewProps={{showUser: false, showLike: !isCurrentUser, showTag: true}}/>
+          <SimpleImageViewer username={this.state.username} ItemViewProps={{showMakeProfilePicture: true, showUser: false, showLike: !isCurrentUser, showTag: true}}/>
         </div>
         <Footer whiteBackground={true}/>
       </div>

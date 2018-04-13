@@ -239,6 +239,11 @@ class API {
       media, location: location, description
     })
   }
+
+  setProfilePicture(media) {
+    Object.keys(media).forEach((key) => (media[key] == null) && delete media[key]);
+    return this.post('/user/self/profile_picture', Object.assign({}, media))
+  }
 }
 
 export default API

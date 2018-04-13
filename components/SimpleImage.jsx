@@ -116,7 +116,7 @@ class Feed extends Component {
   }
 
   render() {
-    const {onClick, styleOverwrite, onLoaded, showTag, showUser, showLike, hideStyle} = this.props
+    const {onClick, styleOverwrite, onLoaded, showTag, showUser, showLike, hideStyle, showMakeProfilePicture} = this.props
     const {loaded, base,heartColor, heartClass} = this.state
 
     return (
@@ -150,6 +150,9 @@ class Feed extends Component {
             </div>
           </div>))}
         {showUser ? (<div style={{position: 'absolute', bottom: 0}} className="text"><a href={'/profile/' + base.user.username}>{base.user.username}</a></div>) : ''}
+        {showMakeProfilePicture ? (<a className="btn shadowed" onClick={() => this.api.setProfilePicture(base)} style={{position: 'absolute', bottom: 0, left: 0, color: 'white', margin: 10, backgroundColor: 'blue', borderRadius: 10}}>
+          Set as your profile picture
+        </a>): ''}
         {showLike ? (<a className="btn shadowed" onClick={() => this.likeClicked()} style={{position: 'absolute', top: 0, right: 0, margin: 2, color: heartColor}}>
           <i className={heartClass}></i>
         </a>) : ''}
@@ -168,6 +171,7 @@ Feed.propTypes = {
   showTag: PropTypes.bool,
   showLike: PropTypes.bool,
   hideStyle: PropTypes.bool,
+  showMakeProfilePicture: PropTypes.bool,
   styleOverwrite: PropTypes.object
 }
 
