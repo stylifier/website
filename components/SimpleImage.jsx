@@ -119,6 +119,8 @@ class Feed extends Component {
     const {onClick, styleOverwrite, onLoaded, showTag, showUser, showLike, hideStyle, showMakeProfilePicture} = this.props
     const {loaded, base,heartColor, heartClass} = this.state
 
+    const showSetProfilePic = showMakeProfilePicture && !this.state.currentUser.is_instagram_user && this.state.currentUser.profile_picture !== base.images.standard_resolution.url
+
     return (
       <div
         className="containerItem"
@@ -150,7 +152,7 @@ class Feed extends Component {
             </div>
           </div>))}
         {showUser ? (<div style={{position: 'absolute', bottom: 0}} className="text"><a href={'/profile/' + base.user.username}>{base.user.username}</a></div>) : ''}
-        {showMakeProfilePicture ? (<a className="btn shadowed" onClick={() => this.api.setProfilePicture(base)} style={{position: 'absolute', bottom: 0, left: 0, color: 'white', margin: 10, backgroundColor: 'blue', borderRadius: 10}}>
+        {showSetProfilePic ? (<a className="btn shadowed" onClick={() => this.api.setProfilePicture(base).then(() => window.location.reload())} style={{position: 'absolute', bottom: 0, left: 0, color: 'white', margin: 10, backgroundColor: 'blue', borderRadius: 10}}>
           Set as your profile picture
         </a>): ''}
         {showLike ? (<a className="btn shadowed" onClick={() => this.likeClicked()} style={{position: 'absolute', top: 0, right: 0, margin: 2, color: heartColor}}>
