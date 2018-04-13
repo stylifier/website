@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 require('../styles/feed.scss')
 
-class BrandImage extends Component {
+class CampaignItem extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -46,7 +46,7 @@ class BrandImage extends Component {
         style={{
           visibility: this.state.loaded ? 'visible' : 'hidden',
           margin: 20,
-          '-webkit-filter': base.expired ? 'grayscale(100%)': 'grayscale(0%)',
+          WebkitFilter: base.expired ? 'grayscale(100%)': 'grayscale(0%)',
           filter: base.expired ? 'grayscale(100%)': 'grayscale(0%)'
         }}>
         <div className='campaign' style={{height: 'auto'}}>
@@ -77,10 +77,10 @@ class BrandImage extends Component {
   }
 }
 
-BrandImage.propTypes = {
+CampaignItem.propTypes = {
   base: PropTypes.object,
-  showApproval: PropTypes.boolean,
+  showApproval: PropTypes.bool,
   onLoaded: PropTypes.func
 }
 
-export default BrandImage
+export default CampaignItem

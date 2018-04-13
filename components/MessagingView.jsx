@@ -158,7 +158,7 @@ class MessagingView extends Component {
 
   renderConversationHeader() {
     const {thread} = this.props
-    let showBack = window.innerWidth < 768 && this.props.threadId? false : true
+    let showBack = window.innerWidth < 768 && this.props.threadId ? true : false
 
     if(!thread.from)
       return

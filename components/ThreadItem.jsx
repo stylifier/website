@@ -41,10 +41,10 @@ class ProfileImage extends Component {
               this.props.onClose && this.props.onClose(Object.assign({}, this.props.base))
             }}>×</a>}
             <div className={'row' + (isSelected ? ' selected': ' contact')} style={{textAlign: 'center'}}>
-              <div className="col-lg-4 col-md-4 col-sm-12 col-xs-4" style={{textAlign: 'center'}}>
-                <img src={userToShow.profile_picture} className="img-circle" style={{objectFit: 'scale-down', height: 100,width: 100}}/>
+              <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4" style={{textAlign: 'center'}}>
+                <img src={userToShow.profile_picture} className="img-circle" style={{objectFit: 'scale-down', height: 80,width: 80}}/>
               </div>
-              <div className="col-lg-8 col-md-8 col-sm-12 col-xs-8" style={{textAlign: 'left'}}>
+              <div className="col-lg-8 col-md-8 col-sm-8 col-xs-8" style={{textAlign: 'left'}}>
                 <div>
                   {userToShow.full_name} ({userToShow.username})
                 </div>

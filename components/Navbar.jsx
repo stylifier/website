@@ -39,6 +39,10 @@ class Navbar extends Component {
     .then((info) => {
       localStorage.setItem('user_info', JSON.stringify(info))
       this.setState({userInfo: Object.assign({}, info)})
+      return this.api.fetchThreads()
+    })
+    .then((threads) => {
+      console.log(threads.data.filter(t => t.status === 'REQUESTED'));
     })
   }
 

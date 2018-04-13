@@ -3,7 +3,7 @@ import CampaignItem from './CampaignItem.jsx'
 import Viewer from './Viewer.jsx'
 import API from '../src/API'
 
-class FeedViewer extends Component {
+class CampaignsViewer extends Component {
   constructor(props) {
     super(props)
     this.api = new API()
@@ -35,9 +35,9 @@ class FeedViewer extends Component {
   }
 }
 
-FeedViewer.propTypes = {
-  showSelfCampaigns: PropTypes.boolean,
-  showApproval: PropTypes.boolean
+CampaignsViewer.propTypes = {
+  showSelfCampaigns: PropTypes.bool,
+  showApproval: PropTypes.bool
 }
 
-export default FeedViewer
+export default CampaignsViewer

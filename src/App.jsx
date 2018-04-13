@@ -148,11 +148,7 @@ function Home() {
 }
 
 App.propTypes = {
-  location: PropTypes.object,
-  history: React.PropTypes.shape({
-    push: React.PropTypes.func.isRequired,
-    listen: React.PropTypes.func.isRequired
-  }).isRequired
+  location: PropTypes.object
 }
 
 export default App;
