@@ -119,7 +119,7 @@ class MessagingView extends Component {
     const hasPhoto = this.props.thread.media && this.props.thread.media.length > 0
     return(
     <div>
-      <p style={{color: 'white', textAlign: 'left'}}> {'Your advice has been closed' + (hasPhoto && `, ${recipient.full_name} asked you to share these photos on you profile. Just click on the one you want to share.`)} </p>
+      <p style={{color: 'white', textAlign: 'left'}}> {'Your advice has been closed' + (hasPhoto ? `, ${recipient.full_name} asked you to share these photos on you profile. Just click on the one you want to share.`: '')} </p>
       {hasPhoto &&
         <ScrollArea
             className="area"
