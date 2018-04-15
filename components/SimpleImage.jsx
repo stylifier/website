@@ -117,9 +117,10 @@ class Feed extends Component {
 
   render() {
     const {onClick, styleOverwrite, onLoaded, showTag, showUser, showLike, hideStyle, showMakeProfilePicture} = this.props
-    const {loaded, base,heartColor, heartClass} = this.state
+    const {currentUser, loaded, base,heartColor, heartClass} = this.state
+    const isMe = base.user ? base.user.username.toLowerCase() === currentUser.username.toLowerCase() : false
 
-    const showSetProfilePic = showMakeProfilePicture && !this.state.currentUser.is_instagram_user && this.state.currentUser.profile_picture !== base.images.standard_resolution.url
+    const showSetProfilePic = showMakeProfilePicture && isMe && !this.state.currentUser.is_instagram_user && this.state.currentUser.profile_picture !== base.images.standard_resolution.url
 
     return (
       <div
