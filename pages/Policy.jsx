@@ -175,7 +175,7 @@ class Policy extends Component {
               <p className="p6"><span className="s1">If you have questions or comments about this Privacy Policy, please contact us at:</span></p>
               <p className="p5">&nbsp;</p>
               <p className="p6"><span className="s1">Stylifier</span></p>
-              <p className="p6"><span className="s1">stylifier@gmail.com</span></p>
+              <p className="p6"><span className="s1">admin@stylifier.com</span></p>
             </div>
           </div>
         </div>
