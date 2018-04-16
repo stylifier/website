@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import { withRouter } from 'react-router-dom'
-import Autocomplete from 'react-autocomplete'
 import ImageUploader from '../components/ImageUploader.jsx'
+import Autosuggest from 'react-autosuggest'
 import API from '../src/API'
 
 class ComposeThreadModal extends Component {
@@ -17,7 +17,8 @@ class ComposeThreadModal extends Component {
       uploaderLoading: false,
       sendButtonDisabled: false,
       send: false,
-      message: ''
+      message: '',
+      value: ''
     }
   }
 
@@ -39,55 +40,39 @@ class ComposeThreadModal extends Component {
     }
   }
 
+  fetchRecipients(q) {
+    clearTimeout(this.requestTimer)
+    this.requestTimer = setTimeout(() =>
+      this.api.fetchUserFollowers(this.props.currentUser.username, 0, q + '%')
+      .then(r => this.setState({followersSuggestionList: [...r.data.map(i => ({name: i.username})).map(i => i.name).slice(0, 10)]}))
+    ,200)
+  }
+
   renderAutoComplete() {
-    return (<div className="dropdown" style={{width: '70%'}}>
-      <Autocomplete
-        value={this.state.recipientUsername}
+    return (<div className="dropdown" style={{width: '100%', textAlign: 'left', zIndex: 1000}}>
+      <Autosuggest
+        alwaysRenderSuggestions={true}
+        suggestions={this.state.followersSuggestionList}
+        onSuggestionsFetchRequested={(e) => {
+          if(e.reason === 'suggestion-selected')
+            return this.setState({followersSuggestionList: []})
+
+          this.fetchRecipients(e.value)
+        }}
+        onSuggestionsClearRequested={() => {
+          if(this.state.recipientUsername && this.state.recipientUsername.trim().length >= 1)
+            return this.setState({followersSuggestionList: []})
+
+          this.fetchRecipients('')
+        }}
+        getSuggestionValue={t => t}
+        renderSuggestion={t => (<div> {t} </div>)}
         inputProps={{
-          style: {width: '100%'},
-          placeholder: 'to brand or people you follow',
-          id:'dropdownMenu2',
-          'data-toggle':'dropdown',
-          'aria-haspopup':'true' ,
-          'aria-expanded':'false',
-          disabled: this.state.hasDefault ? 'disabled' : ''
+          style: {height: 35, width: '100%'},
+          placeholder: 'Recipient',
+          value: this.state.recipientUsername,
+          onChange: (e, value) => this.setState({recipientUsername: value.newValue})
         }}
-        wrapperStyle={{ position: 'relative', width: '100%', display: 'inherit'}}
-        items={this.state.followersSuggestionList}
-        getItemValue={(item) => item.name}
-        onSelect={(value, state) => this.setState({recipientUsername: value, followersSuggestionList: [state] }) }
-        onChange={(event, value) => {
-          this.setState({ value, loading: true, followersSuggestionList: [] , recipientUsername: value})
-          clearTimeout(this.requestTimer)
-          this.requestTimer = setTimeout(() =>
-            this.api.fetchUserFollowers(this.props.currentUser.username, 0, value + '%')
-            .then(r => {
-              this.setState({
-                followersSuggestionList: [...r.data.map(i => ({name: i.username}))],
-                loading: false
-              })
-            }
-            )
-          ,200)
-        }}
-        renderItem={(item, isHighlighted) => (
-          <div
-            className={`item ${isHighlighted ? 'item-highlighted' : ''}`}
-            key={item.abbr}
-          >{item.name}</div>
-        )}
-        renderMenu={(items, value) => {
-          return (
-          <div className="dropdown-menu" style={{width: '100%', backgroundColor: 'white', color: 'black'}} aria-labelledby="dropdownMenu2">
-            {value === '' ? (
-              <div className="dropdown-item">brand or people you follow</div>
-            ) : this.state.loading ? (
-              <div className="dropdown-item">loading...</div>
-            ) : items.length === 0 ? (
-              <div className="dropdown-item">no matches for {value}</div>
-            ) : items.map((i, t) => [(<div key={t} className="dropdown-item">{i.name}</div>), i])}
-          </div>
-        )}}
       />
     </div>)
   }
