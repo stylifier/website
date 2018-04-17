@@ -55,7 +55,6 @@ class API {
 
   post(path, body) {
     return new Promise((resolve, reject) => {
-      console.log(body)
       request
       .post(this.baseAddress + path)
       .send(Object.assign({}, body))
@@ -144,8 +143,8 @@ class API {
     return this.post('/threads', {to: {username: toUsername}})
   }
 
-  createMessage(threadId, text, media) {
-    return this.put(`/threads/${threadId}/messages`, {text: text, media: media})
+  createMessage(threadId, text, media, products) {
+    return this.put(`/threads/${threadId}/messages`, {text: text, media: media, products})
   }
 
   addMediaToThread(threadId, media) {
@@ -238,6 +237,18 @@ class API {
     return this.post('/campaigns', {
       media, location: location, description
     })
+  }
+
+  createProduct(media, name, code, price) {
+    return this.post('/products', {media, name, code, price})
+  }
+
+  fetchSelfProducts() {
+    return this.get('/self_products', [])
+  }
+
+  getUserProduct(q) {
+    return this.get('/products', [ ...(q ? ['q=' + encodeURIComponent(q)] : [])])
   }
 
   setProfilePicture(media) {

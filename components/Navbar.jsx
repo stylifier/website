@@ -96,6 +96,11 @@ class Navbar extends Component {
             }
             {this.state.userInfo.is_brand &&
               (<li className="nav-item">
+              <a className="nav-link" href="/products">Products</a>
+              </li>)
+            }
+            {this.state.userInfo.is_brand &&
+              (<li className="nav-item">
               <a className="nav-link" href="/campaigns">Campaigns</a>
               </li>)
             }

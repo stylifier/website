@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react'
 import ConversationViewer from './ConversationViewer.jsx'
 import CloseThreadModal from './CloseThreadModal.jsx'
+import Autosuggest from 'react-autosuggest'
 import API from '../src/API'
 import { withRouter } from 'react-router-dom'
 import ComposeThreadModal from './ComposeThreadModal.jsx'
@@ -20,7 +21,10 @@ class MessagingView extends Component {
       showRatingModal: false,
       showComposeModal: false,
       media: [],
+      productsSuggestion: [],
+      product: '',
       uploaderLoading: false,
+      selfProducts: [],
       send: false
     }
 
@@ -31,6 +35,8 @@ class MessagingView extends Component {
   }
 
   componentDidMount() {
+    this.api.fetchSelfProducts()
+    .then(t => this.setState({selfProducts: [...t]}))
   }
 
   componentWillUnmount() {
@@ -43,9 +49,9 @@ class MessagingView extends Component {
   componentDidUpdate() {
     if (this.state.send && !this.state.uploaderLoading) {
       this.setState({send: false})
-      this.api.createMessage(this.props.threadId, this.state.message, this.state.media)
+      this.api.createMessage(this.props.threadId, this.state.message, this.state.media, this.state.selfProducts.filter(t => t.name === this.state.product))
       .then(() => {
-        this.setState({message: '', showUploader: false, media: []})
+        this.setState({message: '', showUploader: false, media: [], product: ''})
         setTimeout(() => this.forceUpdate(), 200)
         this.conversationViewer.viewer.fetcherOnTop.call(this.conversationViewer.viewer)
       })
@@ -54,7 +60,7 @@ class MessagingView extends Component {
 
   messageSend(e) {
     e.preventDefault()
-    if(this.state.message.trim() !== '' || this.state.media.length > 0)
+    if(this.state.message.trim() !== '' || this.state.media.length > 0 || this.state.selfProducts.filter(t => t.name === this.state.product).length !== 0)
       this.setState({send: true})
   }
 
@@ -84,21 +90,76 @@ class MessagingView extends Component {
     </div>)
   }
 
+  fetchProducts(q) {
+    clearTimeout(this.requestTimer)
+    this.requestTimer = setTimeout(() =>
+      this.api.getUserProduct(q + '%')
+      .then(r => {
+        this.setState({productsSuggestion: [...r.slice(0, 10)]})
+      })
+    ,200)
+  }
+
   renderMessageWritingArea() {
+    const theme = {
+      container:                'react-autosuggest__container',
+      containerOpen:            'react-autosuggest__container--open',
+      input:                    'react-autosuggest__input',
+      inputOpen:                'react-autosuggest__input--open',
+      inputFocused:             'react-autosuggest__input--focused',
+      suggestionsContainer:     'react-autosuggest__suggestions-container',
+      suggestionsContainerOpen: 'react-autosuggest__suggestions-container--open__scrolled',
+      suggestionsList:          'react-autosuggest__suggestions-list',
+      suggestion:               'react-autosuggest__suggestion',
+      suggestionFirst:          'react-autosuggest__suggestion--first',
+      suggestionHighlighted:    'react-autosuggest__suggestion--highlighted',
+      sectionContainer:         'react-autosuggest__section-container',
+      sectionContainerFirst:    'react-autosuggest__section-container--first',
+      sectionTitle:             'react-autosuggest__section-title'
+    }
     return(
     <div>
-      <div className="input-group">
-        <textarea
-          value={this.state.message}
-          onChange={e => this.setState({message: e.target.value})}
-          style={{
-            resize: 'none',
-            minHeight: '100%'}}
-          onKeyPress={(e) => e.key === 'Enter' && this.messageSend(e)}
-          id="btn-input"
-          className="form-control input-sm"
-          placeholder="Write your message here..."/>
-        <span className="input-group-btn">
+      <div className="input-group" style={{width: '100%'}}>
+        <div style={{float: 'left', width: 'calc(100% - 57px)'}}>
+          {this.props.currentUser.is_brand && <div>
+            <Autosuggest
+              theme={theme}
+              alwaysRenderSuggestions={true}
+              suggestions={this.state.productsSuggestion}
+              onSuggestionsFetchRequested={(e) => {
+                if(e.reason === 'suggestion-selected')
+                  return this.setState({productsSuggestion: []})
+
+                this.fetchProducts(e.value)
+              }}
+              onSuggestionsClearRequested={() => {
+                if(this.state.product && this.state.product.trim().length >= 1)
+                  return this.setState({productsSuggestion: []})
+
+                this.fetchProducts('')
+              }}
+              getSuggestionValue={t => t.name}
+              renderSuggestion={t => (<div> {t.name} </div>)}
+              inputProps={{
+                style: {height: 35, width: '100%'},
+                placeholder: 'Products to Offer',
+                value: this.state.product,
+                onChange: (e, value) => this.setState({product: value.newValue})
+              }}
+            />
+          </div>}
+          <textarea
+            value={this.state.message}
+            onChange={e => this.setState({message: e.target.value})}
+            style={{
+              resize: 'none',
+              minHeight: '100%'}}
+            onKeyPress={(e) => e.key === 'Enter' && this.messageSend(e)}
+            id="btn-input"
+            className="form-control input-sm"
+            placeholder="Write your message here..."/>
+        </div>
+        <span style={{float: 'right'}}>
           <div className="btn-group-vertical">
             <button type="button" className="btn btn-primary" onClick={(e) => this.messageSend(e)}>Send</button>
             <button type="button" className="btn btn-primary" onClick={() => {
