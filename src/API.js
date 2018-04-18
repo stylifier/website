@@ -226,21 +226,21 @@ class API {
   }
 
   searchMedia(q, pagination) {
-    return this.get(`/media`,
+    return this.get('/media',
       [
         ...(q ? ['q=' + q] : []),
         ...(pagination ? ['pagination=' + pagination] : [])
       ])
   }
 
-  createCampaign(media, location, description) {
+  createCampaign(media, shopAddress, description) {
     return this.post('/campaigns', {
-      media, location: location, description
+      media, shopAddress, description
     })
   }
 
-  createProduct(media, name, code, price) {
-    return this.post('/products', {media, name, code, price})
+  createProduct(media, name, code, price, shopAddress) {
+    return this.post('/products', {media, name, code, price, shopAddress})
   }
 
   fetchSelfProducts() {
@@ -254,6 +254,19 @@ class API {
   setProfilePicture(media) {
     Object.keys(media).forEach((key) => (media[key] == null) && delete media[key]);
     return this.post('/user/self/profile_picture', Object.assign({}, media))
+  }
+
+  getUserAddresses() {
+    return this.get('/addresses', [])
+    .then(t => t.reverse())
+  }
+
+  createAddress(address) {
+    return this.post('/addresses', Object.assign({}, address))
+  }
+
+  deleteAddress(id) {
+    return this.delete('/addresses/' + id, {})
   }
 }
 

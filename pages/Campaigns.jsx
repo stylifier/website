@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import CampaignsViewer from '../components/CampaignsViewer.jsx'
 import Footer from '../components/Footer.jsx'
 import ImageUploader from '../components/ImageUploader.jsx'
+import AddressManager from '../components/AddressManager.jsx'
 import API from '../src/API'
 
 class Campaigns extends Component {
@@ -9,7 +10,6 @@ class Campaigns extends Component {
     super(props)
     this.state = {
       description: '',
-      city: '',
       showComposeForm: false,
       viewerKey: Math.random() * 1000
     }
@@ -31,7 +31,7 @@ class Campaigns extends Component {
 
     this.api.createCampaign(
       this.state.media[0],
-      {name: this.state.city},
+      this.addressManager.getSelectedAddress(),
       this.state.description
     )
     .then(() => this.setState({showComposeForm: false, viewerKey: Math.random() * 1000}))
@@ -47,7 +47,6 @@ class Campaigns extends Component {
           onSubmit={() => this.setState({uploaderLoading: true})}
           onComplete={(media) => this.setState({uploaderLoading: false, media: media})}/>
         <input type="text" value={this.state.description} onChange={e => this.setState({description: e.target.value})} className="form-control" placeholder="Description"/>
-        <input type="text" value={this.state.city} onChange={e => this.setState({city: e.target.value})} className="form-control" placeholder="City"/>
         <button style={{float: 'right'}} type="submit" className="btn btn-default" onClick={(e) => this.createCampaign(e)}>Create</button>
       </form>
     )
@@ -76,7 +75,9 @@ class Campaigns extends Component {
                 Create a new Campaign
               </a>)}
           </div>
-          <div className="col-lg-4 col-md-4 col-sm-3 col-xs-12" />
+          <div className="col-lg-4 col-md-4 col-sm-3 col-xs-12" >
+            {this.state.showComposeForm && <AddressManager ref={ref => this.addressManager = ref}/>}
+          </div>
         </div>
       </div>
     )

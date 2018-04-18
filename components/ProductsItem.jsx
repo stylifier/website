@@ -58,7 +58,7 @@ class ProductsItem extends Component {
         </div>
         {this.state.currentUser.username.toLowerCase() !== base.userUsername.toLowerCase() && <div style={{position: 'relative'}}>
           <a className="btn shadowed" onClick={() => this.api.setProfilePicture(base).then(() => window.location.reload())} style={{position: 'absolute', bottom: 0, right: 0, color: 'white', margin: 10, marginRight: 5, backgroundColor: 'blue', borderRadius: 4}}>
-            Add to Your Cart
+            Add to Your Basket
           </a>
         </div>}
       </div>
