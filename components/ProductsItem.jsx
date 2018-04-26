@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import API from '../src/API'
 require('../styles/feed.scss')
 
 class ProductsItem extends Component {
@@ -8,6 +9,7 @@ class ProductsItem extends Component {
       loaded: false,
       currentUser: JSON.parse(localStorage.getItem('user_info'))
     }
+    this.api = new API()
   }
 
   refreshStats() {
@@ -24,7 +26,7 @@ class ProductsItem extends Component {
   }
 
   render() {
-    const {base, onLoaded} = this.props
+    const {base, onLoaded, hideOrder} = this.props
     const {loaded} = this.state
     const img = base.media.images.standard_resolution.url
 
@@ -33,7 +35,7 @@ class ProductsItem extends Component {
         className="containerItem"
         style={{visibility: loaded ? 'visible' : 'hidden'}}>
         <img src={img} style={{width: '100%', borderRadius: 4, marginBottom: 5}} onLoad={() => this.setState({loaded: true}) && onLoaded()}/>
-        <div style={{float: 'left', position: 'relative'}}>
+        {!hideOrder && <div style={{float: 'left', position: 'relative'}}>
           <div className="text" style={{
             top: 0,
             left: 0,
@@ -55,9 +57,22 @@ class ProductsItem extends Component {
               </tr>
             </table>
           </div>
-        </div>
-        {this.state.currentUser.username.toLowerCase() !== base.userUsername.toLowerCase() && <div style={{position: 'relative'}}>
-          <a className="btn shadowed" onClick={() => this.api.setProfilePicture(base).then(() => window.location.reload())} style={{position: 'absolute', bottom: 0, right: 0, color: 'white', margin: 10, marginRight: 5, backgroundColor: 'blue', borderRadius: 4}}>
+        </div>}
+        {!hideOrder && this.state.currentUser.username.toLowerCase() !== base.userUsername.toLowerCase() && <div style={{position: 'relative'}}>
+          <a className="btn shadowed"
+            onClick={(e) => {
+              e.preventDefault()
+              this.api.addOrder(Object.assign({}, base))
+            }}
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              right: 0,
+              color: 'white',
+              margin: 10,
+              marginRight: 5,
+              backgroundColor: 'blue',
+              borderRadius: 4}}>
             Add to Your Basket
           </a>
         </div>}
@@ -69,6 +84,7 @@ class ProductsItem extends Component {
 ProductsItem.propTypes = {
   base: PropTypes.object,
   showApproval: PropTypes.bool,
+  plain: PropTypes.bool,
   onLoaded: PropTypes.func
 }
 

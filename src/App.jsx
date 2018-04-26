@@ -13,6 +13,8 @@ import Sponsorship from '../pages/Sponsorship.jsx'
 import Campaigns from '../pages/Campaigns.jsx'
 import Products from '../pages/Products.jsx'
 import Policy from '../pages/Policy.jsx'
+import Orders from '../pages/Orders.jsx'
+import Basket from '../pages/Basket.jsx'
 import { Switch, Route } from 'react-router-dom'
 
 require('../styles/application.scss')
@@ -62,11 +64,30 @@ class App extends Component {
         <Route exact path='/campaigns' component={campaigns}/>
         <Route exact path='/products' component={products}/>
         <Route exact path='/policy' component={policy}/>
+        <Route exact path='/orders' component={orders}/>
+        <Route exact path='/basket' component={basket}/>
       </Switch>
     )
   }
 }
 
+function basket() {
+  return (
+    <div>
+      <Navbar isLogedIn={userToken ? true : false}/>
+      <Basket/>
+    </div>
+  )
+}
+
+function orders() {
+  return (
+    <div>
+      <Navbar isLogedIn={userToken ? true : false}/>
+      <Orders/>
+    </div>
+  )
+}
 
 function campaigns() {
   return (

@@ -13,7 +13,8 @@ class Navbar extends Component {
     this.state = {
       showUploader: false,
       searchPhrase: '',
-      userInfo: JSON.parse(localStorage.getItem('user_info')) || {}
+      userInfo: JSON.parse(localStorage.getItem('user_info')) || {},
+      orders: []
     }
 
     if(!this.api.token)
@@ -39,7 +40,8 @@ class Navbar extends Component {
     .then((info) => {
       localStorage.setItem('user_info', JSON.stringify(info))
       this.setState({userInfo: Object.assign({}, info)})
-      return this.fetchThreads()
+      this.fetchThreads()
+      this.fetchOrders()
     })
   }
 
@@ -56,8 +58,19 @@ class Navbar extends Component {
     })
   }
 
+  fetchOrders() {
+    if(!this.state.userInfo || !this.state.userInfo.username)
+      return
+
+    this.api.fetchOpenOrders()
+    .then(orders => this.setState({orders}))
+  }
+
   componentDidMount() {
-    this.pullingInterval = setInterval(() => this.fetchThreads.call(this), 5000)
+    this.pullingInterval = setInterval(() => {
+      this.fetchThreads.call(this)
+      this.fetchOrders.call(this)
+    }, 4000)
   }
 
   componentWillUnmount() {
@@ -122,8 +135,24 @@ class Navbar extends Component {
               <a className="dropdown-item" href="/followers">Following</a>
             </li>
             <li className="nav-item">
-              <a className="dropdown-item" href="/logout">Logout</a>
+              <a className="dropdown-item" href="/orders">Orders</a>
             </li>
+            {this.state.orders.length > 0 && <li className="nav-item">
+               <a href="/basket" className="fa fa-shopping-cart fa-lg"></a>
+               <span className="badge" style={{
+                    background: 'rgba(0,255,0,0.5)',
+                    width: 'auto',
+                    height: 'auto',
+                    margin: 0,
+                    borderRadius: '20%',
+                    position:'absolute',
+                    top:3,
+                    right:0,
+                    padding: '3 3 1 3'
+                }}>{this.state.orders.reduce((a, b) => {
+                  b.items.forEach(i => a.push(i));
+                  return a}, []).length}</span>
+            </li>}
             <li className="nav-item">
                 <a href="javascript:void(0)" onClick={(e) => {
                   e.preventDefault()

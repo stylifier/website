@@ -113,10 +113,9 @@ class Profile extends Component {
       return
 
     if(this.state.username === this.state.currentUser.username) {
-      return
-      // return (<a className='btn btn-primary' style={{color: 'white', width: '100%'}} >
-      //   edit profile
-      // </a>)
+      return (<a className='btn btn-primary' style={{color: 'white', width: '100%'}} href="/logout">
+        Logout
+      </a>)
     }
     else if(this.state.followedByUser) {
       return (<a className='btn btn-primary' onClick={(e) => {
