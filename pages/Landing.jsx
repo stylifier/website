@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import Footer from '../components/Footer.jsx'
 import LandingTopSection from '../components/LandingTopSection.jsx'
-import {isMobile} from 'react-device-detect'
 
 class Landing extends Component {
   constructor(props) {

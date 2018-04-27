@@ -14,6 +14,7 @@ class Navbar extends Component {
       showUploader: false,
       searchPhrase: '',
       userInfo: JSON.parse(localStorage.getItem('user_info')) || {},
+      openOrders: [],
       orders: []
     }
 
@@ -62,8 +63,12 @@ class Navbar extends Component {
     if(!this.state.userInfo || !this.state.userInfo.username)
       return
 
-    this.api.fetchOpenOrders()
-    .then(orders => this.setState({orders}))
+    this.api.fetchOrders()
+    .then(orders =>
+      this.setState({
+      openOrders: orders.filter(o => o.status === 'OPEN' && o.user.username === this.state.userInfo.username),
+      orders: orders
+    }))
   }
 
   componentDidMount() {
@@ -89,6 +94,7 @@ class Navbar extends Component {
 
   renderLoggedIn() {
     const profileLink = '/profile/' + this.state.userInfo.username
+    const incomingOrderHangingCount = this.state.orders.filter(o => o.status === 'ORDERED' && o.user.username !== this.state.userInfo.username).length
     return (
       <div className="navbar-collapse collapse move-me">
         <ul className="nav navbar-nav navbar-right">
@@ -136,8 +142,19 @@ class Navbar extends Component {
             </li>
             <li className="nav-item">
               <a className="dropdown-item" href="/orders">Orders</a>
+              {incomingOrderHangingCount > 0 && <span className="badge" style={{
+                   background: 'rgba(0,255,0,0.5)',
+                   width: 'auto',
+                   height: 'auto',
+                   margin: 0,
+                   borderRadius: '20%',
+                   position:'absolute',
+                   top:3,
+                   right:0,
+                   padding: '3 3 1 3'
+               }}>{incomingOrderHangingCount}</span>}
             </li>
-            {this.state.orders.length > 0 && <li className="nav-item">
+            {this.state.openOrders.length > 0 && <li className="nav-item">
                <a href="/basket" className="fa fa-shopping-cart fa-lg"></a>
                <span className="badge" style={{
                     background: 'rgba(0,255,0,0.5)',
@@ -149,7 +166,7 @@ class Navbar extends Component {
                     top:3,
                     right:0,
                     padding: '3 3 1 3'
-                }}>{this.state.orders.reduce((a, b) => {
+                }}>{this.state.openOrders.reduce((a, b) => {
                   b.items.forEach(i => a.push(i));
                   return a}, []).length}</span>
             </li>}

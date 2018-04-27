@@ -23,7 +23,7 @@ class AddressManager extends Component {
   updateAddresses() {
     return this.api.getUserAddresses()
     .then(addresses => this.setState({
-      addresses,
+      addresses: [...addresses],
       selectedId: addresses[0] ? addresses[0].id : undefined
     }))
   }
@@ -69,6 +69,12 @@ class AddressManager extends Component {
       showAddAddress
     } = this.state
 
+    // <a onClick={(e) => {
+    //   e.preventDefault();
+    //   this.api.deleteAddress(a.id)
+    //   .then(() => this.updateAddresses())
+    // }}> delete </a>
+
     return (
       <div>
         {addresses.map((a, i) => (
@@ -82,11 +88,6 @@ class AddressManager extends Component {
               {ucfirst(a.street)},&nbsp;
               {ucfirst(a.postalCode)}&nbsp;
               {ucfirst(a.city)},&nbsp;{ucfirst(a.country)}
-              <a onClick={(e) => {
-                e.preventDefault();
-                this.api.deleteAddress(a.id)
-                .then(() => this.updateAddresses())
-              }}> delete </a>
             </label>
           </div>
         ))}

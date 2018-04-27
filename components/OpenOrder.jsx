@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import OrderItem from './OrderItem.jsx'
 import AddressManager from '../components/AddressManager.jsx'
+import { withRouter } from 'react-router-dom'
+import Promise from 'bluebird'
 import API from '../src/API'
 
 class OpenOrder extends Component {
@@ -22,8 +24,9 @@ class OpenOrder extends Component {
   closeOrder(e) {
     const {orders} = this.state
     e.preventDefault()
-    orders.forEach(order =>
-      this.api.closeOrder(order.id, this.addressManager.getSelectedAddress()))
+    Promise.all(orders.map(order =>
+      this.api.closeOrder(order.id, this.addressManager.getSelectedAddress())))
+    .then(() => this.props.history.push('/orders'))
   }
 
   render() {
@@ -35,7 +38,7 @@ class OpenOrder extends Component {
     return (
       <div>
         {reducedOrders.map((o, i) => (
-          <OrderItem base={o} key={i} onRemoveClicked={(item) => this.api.deleteOrderItem(item).then(() => this.fetchOrders())}/>
+          <OrderItem base={o} key={i} showRemoveButton={true} onRemoveClicked={(item) => this.api.deleteOrderItem(item).then(() => this.fetchOrders())}/>
         ))}
         <div className="container">
           <div className="row clr-white" >
@@ -55,4 +58,8 @@ class OpenOrder extends Component {
   }
 }
 
-export default OpenOrder
+OpenOrder.propTypes = {
+  history: React.PropTypes.shape({push: React.PropTypes.func.isRequired}).isRequired
+}
+
+export default withRouter(OpenOrder)

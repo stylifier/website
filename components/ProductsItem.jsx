@@ -85,7 +85,8 @@ ProductsItem.propTypes = {
   base: PropTypes.object,
   showApproval: PropTypes.bool,
   plain: PropTypes.bool,
-  onLoaded: PropTypes.func
+  onLoaded: PropTypes.func,
+  hideOrder: PropTypes.bool
 }
 
 export default ProductsItem

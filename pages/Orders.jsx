@@ -29,7 +29,7 @@ class Orders extends Component {
   render() {
     return (
       <div>
-        <div id="home-sec" className="container" style={{marginTop: 70}}>
+        <div id="home-sec" className="container" style={{marginTop: 70, maxWidth: 1000}}>
           <div className="row clr-white" >
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
               {this.state.orders.map((o, i) => <Order base={o} key={i}/>)}

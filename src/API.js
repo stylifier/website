@@ -276,6 +276,7 @@ class API {
 
   fetchOpenOrders() {
     return this.get('/orders', ['status=OPEN'])
+    .then(t => t.reverse())
   }
 
   fetchOrders() {
@@ -291,6 +292,10 @@ class API {
     add.postalCode = parseInt(add.postalCode, 10)
     add.id = add.id.toString()
     return this.post(`/orders/${orderId}/close`, add)
+  }
+
+  setOrderStatus(orderId, status) {
+    return this.post(`/orders/${orderId}/status/${status}`, {})
   }
 }
 
