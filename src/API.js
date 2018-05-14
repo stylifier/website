@@ -281,6 +281,7 @@ class API {
 
   fetchOrders() {
     return this.get('/orders')
+    .then(t => t.reverse())
   }
 
   deleteOrderItem(item) {
