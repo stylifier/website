@@ -49,7 +49,7 @@ class OpenOrder extends Component {
             </div>
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12" style={{textAlign: 'right', marginBottom: 20, marginTop: 20}}>
               <h5> Total Price: {reducedOrders.map(t => t.product).reduce((a, b) => a + b.price, 0)} &euro;</h5>
-              <button style={{marginTop: 10}} type="submit" className="btn btn-primary" onClick={(e) => this.closeOrder(e)}>Request Items</button>
+              <button style={{marginTop: 10}} type="submit" className="btn btn-primary" onClick={(e) => this.closeOrder(e)}>Process Requests</button>
             </div>
           </div>
         </div>

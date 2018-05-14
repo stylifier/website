@@ -104,10 +104,10 @@ class AddressManager extends Component {
               type="submit"
               className="btn btn-default"
               onClick={(e) => this.createAddress(e)}>
-                Create Address
+                Save Address
             </button>
           </form>) :
-          (<button type="button" style={{marginTop: 20}} className="btn btn-primary" onClick={() => this.setState({showAddAddress: true})}> Add Address</button>)}
+          (<button type="button" style={{marginTop: 20}} className="btn btn-primary" onClick={() => this.setState({showAddAddress: true})}> Add a New Address</button>)}
       </div>
     )
   }
