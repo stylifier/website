@@ -1,7 +1,5 @@
-React Boilerplate
+Stylifier
 =====================
-
-A minimal and light dev environment for ReactJS.
 
 ### Usage
 

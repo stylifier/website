@@ -66,6 +66,7 @@
     "react-slick": "^0.15.4",
     "react-stack-grid": "^0.7.0",
     "react-timeseries-charts": "^0.12.4",
+    "redux": "^4.0.0",
     "request": "^2.83.0",
     "request-promise": "^4.2.2",
     "slick-carousel": "^1.8.1",
