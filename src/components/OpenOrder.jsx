@@ -4,6 +4,17 @@ import AddressManager from '../components/AddressManager.jsx'
 import { withRouter } from 'react-router-dom'
 import Promise from 'bluebird'
 import API from '../API'
+import {connect} from 'react-redux'
+import actions from '../actions'
+
+const mapStateToProps = (state) => ({
+  basket : state.basket
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  removeFromBasket : (p) =>
+    dispatch((actions.removeFromBasket(p)))
+})
 
 class OpenOrder extends Component {
   constructor(props) {
@@ -30,15 +41,10 @@ class OpenOrder extends Component {
   }
 
   render() {
-    const reducedOrders = this.state.orders.reduce((a, b) => {
-      b.items.forEach(i => a.push(i));
-      return a}
-    , [])
-
     return (
       <div>
-        {reducedOrders.map((o, i) => (
-          <OrderItem base={o} key={i} showRemoveButton={true} onRemoveClicked={(item) => this.api.deleteOrderItem(item).then(() => this.fetchOrders())}/>
+        {this.props.basket.map((o, i) => (
+          <OrderItem base={o} key={i} showRemoveButton={true} onRemoveClicked={(item) => this.props.removeFromBasket(item)}/>
         ))}
         <div className="container">
           <div className="row clr-white" >
@@ -48,7 +54,7 @@ class OpenOrder extends Component {
               <hr/>
             </div>
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12" style={{textAlign: 'right', marginBottom: 20, marginTop: 20}}>
-              <h5> Total Price: {reducedOrders.map(t => t.product).reduce((a, b) => a + b.price, 0)} &euro;</h5>
+              <h5> Total Price: {this.props.basket.map(t => t.product).reduce((a, b) => a + b.price, 0)} &euro;</h5>
               <button style={{marginTop: 10}} type="submit" className="btn btn-primary" onClick={(e) => this.closeOrder(e)}>Process Requests</button>
             </div>
           </div>
@@ -59,7 +65,9 @@ class OpenOrder extends Component {
 }
 
 OpenOrder.propTypes = {
+  removeFromBasket: React.PropTypes.func,
+  basket: React.PropTypes.array,
   history: React.PropTypes.shape({push: React.PropTypes.func.isRequired}).isRequired
 }
 
-export default withRouter(OpenOrder)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(OpenOrder))

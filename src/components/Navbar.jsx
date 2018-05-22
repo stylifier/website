@@ -2,7 +2,23 @@ import React, {Component, PropTypes} from 'react';
 import API from '../API'
 import { withRouter } from 'react-router-dom'
 import ImageUploader from '../components/ImageUploader.jsx'
+import {connect} from 'react-redux'
+import actions from '../actions'
 require('../styles/Navbar.scss')
+
+
+const mapStateToProps = (state) => {
+    return {
+        basket : state.basket
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        initBasket : () =>
+          dispatch((actions.initBasket()))
+    }
+};
 
 class Navbar extends Component {
   constructor(props) {
@@ -43,6 +59,7 @@ class Navbar extends Component {
       this.setState({userInfo: Object.assign({}, info)})
       this.fetchThreads()
       this.fetchOrders()
+      props.initBasket()
     })
   }
 
@@ -154,7 +171,7 @@ class Navbar extends Component {
                    padding: '3 3 1 3'
                }}>{incomingOrderHangingCount}</span>}
             </li>
-            {this.state.openOrders.length > 0 && <li className="nav-item">
+            {this.props.basket.length > 0 && <li className="nav-item">
                <a href="/basket" className="fa fa-shopping-cart fa-lg"></a>
                <span className="badge" style={{
                     background: 'rgba(0,255,0,0.5)',
@@ -166,9 +183,7 @@ class Navbar extends Component {
                     top:3,
                     right:0,
                     padding: '3 3 1 3'
-                }}>{this.state.openOrders.reduce((a, b) => {
-                  b.items.forEach(i => a.push(i));
-                  return a}, []).length}</span>
+                }}>{this.props.basket.length}</span>
             </li>}
             <li className="nav-item">
                 <a href="javascript:void(0)" onClick={(e) => {
@@ -240,9 +255,11 @@ class Navbar extends Component {
 Navbar.propTypes = {
   isLogedIn: PropTypes.bool,
   emptyRender: PropTypes.bool,
+  initBasket: PropTypes.func,
+  basket: PropTypes.array,
   history: React.PropTypes.shape({
     push: React.PropTypes.func.isRequired
   }).isRequired
 }
 
-export default withRouter(Navbar)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Navbar))

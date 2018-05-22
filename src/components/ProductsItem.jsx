@@ -1,5 +1,17 @@
 import React, {Component, PropTypes} from 'react';
 import API from '../API'
+import {connect} from 'react-redux'
+import actions from '../actions'
+
+const mapStateToProps = (state) => ({
+  basket : state.basket
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  addToBasket : (p) =>
+    dispatch((actions.addToBasket(p)))
+})
+
 require('../styles/feed.scss')
 
 class ProductsItem extends Component {
@@ -26,7 +38,7 @@ class ProductsItem extends Component {
   }
 
   render() {
-    const {base, onLoaded, hideOrder} = this.props
+    const {base, onLoaded, hideOrder, basket, addToBasket} = this.props
     const {loaded} = this.state
     const img = base.media.images.standard_resolution.url
 
@@ -62,6 +74,7 @@ class ProductsItem extends Component {
           <a className="btn shadowed"
             onClick={(e) => {
               e.preventDefault()
+              addToBasket(Object.assign({}, base))
               this.api.addOrder(Object.assign({}, base))
             }}
             style={{
@@ -86,7 +99,9 @@ ProductsItem.propTypes = {
   showApproval: PropTypes.bool,
   plain: PropTypes.bool,
   onLoaded: PropTypes.func,
-  hideOrder: PropTypes.bool
+  hideOrder: PropTypes.bool,
+  addToBasket: PropTypes.func,
+  basket: PropTypes.array
 }
 
-export default ProductsItem
+export default connect(mapStateToProps, mapDispatchToProps)(ProductsItem)
