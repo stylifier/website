@@ -288,11 +288,11 @@ class API {
     return this.delete('/order-item/' + item.id, {})
   }
 
-  closeOrder(orderId, address) {
+  closeOrders(orders, address, paymentToken) {
     const add = Object.assign({}, address)
     add.postalCode = parseInt(add.postalCode, 10)
     add.id = add.id.toString()
-    return this.post(`/orders/${orderId}/close`, add)
+    return this.post('/orders/close', {orders, address: add, payment_token: paymentToken})
   }
 
   setOrderStatus(orderId, status) {

@@ -12,13 +12,16 @@ import reducer from './reducers'
 import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import api from './middleware/api'
+import {StripeProvider} from 'react-stripe-elements';
 
 const store = createStore(reducer, {}, applyMiddleware(api))
 
 ReactDOM.render((
   <Router>
     <Provider store={store}>
-      <App />
+      <StripeProvider apiKey="pk_live_RVFfpQWJtuDPOp5YCa01Acw3">
+        <App />
+      </StripeProvider>
     </Provider>
   </Router>
 ), document.getElementById('react-root'));

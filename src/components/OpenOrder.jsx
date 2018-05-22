@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import OrderItem from './OrderItem.jsx'
 import AddressManager from '../components/AddressManager.jsx'
+import {Elements} from 'react-stripe-elements';
+import CardPayment from '../components/CardPayment.jsx';
 import { withRouter } from 'react-router-dom'
-import Promise from 'bluebird'
 import API from '../API'
 import {connect} from 'react-redux'
 import actions from '../actions'
@@ -35,19 +36,28 @@ class OpenOrder extends Component {
   closeOrder(e) {
     const {orders} = this.state
     e.preventDefault()
-    Promise.all(orders.map(order =>
-      this.api.closeOrder(order.id, this.addressManager.getSelectedAddress())))
+    this.CardPayment.state.stripe.createToken({name: 'Jenny Rosen'})
+    .then(({token}) => {
+      if(!token) {
+        throw new Error('failed to get payment token')
+      }
+      return this.api.closeOrders(orders, this.addressManager.getSelectedAddress(), token)
+    })
     .then(() => this.props.history.push('/orders'))
+    .catch(e => console.log(e))
   }
 
   render() {
     return (
       <div>
-        {this.props.basket.map((o, i) => (
-          <OrderItem base={o} key={i} showRemoveButton={true} onRemoveClicked={(item) => this.props.removeFromBasket(item)}/>
-        ))}
+
         <div className="container">
           <div className="row clr-white" >
+            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12" style={{marginBottom: 20, marginTop: 20}}>
+              {this.props.basket.map((o, i) => (
+                <OrderItem base={o} key={i} showRemoveButton={true} onRemoveClicked={(item) => this.props.removeFromBasket(item)}/>
+              ))}
+            </div>
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12" style={{marginBottom: 20, marginTop: 20}}>
               <h4> Delivery Address: </h4>
               <AddressManager ref={ref => this.addressManager = ref}/>
@@ -55,6 +65,13 @@ class OpenOrder extends Component {
             </div>
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12" style={{textAlign: 'right', marginBottom: 20, marginTop: 20}}>
               <h5> Total Price: {this.props.basket.map(t => t.product).reduce((a, b) => a + b.price, 0)} &euro;</h5>
+
+              <div className="Checkout" style={{backgroundColor: '#e0eeff', textAlign: 'left', padding: 20, borderRadius: 5, marginTop: 20, marginBottom: 20}}>
+                <Elements>
+                  <CardPayment ref={ref => this.CardPayment = ref}/>
+                </Elements>
+              </div>
+
               <button style={{marginTop: 10}} type="submit" className="btn btn-primary" onClick={(e) => this.closeOrder(e)}>Process Requests</button>
             </div>
           </div>
