@@ -30,6 +30,7 @@ class Basket extends Component {
             <div className="col-lg-2 col-md-1 col-sm-0 col-xs-0"/>
           </div>
         </div>
+
         <Footer whiteBackground={true}/>
       </div>
     )
