@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import API from '../API'
 import { withRouter } from 'react-router-dom'
-import ImageUploader from '../components/ImageUploader.jsx'
+import ImageUploaderModal from './ImageUploaderModal.jsx'
 import {connect} from 'react-redux'
 import actions from '../actions'
 require('../styles/Navbar.scss')
@@ -9,14 +9,19 @@ require('../styles/Navbar.scss')
 
 const mapStateToProps = (state) => {
     return {
-        basket : state.basket
+        basket : state.basket,
+        imageUploader : state.imageUploader
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        initBasket : () =>
-          dispatch((actions.initBasket()))
+        initBasket: () =>
+          dispatch((actions.initBasket())),
+        openImageUploader: () =>
+          dispatch((actions.openImageUploader())),
+        closeImageUploader: () =>
+          dispatch((actions.closeImageUploader()))
     }
 };
 
@@ -27,7 +32,6 @@ class Navbar extends Component {
 
     this.emptyRender = this.props.emptyRender || false
     this.state = {
-      showUploader: false,
       searchPhrase: '',
       userInfo: JSON.parse(localStorage.getItem('user_info')) || {},
       openOrders: [],
@@ -188,8 +192,7 @@ class Navbar extends Component {
             <li className="nav-item">
                 <a href="javascript:void(0)" onClick={(e) => {
                   e.preventDefault()
-                  $(".navbar-collapse").collapse('hide');
-                  this.setState({showUploader:!this.state.showUploader})
+                  this.props.openImageUploader()
                 }} className="fa fa-plus fa-lg" style={{marginTop: 2,marginRight: 10, color: 'white'}}></a>
             </li>
         </ul>
@@ -218,6 +221,11 @@ class Navbar extends Component {
     const navElements = this.getNavElements()
     return (
       <div>
+      {this.props.imageUploader.isOpen &&
+        (<ImageUploaderModal
+          defaultValue={this.state.username}
+          currentUser={this.state.currentUser}
+          onClose={() => this.props.closeImageUploader()}/>)}
       <div className="navbar navbar-inverse navbar-fixed-top" style={{width: '100%'}}>
         <div className="container" style={{width: '100%'}}>
             <div className="navbar-header" >
@@ -243,10 +251,6 @@ class Navbar extends Component {
         </div>
       </div>
       <div style={{display: 'block', margin: '50px 0'}}/>
-      {this.state.showUploader && <ImageUploader isPublic={true} onComplete={() => {
-        this.props.history.push('/profile/' + this.state.userInfo.username)
-        window.location.reload()
-      }}/>}
       </div>
     )
   }
@@ -256,7 +260,10 @@ Navbar.propTypes = {
   isLogedIn: PropTypes.bool,
   emptyRender: PropTypes.bool,
   initBasket: PropTypes.func,
+  closeImageUploader: PropTypes.func,
+  openImageUploader: PropTypes.func,
   basket: PropTypes.array,
+  imageUploader: PropTypes.object,
   history: React.PropTypes.shape({
     push: React.PropTypes.func.isRequired
   }).isRequired

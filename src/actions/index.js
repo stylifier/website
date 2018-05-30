@@ -12,5 +12,11 @@ export default {
   initBasket: () => ({
     type: 'INIT_BASKET',
     callApi: true
+  }),
+  openImageUploader: () => ({
+    type: 'OPEN_IMAGE_UPLOADER'
+  }),
+  closeImageUploader: () => ({
+    type: 'CLOSE_IMAGE_UPLOADER'
   })
 }

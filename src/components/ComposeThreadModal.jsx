@@ -81,17 +81,22 @@ class ComposeThreadModal extends Component {
     return (
       <div
       id="openingThreadModal"
-      style={{position: 'fixed', top: 0, textAlign: 'center', left: 0, width: '100%', height: '100%'}}
+      style={{position: 'fixed', top: 0, textAlign: 'center', left: 0, width: '100%', height: '100%', maxWidth: '95%'}}
       className="modal modal-dialog fade"
       role="dialog"
       aria-labelledby="openingThreadModalLabel"
       aria-hidden="true">
-        <div className="modal-content" style={{position: 'relative', margin: 'auto', width: 800, height: 550, maxHeight: '100%', maxWidth: '100%'}}>
+        <div className="modal-content" style={{position: 'relative', margin: 'auto', width: 800, height: 565, maxHeight: '100%', maxWidth: '100%'}}>
           <div className="modal-header">
-            <a type="button" className="close" data-dismiss="modal" aria-hidden="true">×</a>
-            {this.renderAutoComplete()}
+            <h4 style={{float: 'left'}}>Ask for advice</h4>
+            <button
+              className="btn btn-danger" style={{float: 'right'}}
+              data-dismiss="modal">
+              X
+            </button>
           </div>
           <div className="modal-body">
+          {this.renderAutoComplete()}
           <div>
             <div className="input-group" style={{width: '100%'}}>
               <textarea
