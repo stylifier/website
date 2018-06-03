@@ -7,6 +7,7 @@ import Profile from './pages/Profile.jsx'
 import Followers from './pages/Followers.jsx'
 import Search from './pages/Search.jsx'
 import InstagramCallback from './pages/InstagramCallback.jsx'
+import PinterestCallback from './pages/PinterestCallback.jsx'
 import Messages from './pages/Messages.jsx'
 import LogoutComponent from './components/Logout.jsx'
 import Sponsorship from './pages/Sponsorship.jsx'
@@ -60,6 +61,7 @@ class App extends Component {
         <Route exact path='/search*' component={search}/>
         <Route exact path='/messages*' component={messages}/>
         <Route exact path='/instagram_callback*' component={InstagramCallback}/>
+        <Route exact path='/pinterest_callback*' component={PinterestCallback}/>
         <Route exact path='/sponsorship' component={sponsorship}/>
         <Route exact path='/campaigns' component={campaigns}/>
         <Route exact path='/products' component={products}/>
