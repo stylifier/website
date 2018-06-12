@@ -19,7 +19,7 @@ class LandingTopSection extends Component {
         <p style={{text: 'center', width: '100%', marginBottom: 70}}>
           <p className={window.innerWidth > 768 ? 'btn-group' : 'btn-group-vertical'} role="group">
             <a role="button" href="/login" style={{fontSize: '1.4em',textAlign: 'center'}} className="btn btn-default btn-transparent btn-lg">Join Stylifier Now!</a>
-            <a href={'https://api.pinterest.com/oauth/?response_type=code&redirect_uri=https://www.stylifier.com/pinterest_callback&scope=read_public&client_id=4970207959045910011'} className="btn btn-default btn-transparent btn-lg btn-social btn-pinterest" style={{fontSize: '1.4em', textAlign: 'center'}}>
+            <a href={'https://api.pinterest.com/oauth/?response_type=code&redirect_uri=https://www.stylifier.com/pinterest_callback&scope=read_public&client_id=4971996501849947262'} className="btn btn-default btn-transparent btn-lg btn-social btn-pinterest" style={{fontSize: '1.4em', textAlign: 'center'}}>
               <i className="fa fa-pinterest" style={{color: '#BD081C'}}></i> Continue with Pinterest
             </a>
           </p>
