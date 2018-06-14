@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import {isMobile} from 'react-device-detect'
 
 class LandingTopSection extends Component {
   constructor(props) {
@@ -43,7 +42,20 @@ class LandingTopSection extends Component {
         <div className="row">
           <div className="col-lg-6 col-md-10 col-sm-10 col-xs-12">
             <div style={{margin: 20, marginTop: '10%'}}>
-              {this.props.message.split(' ').map((i, t) => <p key={t} style={{ color: 'black', background: 'white', float: 'left', margin: '10 10 0 0', padding: '0 5 0 5', fillOpacity:"0.1", fontSize: window.innerWidth > 768 ? '4em' : '3em', lineHeight: '1em', height: '1em'}}>{i}</p>)}
+              {this.props.message.split(' ').map((i, t) =>
+                <p
+                  key={t}
+                  style={{
+                    color: 'black',
+                    background: 'white',
+                    float: 'left',
+                    margin: '10 10 0 0',
+                    padding: '0 5 0 5',
+                    fillOpacity: '0.1',
+                    fontSize: window.innerWidth > 768 ? '4em' : '3em',
+                    lineHeight: '1em', height: '1em'}}>
+                  {i}
+                </p>)}
             </div>
           </div>
         </div>

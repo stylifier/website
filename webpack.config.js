@@ -5,7 +5,7 @@ var rootPath = path.join(__dirname, '../', '../');
 module.exports = {
   devtool: 'eval',
   entry: [
-    'webpack-dev-server/client?http://localhost:8080',
+    'webpack-dev-server/client?http://0.0.0.0:8080',
     './src/index.jsx'
   ],
   output: {
