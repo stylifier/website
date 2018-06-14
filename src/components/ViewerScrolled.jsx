@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import ScrollArea from 'react-scrollbar'
+import { Scrollbars } from 'react-custom-scrollbars'
 
 class Viewer extends Component {
   constructor(props) {
@@ -21,11 +21,9 @@ class Viewer extends Component {
   }
 
   keepAtBottom() {
+    console.log(this.scrollArea)
     this.initializing = false
-
-    // this.scrollArea.scrollBottom()
-    // setTimeout(() => this.scrollArea.scrollBottom(), 100)
-    setTimeout(() => this.scrollArea.scrollBottom(), 100)
+    setTimeout(() => this.scrollArea.scrollToBottom(), 100)
   }
 
   handleScroll(value) {
@@ -74,8 +72,7 @@ class Viewer extends Component {
       this.setState({items: [...items, ...this.state.items]})
       setTimeout(() => this.setState({loading: false}), 200)
     })
-    .catch((e) => {
-      console.log(e);
+    .catch(() => {
       setTimeout(() => this.setState({loading: false})), 2000
     })
   }
@@ -135,16 +132,13 @@ class Viewer extends Component {
   render() {
     return (
       <div style={{height: '100%', width: '100%', overlay: 'hidden',top: 0, right: 0}}>
-        <ScrollArea
-            ref={s => s ? this.scrollArea = s.scrollArea : ''}
-            className="area"
-            contentClassName="content"
-            horizontal={false}
+        <Scrollbars
+            ref={s => this.scrollArea = s}
             onScroll={(value) => this.handleScroll(value)}
             style={{height: '100%', width: '100%'}}
             >
           {this.renderItems()}
-        </ScrollArea>
+        </Scrollbars>
         {!this.props.hideLoading && this.state.loading && (<div style={{textAlign: 'center', width: '100%', height: '100%', color: 'white', textShadow: '0px 0px 10px #000000'}} className='overlay'>
           <i className="fa fa-circle-o-notch fa-spin fa-3x fa-fw" style={{marginBottom: 60, marginTop: 80}}></i>
         </div>)}

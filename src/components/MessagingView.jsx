@@ -8,7 +8,7 @@ import ComposeThreadModal from './ComposeThreadModal.jsx'
 import ImageUploader from './ImageUploader.jsx'
 import Viewer from './Viewer.jsx'
 import SimpleImage from './SimpleImage.jsx'
-import ScrollArea from 'react-scrollbar'
+import { Scrollbars } from 'react-custom-scrollbars'
 
 class MessagingView extends Component {
   constructor(props) {
@@ -182,10 +182,7 @@ class MessagingView extends Component {
     <div>
       <p style={{color: 'white', textAlign: 'left'}}> {'Your advice has been closed' + (hasPhoto ? `, ${recipient.full_name} asked you to share these photos on you profile. Just click on the one you want to share.`: '')} </p>
       {hasPhoto &&
-        <ScrollArea
-            className="area"
-            contentClassName="content"
-            horizontal={false}
+        <Scrollbars
             style={{height: '350px', width: '100%'}}
             >
             <Viewer
@@ -198,7 +195,7 @@ class MessagingView extends Component {
               baseItems={[...this.props.thread.media]}
               ItemView={SimpleImage}
               height={100}/>
-        </ScrollArea>}
+        </Scrollbars>}
     </div>)
   }
 
