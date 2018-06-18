@@ -59,7 +59,7 @@ class ImageDitailsModal extends Component {
           </div>
           {isMe && <a className={this.state.isEditing ? 'btn btn-success' : 'btn btn-primary'} onClick={(e) => {
             e.preventDefault()
-            this.state.isEditing && this.api.addDescriptionToMedia(base.id, e.target.value)
+            this.state.isEditing && this.api.addDescriptionToMedia(base.id, this.state.description)
             this.setState({isEditing: !this.state.isEditing})
           }} style={{color: 'white', float: 'right'}} >
             {this.state.isEditing ? 'Save Chanes' : 'Edit Description'}
