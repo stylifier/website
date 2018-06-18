@@ -4,11 +4,12 @@ import CloseThreadModal from './CloseThreadModal.jsx'
 import Autosuggest from 'react-autosuggest'
 import API from '../API'
 import { withRouter } from 'react-router-dom'
-import ComposeThreadModal from './ComposeThreadModal.jsx'
 import ImageUploader from './ImageUploader.jsx'
 import Viewer from './Viewer.jsx'
 import SimpleImage from './SimpleImage.jsx'
 import { Scrollbars } from 'react-custom-scrollbars'
+import {connect} from 'react-redux'
+import actions from '../actions'
 
 class MessagingView extends Component {
   constructor(props) {
@@ -19,7 +20,6 @@ class MessagingView extends Component {
       toUsername: undefined,
       disableToUsernameEdit: false,
       showRatingModal: false,
-      showComposeModal: false,
       media: [],
       productsSuggestion: [],
       product: '',
@@ -313,10 +313,10 @@ class MessagingView extends Component {
             className='btn btn-primary'
             onClick={(e) => {
               e.preventDefault()
-              this.setState({showComposeModal: true})
+              this.props.openThreadCreator()
             }}
             style={{color: 'white'}}>
-            Ask for advice
+            Ask for Advice
           </a>
         </div>
       </div>
@@ -327,10 +327,6 @@ class MessagingView extends Component {
     return (
       <div>
         {this.state.showRatingModal && <CloseThreadModal base={this.props.thread} onClose={() => this.setState({showRatingModal: false})}/>}
-        {this.state.showComposeModal &&
-          (<ComposeThreadModal
-            currentUser={this.props.currentUser}
-            onClose={() => this.setState({showComposeModal: false})}/>)}
         {this.props.threadId ? this.renderMessageSelected(): this.renderNoMessageSelected()}
       </div>
     )
@@ -346,10 +342,17 @@ MessagingView.propTypes = {
   currentUser: PropTypes.object,
   query: React.PropTypes.string,
   changeCurrentThread: React.PropTypes.func,
+  openThreadCreator: PropTypes.func,
   history: React.PropTypes.shape({
     push: React.PropTypes.func.isRequired,
     listen: React.PropTypes.func.isRequired
   }).isRequired
 }
 
-export default withRouter(MessagingView)
+export default withRouter(connect(
+  () => ({}),
+  (dispatch) => ({
+    openThreadCreator: (media, defaultValue) =>
+      dispatch((actions.openThreadCreator(media, defaultValue)))
+  })
+)(MessagingView))

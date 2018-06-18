@@ -45,7 +45,7 @@ class FeedViewer extends Component {
           })
         }
         ItemView={ProfileImage}
-        ItemViewProps={{showUser: true, showLike:true}}/>
+        ItemViewProps={{showUser: true, showDetailsIcon:true}}/>
     )
   }
 }

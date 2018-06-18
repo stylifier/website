@@ -40,7 +40,7 @@ class UsersViewer extends Component {
           smallRowCount={3.5}
           fetcher={() => this.infinitUpdate ? this.fetchUsers() : Promise.resolve([])}
           ItemView={ProfileImage}
-          ItemViewProps={{showUser: true, showLike:true}}
+          ItemViewProps={{showUser: true, showDetailsIcon:true}}
         />
         <div style={{paddingRight: 50, marginBottom: 50}}>
         {this.state.hasData && <a href={`/search?username=${this.props.phrase}`} style={{width: '100%', display: 'inline-block', textAlign: 'right'}}>see more results</a>}

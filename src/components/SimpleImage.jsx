@@ -1,14 +1,29 @@
 import React, {Component, PropTypes} from 'react'
 import API from '../API'
 import Autosuggest from 'react-autosuggest'
+import {connect} from 'react-redux'
+import actions from '../actions'
 require('../styles/feed.scss')
 
-class Feed extends Component {
+const mapStateToProps = (state) => {
+    return {
+        imageDetails : state.imageDetails
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        openImageDetails: (base) =>
+          dispatch((actions.openImageDetails(base))),
+        closeImageDetails: () =>
+          dispatch((actions.closeImageDetails()))
+    }
+};
+
+class SimpleImage extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      heartColor: 'white',
-      heartClass: 'fa fa-heart-o fa-lg',
       loaded: false,
       showStyleEditor: false,
       stylesSuggestions: [],
@@ -40,18 +55,7 @@ class Feed extends Component {
   }
 
   likeClicked() {
-    if(this.state.heartColor === 'white')
-      this.setState({
-        heartColor: 'red',
-        heartClass: 'fa fa-heart fa-lg',
-        showStyleEditor: false
-      })
-    else
-      this.setState({
-        heartColor: 'white',
-        heartClass: 'fa fa-heart-o fa-lg',
-        showStyleEditor: false
-      })
+    this.props.showDetailsIcon && this.props.openImageDetails(this.props.base)
   }
 
   renderStyleArea() {
@@ -116,8 +120,8 @@ class Feed extends Component {
   }
 
   render() {
-    const {onClick, styleOverwrite, onLoaded, showTag, showUser, showLike, hideStyle, showMakeProfilePicture} = this.props
-    const {currentUser, loaded, base,heartColor, heartClass} = this.state
+    const {onClick, styleOverwrite, onLoaded, showTag, showUser, showDetailsIcon, hideStyle, showMakeProfilePicture} = this.props
+    const {currentUser, loaded, base} = this.state
     const isMe = base.user ? base.user.username.toLowerCase() === currentUser.username.toLowerCase() : false
 
     const showSetProfilePic = showMakeProfilePicture && isMe && !this.state.currentUser.is_instagram_user && !this.state.currentUser.is_pinterest_user && this.state.currentUser.profile_picture !== base.images.standard_resolution.url
@@ -156,8 +160,8 @@ class Feed extends Component {
         {showSetProfilePic ? (<a className="btn shadowed" onClick={() => this.api.setProfilePicture(base).then(() => window.location.reload())} style={{position: 'absolute', bottom: 0, left: 0, color: 'white', margin: 10, backgroundColor: 'blue', borderRadius: 10}}>
           Set as your profile picture
         </a>): ''}
-        {showLike ? (<a className="btn shadowed" onClick={() => this.likeClicked()} style={{position: 'absolute', top: 0, right: 0, margin: 2, color: heartColor}}>
-          <i className={heartClass}></i>
+        {showDetailsIcon ? (<a className="btn shadowed" onClick={() => this.likeClicked()} style={{position: 'absolute', top: 0, right: 0, margin: 2, color: 'white'}}>
+          <i className='fa fa-ellipsis-h fa-lg'></i>
         </a>) : ''}
 
         {!hideStyle && this.renderStyleArea()}
@@ -166,16 +170,18 @@ class Feed extends Component {
   }
 }
 
-Feed.propTypes = {
+SimpleImage.propTypes = {
   base: PropTypes.object,
   onLoaded: PropTypes.func,
   onClick: PropTypes.func,
   showUser: PropTypes.bool,
   showTag: PropTypes.bool,
-  showLike: PropTypes.bool,
+  showDetailsIcon: PropTypes.bool,
   hideStyle: PropTypes.bool,
+  closeImageDetails: PropTypes.func,
+  openImageDetails: PropTypes.func,
   showMakeProfilePicture: PropTypes.bool,
   styleOverwrite: PropTypes.object
 }
 
-export default Feed
+export default connect(mapStateToProps, mapDispatchToProps)(SimpleImage)

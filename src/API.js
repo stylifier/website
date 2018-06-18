@@ -188,6 +188,10 @@ class API {
     return this.post(`/media/${id}/share`, {})
   }
 
+  addDescriptionToMedia(id, description) {
+    return this.post(`/media/${id}/description`, {description})
+  }
+
   removeSubsctiption(id) {
     return this.delete(`/subscriptions/${id}`, {})
   }

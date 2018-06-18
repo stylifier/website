@@ -51,7 +51,7 @@ class SponsorshipViewer extends Component {
         ItemView={ProfileImage}
         ItemViewProps={{
           showUser: true,
-          showLike:true,
+          showDetailsIcon:true,
           customButtonOnClick: (user) =>
             this.api.sponsorUser(user.username, true).then(() => {
               this.pagination = this.oldPagination

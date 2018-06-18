@@ -4,10 +4,11 @@ import SimpleImageViewer from '../components/SimpleImageViewer.jsx'
 import { withRouter } from 'react-router-dom'
 import API from '../API'
 import Promise from 'bluebird'
-import ComposeThreadModal from '../components/ComposeThreadModal.jsx'
 import Rating from 'react-rating'
 import Viewer from '../components/Viewer.jsx'
 import BrandImage from '../components/BrandImage.jsx'
+import {connect} from 'react-redux'
+import actions from '../actions'
 
 class Profile extends Component {
   constructor(props) {
@@ -18,7 +19,6 @@ class Profile extends Component {
       username:  parts[parts.length - 1],
       currentUser: {},
       styles: [],
-      showComposeModal: false,
       followedByUser: false
     }
 
@@ -104,7 +104,7 @@ class Profile extends Component {
         this.setState({sponsorshipStatus: 'REQUESTED'})
         this.api.sponsorUser(username)
       }} style={{color: 'white', width: '30%', minWidth: '150px',  float: 'right'}} >
-        Ask for sponsorship
+        Ask for Sponsorship
       </a>)
   }
 
@@ -120,14 +120,14 @@ class Profile extends Component {
     else if(this.state.followedByUser) {
       return (<a className='btn btn-primary' onClick={(e) => {
         e.preventDefault()
-        this.setState({showComposeModal: true})
+        this.props.openThreadCreator(undefined ,this.state.username)
       }} style={{color: 'white', width: '100%'}} >
-        ask for advice
+        Ask for Advice
       </a>)
     }
     else {
       return (<a className='btn btn-primary' onClick={(e) => this.followClicked(e)} style={{color: 'white', width: '100%'}} >
-        follow
+        Follow
       </a>)
     }
 
@@ -137,17 +137,12 @@ class Profile extends Component {
     const isCurrentUser = this.state.username === this.state.currentUser.username
     return (
       <div>
-        {this.state.showComposeModal &&
-          (<ComposeThreadModal
-            defaultValue={this.state.username}
-            currentUser={this.state.currentUser}
-            onClose={() => this.setState({showComposeModal: false})}/>)}
         <div id="home-sec" className="container" style={{padding: 50}}>
           <div className="row clr-white" style={{textAlign: 'center'}}>
             <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12" style={{textAlign: 'center'}}>
               <img src={this.state.profile_picture} className="img-circle" style={{height: 300, objectFit: 'cover',width: 300}}/>
             </div>
-            <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12" style={{textAlign: 'left'}}>
+            <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12" style={{textAlign: 'left', padding: 30}}>
               {this.renderFollowMessageBtn()}
               <div>
               {this.state.full_name} <a href={'/profile/'+this.state.username}>@{this.state.username}</a>
@@ -186,11 +181,11 @@ class Profile extends Component {
           </div>)}
 
         {this.state.styles.length > 0 && (
-          <div style={{float: 'none',paddingLeft: 100, paddingRight: 100, paddingTop: 20, paddingBottom: 20}}>
+          <div style={{float: 'none',marginLeft: 'auto', marginRight: 'auto', width: 1000, maxWidth: '90%', paddingTop: 20, paddingBottom: 20}}>
           <hr/>
           <h4> User's Styles: </h4>
             {this.state.styles.map((s,i) => (
-              <a className="btn shadowed" key={i} href={`/search?style=${s}`} style={{color: 'white', backgroundColor: 'blue', borderRadius: 20, float: 'left', margin: 10}}>
+              <a className="btn shadowed" key={i} href={`/search?style=${s}`} style={{color: 'white', backgroundColor: 'blue', borderRadius: 20, float: 'none', margin: 10}}>
                 {s}
               </a>)
             )}
@@ -199,7 +194,7 @@ class Profile extends Component {
         )}
 
         <div>
-          <SimpleImageViewer username={this.state.username} showEmptyMessage={isCurrentUser} ItemViewProps={{showMakeProfilePicture: true, showUser: false, showLike: !isCurrentUser, showTag: true}}/>
+          <SimpleImageViewer username={this.state.username} showEmptyMessage={isCurrentUser} ItemViewProps={{showMakeProfilePicture: true, showUser: false, showDetailsIcon: true, showTag: true}}/>
         </div>
         <Footer whiteBackground={true}/>
       </div>
@@ -208,7 +203,15 @@ class Profile extends Component {
 }
 
 Profile.propTypes = {
-  location: PropTypes.object
+  location: PropTypes.object,
+  openThreadCreator: PropTypes.func
 }
 
-export default withRouter(Profile)
+export default withRouter(
+    connect(
+    () => ({}),
+    (dispatch) => ({
+      openThreadCreator: (media, defaultValue) =>
+        dispatch((actions.openThreadCreator(media, defaultValue)))
+    })
+  )(Profile))

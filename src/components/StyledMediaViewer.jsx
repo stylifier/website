@@ -31,7 +31,7 @@ class StyledMediaViewer extends Component {
     return (
       <div>
         {this.state.hasData && <h3 style={{marginLeft:50}}>Media with phrase "{this.props.phrase}"</h3>}
-        <Viewer fetcher={() => this.fetchFeeds()} ItemView={SimpleImage} ItemViewProps={{showUser: true, showLike:true, showTag: true}}/>
+        <Viewer fetcher={() => this.fetchFeeds()} ItemView={SimpleImage} ItemViewProps={{showUser: true, showDetailsIcon:true, showTag: true}}/>
       </div>
     )
   }

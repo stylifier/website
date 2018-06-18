@@ -61,7 +61,7 @@ class FeedViewer extends Component {
     return (
       <div>
         {!pagination && this.renderEmptyMessage()}
-        <Viewer fetcher={() => this.fetchFeeds()} ItemView={SimpleImage} ItemViewProps={{showUser: true, showLike:true, showTag: true}}/>
+        <Viewer fetcher={() => this.fetchFeeds()} ItemView={SimpleImage} ItemViewProps={{showUser: true, showDetailsIcon:true, showTag: true}}/>
       </div>
     )
   }

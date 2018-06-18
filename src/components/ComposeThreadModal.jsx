@@ -2,18 +2,24 @@ import React, {Component} from 'react'
 import { withRouter } from 'react-router-dom'
 import ImageUploader from '../components/ImageUploader.jsx'
 import Autosuggest from 'react-autosuggest'
+import {connect} from 'react-redux'
 import API from '../API'
+import Viewer from './Viewer.jsx'
+import SimpleImage from './SimpleImage.jsx'
+import actions from '../actions'
 
 class ComposeThreadModal extends Component {
   constructor(props) {
     super(props)
     this.api = new API()
+    const {threadCreator} = props
+    const {defaultValue} = threadCreator
 
     this.state = {
-      recipientUsername: this.props.defaultValue ? this.props.defaultValue + '' : '',
-      hasDefault: this.props.defaultValue ? true : false,
+      recipientUsername: defaultValue ? defaultValue + '' : '',
+      hasDefault: defaultValue ? true : false,
       followersSuggestionList: [],
-      media: [],
+      media: threadCreator.media || [],
       uploaderLoading: false,
       sendButtonDisabled: false,
       send: false,
@@ -78,6 +84,7 @@ class ComposeThreadModal extends Component {
   }
 
   render() {
+    const {media} = this.props.threadCreator
     return (
       <div
       id="openingThreadModal"
@@ -86,9 +93,9 @@ class ComposeThreadModal extends Component {
       role="dialog"
       aria-labelledby="openingThreadModalLabel"
       aria-hidden="true">
-        <div className="modal-content" style={{position: 'relative', margin: 'auto', width: 800, height: 565, maxHeight: '100%', maxWidth: '100%'}}>
+        <div className="modal-content" style={{position: 'relative', margin: 'auto', width: 800, height: 'auto', maxHeight: '100%', maxWidth: '100%'}}>
           <div className="modal-header">
-            <h4 style={{float: 'left'}}>Ask for advice</h4>
+            <h4 style={{float: 'left'}}>Ask for Advice</h4>
             <button
               className="btn btn-danger" style={{float: 'right'}}
               data-dismiss="modal">
@@ -110,10 +117,18 @@ class ComposeThreadModal extends Component {
                 className="form-control input-sm"
                 placeholder="Write your message here..." />
             </div>
+            {media ? <Viewer
+              largeRowCount={1}
+              mediomRowCount={1}
+              smallRowCount={1}
+              dommy={true}
+              styleOverwrite={{maxWidth: '100%', width: '100%'}}
+              baseItems={[...media]}
+              ItemView={SimpleImage}/> :
             <ImageUploader
               isPublic={false}
               onSubmit={() => this.setState({uploaderLoading: true})}
-              onComplete={(media) => this.setState({uploaderLoading: false, media: media})}/>
+              onComplete={(media) => this.setState({uploaderLoading: false, media: media})}/>}
           </div>
           </div>
           <div className="modal-footer">
@@ -125,7 +140,7 @@ class ComposeThreadModal extends Component {
               className="btn btn-primary"
               disabled={this.state.sendButtonDisabled}>
 
-              Ask for advice
+              Ask for Advice
             </button>
           </div>
         </div>
@@ -134,12 +149,21 @@ class ComposeThreadModal extends Component {
 }
 
 ComposeThreadModal.propTypes = {
-  defaultValue: React.PropTypes.string,
-  currentUser: React.PropTypes.object,
   onClose: React.PropTypes.func,
+  currentUser: React.PropTypes.object,
+  threadCreator: React.PropTypes.object,
   history: React.PropTypes.shape({
     push: React.PropTypes.func.isRequired
   }).isRequired
 }
 
-export default withRouter(ComposeThreadModal)
+export default withRouter(
+  connect(
+    (state) => ({
+      threadCreator : state.threadCreator,
+      currentUser : state.user}),
+    (dispatch) => ({
+      onClose: () =>
+        dispatch((actions.closeThreadCreator()))
+    })
+  )(ComposeThreadModal))

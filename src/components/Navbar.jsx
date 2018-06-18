@@ -2,6 +2,8 @@ import React, {Component, PropTypes} from 'react';
 import API from '../API'
 import { withRouter } from 'react-router-dom'
 import ImageUploaderModal from './ImageUploaderModal.jsx'
+import ImageDetailsModal from './ImageDetailsModal.jsx'
+import ComposeThreadModal from './ComposeThreadModal.jsx'
 import {connect} from 'react-redux'
 import actions from '../actions'
 require('../styles/Navbar.scss')
@@ -10,7 +12,9 @@ require('../styles/Navbar.scss')
 const mapStateToProps = (state) => {
     return {
         basket : state.basket,
-        imageUploader : state.imageUploader
+        imageUploader : state.imageUploader,
+        imageDetails : state.imageDetails,
+        threadCreator : state.threadCreator
     }
 }
 
@@ -226,6 +230,13 @@ class Navbar extends Component {
           defaultValue={this.state.username}
           currentUser={this.state.currentUser}
           onClose={() => this.props.closeImageUploader()}/>)}
+
+      {this.props.imageDetails.isOpen &&
+        (<ImageDetailsModal/>)}
+
+      {this.props.threadCreator.isOpen &&
+        <ComposeThreadModal/>}
+
       <div className="navbar navbar-inverse navbar-fixed-top" style={{width: '100%'}}>
         <div className="container" style={{width: '100%'}}>
             <div className="navbar-header" >
@@ -264,6 +275,8 @@ Navbar.propTypes = {
   openImageUploader: PropTypes.func,
   basket: PropTypes.array,
   imageUploader: PropTypes.object,
+  imageDetails: PropTypes.object,
+  threadCreator: PropTypes.object,
   history: React.PropTypes.shape({
     push: React.PropTypes.func.isRequired
   }).isRequired
