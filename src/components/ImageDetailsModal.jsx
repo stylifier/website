@@ -5,7 +5,7 @@ import actions from '../actions'
 import Viewer from './Viewer.jsx'
 import SimpleImage from './SimpleImage.jsx'
 import API from '../API'
-
+import moment from 'moment'
 
 class ImageDitailsModal extends Component {
   constructor(props) {
@@ -54,8 +54,15 @@ class ImageDitailsModal extends Component {
         <div className="container" style={{width: '100%', textAlign: 'left', float: 'left', marginTop: 20, marginBottom: 20}}>
           <a href={'/profile/' + base.user.username}><img  src={base.user.profile_picture} className="img-circle" style={{width: 80, objectFit: 'cover', height: 80, float: 'left'}}/></a>
           <div style={{float: 'left', marginLeft: 20}}>
-            <h4 style={{marginTop: 20}}> <a href={'/profile/' + base.user.username} style={{textDecoration: 'none', color: 'black'}}> {base.user.full_name} </a> </h4>
-            <h5> (<a href={'/profile/' + base.user.username} style={{textDecoration: 'none', color: '#595959'}}> {base.user.username} </a>) </h5>
+            <h4 style={{marginTop: 20}}>
+              <a href={'/profile/' + base.user.username} style={{textDecoration: 'none', color: 'black'}}>
+                {base.user.full_name}
+              </a>
+              <a href={'/profile/' + base.user.username} style={{textDecoration: 'none', color: '#595959', marginLeft: 3}}>
+                @{base.user.username}
+              </a>
+            </h4>
+            <h5> {moment(base.created_time).fromNow()}</h5>
           </div>
           {isMe && <a className={this.state.isEditing ? 'btn btn-success' : 'btn btn-primary'} onClick={(e) => {
             e.preventDefault()
