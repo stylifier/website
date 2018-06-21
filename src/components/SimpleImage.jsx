@@ -60,7 +60,6 @@ class SimpleImage extends Component {
 
   renderStyleArea() {
     const {base, currentUser, showStyleEditor, stylesSuggestions} = this.state
-    const style = {position: 'absolute', top: 0, left: 0, color: 'black', margin: 10, backgroundColor: 'lightGray', borderRadius: 10}
     const isMe = base.user ? base.user.username.toLowerCase() === currentUser.username.toLowerCase() : false
 
     if (base.style && !showStyleEditor) {
@@ -68,11 +67,11 @@ class SimpleImage extends Component {
         return (<a className="btn shadowed" onClick={(e) => {
           e.preventDefault()
           this.setState({showStyleEditor: true, style: base.style})
-        }} style={Object.assign(style, {color: 'white', backgroundColor: 'blue'})}>
+        }} style={{position: 'absolute', top: 0, left: 0, color: 'white', margin: 10, backgroundColor: 'blue', borderRadius: 10}}>
           {base.style}
         </a>)
 
-      return (<a className="btn shadowed" href={`/search?style=${base.style}`} style={Object.assign(style, {color: 'white', backgroundColor: 'blue'})}>
+      return (<a className="btn shadowed" href={`/search?style=${base.style}`} style={{position: 'absolute', top: 0, left: 0, color: 'white', margin: 10, backgroundColor: 'blue', borderRadius: 10}}>
         {base.style}
       </a>)
     }
@@ -115,7 +114,7 @@ class SimpleImage extends Component {
           </div>
         </form>
       ) :
-      (<a className="btn shadowed" onClick={() => this.setState({showStyleEditor: true})} style={style}>
+      (<a className="btn shadowed" onClick={() => this.setState({showStyleEditor: true})} style={{position: 'absolute', top: 0, left: 0, color: 'black', margin: 10, backgroundColor: 'lightGray', borderRadius: 10}}>
         + add a style
       </a>)
     }

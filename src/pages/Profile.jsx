@@ -185,7 +185,7 @@ class Profile extends Component {
           <hr/>
           <h4> User's Styles: </h4>
             {this.state.styles.map((s,i) => (
-              <a className="btn shadowed" key={i} href={`/search?style=${s}`} style={{color: 'white', backgroundColor: 'blue', borderRadius: 20, float: 'none', margin: 10}}>
+              <a className="btn shadowed" key={i} href={`/search?style=${s}`} style={{color: 'white', backgroundColor: 'blue', borderRadius: 10, float: 'none', margin: 10}}>
                 {s}
               </a>)
             )}
