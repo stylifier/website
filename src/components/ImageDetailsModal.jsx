@@ -100,7 +100,7 @@ class ImageDitailsModal extends Component {
     return (
       <div
       id="imageDetailsModal"
-      style={{position: 'fixed', top: 0, textAlign: 'center', left: 0, width: '100%', height: '100%'}}
+      style={{position: 'fixed', top: 0, textAlign: 'center', left: 0, width: '100%', height: '100%', maxWidth: '95%'}}
       className="modal modal-dialog fade"
       role="dialog"
       aria-labelledby="imageDetailsModalLabel"
