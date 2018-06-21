@@ -52,7 +52,7 @@ class Order extends Component {
         {base.items.map((o, i) => (
           <OrderItem base={o} key={i} onRemoveClicked={(item) => this.api.deleteOrderItem(item).then(() => this.fetchOrders())}/>
         ))}
-        <h5 style={{textAlign: 'right', marginRight: 30}}> Total Price: {base.items.map(t => t.product).reduce((a, b) => a + b.price, 0)} &euro;</h5>
+        <h5 style={{textAlign: 'right', marginRight: 30}}> Total Price: {Math.round(base.items.map(t => t.product).reduce((a, b) => a + b.price, 0) * 100) / 100} &euro;</h5>
         <h5 style={Object.assign({},h5Style, {textAlign: 'right', marginRight: 30})}> Updated {moment(base.updatedAt).fromNow()} </h5>
       </div>
     )
