@@ -19,7 +19,7 @@ const store = createStore(reducer, {}, applyMiddleware(api))
 ReactDOM.render((
   <Router>
     <Provider store={store}>
-      <StripeProvider apiKey="pk_live_RVFfpQWJtuDPOp5YCa01Acw3">
+      <StripeProvider apiKey="pk_test_FgYOkWPt4ztdQkkaOULcelAf">
         <App />
       </StripeProvider>
     </Provider>
