@@ -60,7 +60,7 @@ class SimpleImage extends Component {
 
   renderStyleArea() {
     const {base, currentUser, showStyleEditor, stylesSuggestions} = this.state
-    const style = {position: 'absolute', top: 0, left: 0, color: 'black', margin: 10, backgroundColor: 'lightGray', borderRadius: 20}
+    const style = {position: 'absolute', top: 0, left: 0, color: 'black', margin: 10, backgroundColor: 'lightGray', borderRadius: 10}
     const isMe = base.user ? base.user.username.toLowerCase() === currentUser.username.toLowerCase() : false
 
     if (base.style && !showStyleEditor) {
@@ -81,13 +81,13 @@ class SimpleImage extends Component {
     if (isMe) {
       return showStyleEditor ?
       (
-        <form className="form-inline" style={style} onSubmit={(e) => {
+        <form className="form-inline" style={{position: 'absolute', top: 0, left: 0, color: 'black', margin: 10}} onSubmit={(e) => {
           e.preventDefault()
           this.api.setStyle(base.id, this.state.style.toLowerCase())
           .then(() => this.setState({showStyleEditor: false, base: Object.assign({}, base, {style: this.state.style})}))
           .catch(() => this.setState({showStyleEditor: false}))
         }}>
-          <div className="form-group mx-sm-3 mb-2">
+          <div className="input-group">
             <Autosuggest
               alwaysRenderSuggestions={true}
               suggestions={stylesSuggestions}
@@ -109,8 +109,10 @@ class SimpleImage extends Component {
                 onChange: (e, value) => this.setState({style: value.newValue})
               }}
             />
+            <span className="input-group-btn">
+              <button type="submit" className="btn btn-primary mb-2">Add</button>
+            </span>
           </div>
-          <button type="submit" className="btn btn-primary mb-2">+</button>
         </form>
       ) :
       (<a className="btn shadowed" onClick={() => this.setState({showStyleEditor: true})} style={style}>

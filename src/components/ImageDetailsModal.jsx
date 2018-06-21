@@ -116,6 +116,11 @@ class ImageDitailsModal extends Component {
           <div className="container" style={{maxWidth: '100%', width: '100%'}}>
             <div className="row" >
               <div className={isLandscape ?
+                'col-lg-3 col-md-3 col-sm-3 col-xs-3' :
+                'col-lg-12 col-md-12 col-sm-12 col-xs-12'}>
+                {this.renderDetailsSection()}
+              </div>
+              <div className={isLandscape ?
                 'col-lg-9 col-md-9 col-sm-9 col-xs-9' :
                 'col-lg-12 col-md-12 col-sm-12 col-xs-12'}>
                 <div style={{marginBottom: 10}}>
@@ -128,11 +133,6 @@ class ImageDitailsModal extends Component {
                     baseItems={[this.props.imageDetails.base]}
                     ItemView={SimpleImage}/>
                 </div>
-              </div>
-              <div className={isLandscape ?
-                'col-lg-3 col-md-3 col-sm-3 col-xs-3' :
-                'col-lg-12 col-md-12 col-sm-12 col-xs-12'}>
-                {this.renderDetailsSection()}
               </div>
             </div>
           </div>

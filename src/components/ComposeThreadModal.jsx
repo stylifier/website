@@ -55,31 +55,46 @@ class ComposeThreadModal extends Component {
   }
 
   renderAutoComplete() {
-    return (<div className="dropdown" style={{width: '100%', textAlign: 'left', zIndex: 1000}}>
-      <Autosuggest
-        alwaysRenderSuggestions={true}
-        suggestions={this.state.followersSuggestionList}
-        onSuggestionsFetchRequested={(e) => {
-          if(e.reason === 'suggestion-selected')
-            return this.setState({followersSuggestionList: []})
+    return (
+      <div className="dropdown" style={{width: '100%', textAlign: 'left', zIndex: 1000, marginBottom: 20}}>
+        <div className="input-group">
+          <Autosuggest
+            alwaysRenderSuggestions={true}
+            suggestions={this.state.followersSuggestionList}
+            onSuggestionsFetchRequested={(e) => {
+              if(e.reason === 'suggestion-selected')
+                return this.setState({followersSuggestionList: []})
 
-          this.fetchRecipients(e.value)
-        }}
-        onSuggestionsClearRequested={() => {
-          if(this.state.recipientUsername && this.state.recipientUsername.trim().length >= 1)
-            return this.setState({followersSuggestionList: []})
+              this.fetchRecipients(e.value)
+            }}
+            onSuggestionsClearRequested={() => {
+              if(this.state.recipientUsername && this.state.recipientUsername.trim().length >= 1)
+                return this.setState({followersSuggestionList: []})
 
-          this.fetchRecipients('')
-        }}
-        getSuggestionValue={t => t}
-        renderSuggestion={t => (<div> {t} </div>)}
-        inputProps={{
-          style: {height: 35, width: '100%'},
-          placeholder: 'Recipient',
-          value: this.state.recipientUsername,
-          onChange: (e, value) => this.setState({recipientUsername: value.newValue})
-        }}
-      />
+              this.fetchRecipients('')
+            }}
+            getSuggestionValue={t => t}
+            renderSuggestion={t => (<div> {t} </div>)}
+            inputProps={{
+              style: {height: 35, width: '100%'},
+              placeholder: 'Recipient',
+              value: this.state.recipientUsername,
+              onChange: (e, value) => this.setState({recipientUsername: value.newValue})
+            }}
+          />
+          <span className="input-group-btn">
+            <button
+              onClick={(e) => {
+                e.preventDefault()
+                this.setState({send: true, sendButtonDisabled: true})
+              }}
+              className="btn btn-primary"
+              disabled={this.state.sendButtonDisabled}>
+
+              Ask for Advice
+            </button>
+          </span>
+        </div>
     </div>)
   }
 
@@ -103,45 +118,33 @@ class ComposeThreadModal extends Component {
             </button>
           </div>
           <div className="modal-body">
-          {this.renderAutoComplete()}
-          <div>
-            <div className="input-group" style={{width: '100%'}}>
-              <textarea
-                value={this.state.message}
-                onChange={e => this.setState({message: e.target.value})}
-                style={{width: '100%', resize: 'none', minHeight: '100%'}}
-                onKeyPress={(e) =>
-                  e.key === 'Enter' && this.messageSend(e)
-                }
-                id="btn-input"
-                className="form-control input-sm"
-                placeholder="Write your message here..." />
+            {this.renderAutoComplete()}
+            <div>
+              <div className="input-group" style={{width: '100%'}}>
+                <textarea
+                  value={this.state.message}
+                  onChange={e => this.setState({message: e.target.value})}
+                  style={{width: '100%', resize: 'none', minHeight: '100%', marginBottom: 20}}
+                  onKeyPress={(e) =>
+                    e.key === 'Enter' && this.messageSend(e)
+                  }
+                  id="btn-input"
+                  className="form-control input-sm"
+                  placeholder="Write your message here..." />
+              </div>
+              {media ? <Viewer
+                largeRowCount={1}
+                mediomRowCount={1}
+                smallRowCount={1}
+                dommy={true}
+                styleOverwrite={{maxWidth: '100%', width: '100%'}}
+                baseItems={[...media]}
+                ItemView={SimpleImage}/> :
+              <ImageUploader
+                isPublic={false}
+                onSubmit={() => this.setState({uploaderLoading: true})}
+                onComplete={(media) => this.setState({uploaderLoading: false, media: media})}/>}
             </div>
-            {media ? <Viewer
-              largeRowCount={1}
-              mediomRowCount={1}
-              smallRowCount={1}
-              dommy={true}
-              styleOverwrite={{maxWidth: '100%', width: '100%'}}
-              baseItems={[...media]}
-              ItemView={SimpleImage}/> :
-            <ImageUploader
-              isPublic={false}
-              onSubmit={() => this.setState({uploaderLoading: true})}
-              onComplete={(media) => this.setState({uploaderLoading: false, media: media})}/>}
-          </div>
-          </div>
-          <div className="modal-footer">
-            <button
-              onClick={(e) => {
-                e.preventDefault()
-                this.setState({send: true, sendButtonDisabled: true})
-              }}
-              className="btn btn-primary"
-              disabled={this.state.sendButtonDisabled}>
-
-              Ask for Advice
-            </button>
           </div>
         </div>
     </div>)
