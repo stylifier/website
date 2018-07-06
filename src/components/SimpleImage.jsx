@@ -3,6 +3,8 @@ import API from '../API'
 import Autosuggest from 'react-autosuggest'
 import {connect} from 'react-redux'
 import actions from '../actions'
+import ColorItem from './ColorItem.jsx'
+import Viewer from './Viewer.jsx'
 require('../styles/feed.scss')
 
 const mapStateToProps = (state) => {
@@ -67,11 +69,11 @@ class SimpleImage extends Component {
         return (<a className="btn shadowed" onClick={(e) => {
           e.preventDefault()
           this.setState({showStyleEditor: true, style: base.style})
-        }} style={{position: 'absolute', top: 0, left: 0, color: 'white', margin: 10, backgroundColor: 'blue', borderRadius: 10}}>
+        }} style={{position: 'absolute', top: 0, left: 0, color: 'white', margin: 10, backgroundColor: 'rgba(0,0,0, 0.6)', borderRadius: 10}}>
           {base.style}
         </a>)
 
-      return (<a className="btn shadowed" href={`/search?style=${base.style}`} style={{position: 'absolute', top: 0, left: 0, color: 'white', margin: 10, backgroundColor: 'blue', borderRadius: 10}}>
+      return (<a className="btn shadowed" href={`/search?style=${base.style}`} style={{position: 'absolute', top: 0, left: 0, color: 'white', margin: 10, backgroundColor: 'rgba(0,0,0, 0.6)', borderRadius: 10}}>
         {base.style}
       </a>)
     }
@@ -166,6 +168,18 @@ class SimpleImage extends Component {
         </a>) : ''}
 
         {!hideStyle && this.renderStyleArea()}
+
+        {this.props.showColorPallet && base.colorCode && base.colorCode.length > 0 && <Viewer
+          largeRowCount={5}
+          mediomRowCount={5}
+          smallRowCount={5}
+          ItemView={ColorItem}
+          styleOverwrite={{margin: 5}}
+          ItemViewProps={{
+            onClick:(t) => this.props.onColorClick && this.props.onColorClick(t)
+          }}
+          dommy={true}
+          baseItems={base.colorCode.match(/.{1,6}/g)}/>}
       </div>
     )
   }
@@ -175,6 +189,7 @@ SimpleImage.propTypes = {
   base: PropTypes.object,
   onLoaded: PropTypes.func,
   onClick: PropTypes.func,
+  onColorClick: PropTypes.func,
   showUser: PropTypes.bool,
   showTag: PropTypes.bool,
   showDetailsIcon: PropTypes.bool,
@@ -182,6 +197,7 @@ SimpleImage.propTypes = {
   closeImageDetails: PropTypes.func,
   openImageDetails: PropTypes.func,
   showMakeProfilePicture: PropTypes.bool,
+  showColorPallet: PropTypes.bool,
   styleOverwrite: PropTypes.object
 }
 

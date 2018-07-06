@@ -283,6 +283,10 @@ class API {
     .then(t => t.reverse())
   }
 
+  fetchColorPalletRecommendation(base) {
+    return this.get('/color_pallets', ['color_code=%23' + base])
+  }
+
   fetchOrders() {
     return this.get('/orders')
     .then(t => t.reverse())

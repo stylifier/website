@@ -129,7 +129,7 @@ class ImageDitailsModal extends Component {
                     mediomRowCount={1}
                     smallRowCount={1}
                     dommy={true}
-                    styleOverwrite={{maxWidth: '100%', width: '100%'}}
+                    styleOverwrite={{maxWidth: '100%', width: '100%', maxHeight: '100%'}}
                     baseItems={[this.props.imageDetails.base]}
                     ItemView={SimpleImage}/>
                 </div>

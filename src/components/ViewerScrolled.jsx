@@ -28,6 +28,7 @@ class Viewer extends Component {
 
   handleScroll(value) {
     if(value.topPosition + value.containerHeight == value.realHeight) {
+      
       this.stayOnBotton = true
     } else if(!this.initializing && value.topPosition && value.containerHeight && value.realHeight){
       this.stayOnBotton = false
