@@ -21,14 +21,13 @@ class Viewer extends Component {
   }
 
   keepAtBottom() {
-    console.log(this.scrollArea)
     this.initializing = false
     setTimeout(() => this.scrollArea.scrollToBottom(), 100)
   }
 
   handleScroll(value) {
     if(value.topPosition + value.containerHeight == value.realHeight) {
-      
+
       this.stayOnBotton = true
     } else if(!this.initializing && value.topPosition && value.containerHeight && value.realHeight){
       this.stayOnBotton = false

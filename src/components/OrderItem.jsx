@@ -25,7 +25,7 @@ class OrderItem extends Component {
             }}> remove </a> </h5>}
           </div>
           <div className="col-lg-2 col-md-2 col-sm-2 col-xs-3">
-            {base.product.price && base.product.price.toFixed(2)}	&euro;
+            {base.product.price && parseFloat(base.product.price.original).toFixed(2)}	&euro;
           </div>
         </div>
         <hr/>

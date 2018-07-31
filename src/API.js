@@ -243,16 +243,24 @@ class API {
     })
   }
 
-  createProduct(media, name, code, price, shopAddress) {
-    return this.post('/products', {media, name, code, price, shopAddress})
+  createProduct(product) {
+    return this.post('/products', product)
   }
 
-  fetchSelfProducts() {
-    return this.get('/self_products', [])
-  }
+  fetchSelfProducts(q, pagination) {
+    if(!q)
+      q = {}
 
-  getUserProduct(q) {
-    return this.get('/products', [ ...(q ? ['q=' + encodeURIComponent(q)] : [])])
+    return this.get('/products',
+      [
+        ...(q.name ? ['name=' + q.name] : []),
+        ...(q.color ? ['color=' + q.color] : []),
+        ...(q.subColor ? ['sub_color=' + q.subColor] : []),
+        ...(q.category ? ['category=' + q.category] : []),
+        ...(q.hex ? ['hex=' + q.hex.replace('#', '%23')] : []),
+        ...(pagination ? ['pagination=' + pagination] : [])
+      ]
+    )
   }
 
   setProfilePicture(media) {

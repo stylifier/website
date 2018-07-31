@@ -36,7 +36,7 @@ class MessagingView extends Component {
 
   componentDidMount() {
     this.api.fetchSelfProducts()
-    .then(t => this.setState({selfProducts: [...t]}))
+    .then(t => this.setState({selfProducts: [...t.data]}))
   }
 
   componentWillUnmount() {
@@ -93,9 +93,9 @@ class MessagingView extends Component {
   fetchProducts(q) {
     clearTimeout(this.requestTimer)
     this.requestTimer = setTimeout(() =>
-      this.api.getUserProduct(q + '%')
+      this.api.fetchSelfProducts({name: q + '%'})
       .then(r => {
-        this.setState({productsSuggestion: [...r.slice(0, 10)]})
+        this.setState({productsSuggestion: [...r.data], selfProducts: [...r.data]})
       })
     ,200)
   }

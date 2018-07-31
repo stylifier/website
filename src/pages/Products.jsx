@@ -31,13 +31,23 @@ class Products extends Component {
     if(!this.state.media || this.state.media.length <= 0)
       return
 
-    this.api.createProduct(
-      this.state.media[0],
-      this.state.name,
-      this.state.code,
-      parseFloat(this.state.price),
-      this.addressManager.getSelectedAddress()
-    )
+    this.api.createProduct({
+      name: this.state.name,
+      code: this.state.code,
+      price: {
+        original: this.state.price,
+        promotional: this.state.price
+      },
+      media: this.state.media.map(m => m.images),
+      sizes: '',
+      externalURL: '',
+      brand: '',
+      category: '',
+      color: '',
+      subColor: '',
+      colorPallet: this.state.media[0].colorCode,
+      shopAddress: this.addressManager.getSelectedAddress()
+    })
     .then(() => this.setState({showComposeForm: false, viewerKey: Math.random() * 1000}))
   }
 

@@ -38,9 +38,9 @@ class ProductsItem extends Component {
   }
 
   render() {
-    const {base, onLoaded, hideOrder, basket, addToBasket} = this.props
+    const {base, onLoaded, hideOrder, addToBasket} = this.props
     const {loaded} = this.state
-    const img = base.media.images.standard_resolution.url
+    const img = base.media[0].standard_resolution.url
 
     return (
       <div
@@ -65,7 +65,7 @@ class ProductsItem extends Component {
               </tr>
               <tr>
                 <td>Price:</td>
-                <td style={{float: 'right'}}>{base.price && base.price.toFixed(2)}	&euro;</td>
+                <td style={{float: 'right'}}>{base.price && parseFloat(base.price.original).toFixed(2)}	&euro;</td>
               </tr>
             </table>
           </div>

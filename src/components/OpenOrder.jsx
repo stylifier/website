@@ -44,7 +44,7 @@ class OpenOrder extends Component {
       return this.api.closeOrders(orders, this.addressManager.getSelectedAddress(), token)
     })
     .then(() => this.props.history.push('/orders'))
-    .catch(e => console.log(e))
+    .catch(() => {})
   }
 
   render() {
@@ -64,7 +64,7 @@ class OpenOrder extends Component {
               <hr/>
             </div>
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12" style={{textAlign: 'right', marginBottom: 20, marginTop: 20}}>
-              <h5> Total Price: {Math.round(this.props.basket.map(t => t.product).reduce((a, b) => a + b.price, 0) * 100) / 100} &euro;</h5>
+              <h5> Total Price: {Math.round(this.props.basket.map(t => t.product).reduce((a, b) => a + parseFloat(b.price.original), 0) * 100) / 100} &euro;</h5>
 
               <div className="Checkout" style={{backgroundColor: '#e0eeff', textAlign: 'left', padding: 20, borderRadius: 5, marginTop: 20, marginBottom: 20}}>
                 <Elements>
