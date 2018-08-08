@@ -314,6 +314,14 @@ class API {
   setOrderStatus(orderId, status) {
     return this.post(`/orders/${orderId}/status/${status}`, {})
   }
+
+  askForApproval() {
+    return this.post('/user/self/request_approval', {})
+  }
+
+  approveUser(username) {
+    return this.post(`/users/${username}/approve`, {})
+  }
 }
 
 export default API

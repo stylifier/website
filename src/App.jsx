@@ -17,6 +17,7 @@ import Policy from './pages/Policy.jsx'
 import Orders from './pages/Orders.jsx'
 import Basket from './pages/Basket.jsx'
 import Colors from './pages/Colors.jsx'
+import ApproveUser from './pages/ApproveUser.jsx'
 import { Switch, Route } from 'react-router-dom'
 
 require('./styles/application.scss')
@@ -70,9 +71,19 @@ class App extends Component {
         <Route exact path='/orders' component={orders}/>
         <Route exact path='/basket' component={basket}/>
         <Route exact path='/colors' component={colors}/>
+        <Route exact path='/approve_user' component={approveUser}/>
       </Switch>
     )
   }
+}
+
+function approveUser() {
+  return (
+    <div>
+      <Navbar isLogedIn={userToken ? true : false}/>
+      <ApproveUser/>
+    </div>
+  )
 }
 
 function colors() {
