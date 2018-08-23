@@ -300,6 +300,10 @@ class API {
     .then(t => t.reverse())
   }
 
+  getProductById(id) {
+    return this.get('/product/' + parseInt(id))
+  }
+
   deleteOrderItem(item) {
     return this.delete('/order-item/' + item.id, {})
   }
@@ -313,6 +317,10 @@ class API {
 
   setOrderStatus(orderId, status) {
     return this.post(`/orders/${orderId}/status/${status}`, {})
+  }
+
+  addColorCode(code, name) {
+    return this.post('/color_codes', {code, name})
   }
 
   askForApproval() {

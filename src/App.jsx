@@ -17,6 +17,8 @@ import Policy from './pages/Policy.jsx'
 import Orders from './pages/Orders.jsx'
 import Basket from './pages/Basket.jsx'
 import Colors from './pages/Colors.jsx'
+import ColorCodeManager from './pages/ColorCodeManager.jsx'
+import ProductManeger from './pages/ProductManeger.jsx'
 import ApproveUser from './pages/ApproveUser.jsx'
 import { Switch, Route } from 'react-router-dom'
 
@@ -67,14 +69,34 @@ class App extends Component {
         <Route exact path='/sponsorship' component={sponsorship}/>
         <Route exact path='/campaigns' component={campaigns}/>
         <Route exact path='/products' component={products}/>
+        <Route exact path='/product/*' component={productManeger}/>
         <Route exact path='/policy' component={policy}/>
         <Route exact path='/orders' component={orders}/>
         <Route exact path='/basket' component={basket}/>
         <Route exact path='/colors' component={colors}/>
         <Route exact path='/approve_user' component={approveUser}/>
+        <Route exact path='/color_code' component={colorCodeManager}/>
       </Switch>
     )
   }
+}
+
+function productManeger() {
+  return (
+    <div>
+      <Navbar isLogedIn={userToken ? true : false}/>
+      <ProductManeger/>
+    </div>
+  )
+}
+
+function colorCodeManager() {
+  return (
+    <div>
+      <Navbar isLogedIn={userToken ? true : false}/>
+      <ColorCodeManager/>
+    </div>
+  )
 }
 
 function approveUser() {
