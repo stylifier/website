@@ -29,7 +29,7 @@ class Viewer extends Component {
     const html = document.documentElement;
     const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight,  html.scrollHeight, html.offsetHeight);
     const windowBottom = windowHeight + window.pageYOffset;
-    if (windowBottom >= docHeight && !this.state.loading && !this.state.noMoreFetch) {
+    if (windowBottom >= docHeight - 100 && !this.state.loading && !this.state.noMoreFetch) {
       this.setState({loading: true})
       this.fetcher()
     }
@@ -95,6 +95,12 @@ class Viewer extends Component {
             (items &&
             items.map((f, i) => (
               <ItemView {...this.props.ItemViewProps}
+                onChanged={nv => {
+                  const tItems = [...items]
+                  const ov = items.filter(tt => tt.id === nv.id)[0]
+                  tItems[tItems.indexOf(ov)] = nv
+                  this.setState({items: tItems})
+                }}
                 onLoaded={() => {
                   this.setState({loadedItemCounts: this.state.loadedItemCounts + 1})
                   if(this.props.onLoaded && this.state.loadedItemCounts + 1 === items.length) {

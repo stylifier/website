@@ -55,6 +55,7 @@
     "react-autosuggest": "^9.3.4",
     "react-blur": "^0.5.2",
     "react-bootstrap": "^0.30.8",
+    "react-cursor-position": "^2.5.0",
     "react-custom-scrollbars": "^4.2.1",
     "react-device-detect": "^0.1.0",
     "react-dom": "15.2.1",

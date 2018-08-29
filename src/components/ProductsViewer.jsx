@@ -68,7 +68,10 @@ class ProductsViewer extends Component {
           smallRowCount={1}
           ItemView={ProductsItem}
           fetcher={() => this.fetchProducts()}
-          ItemViewProps={{showApproval: this.props.showApproval}}/>
+          ItemViewProps={{
+            showApproval: this.props.showApproval,
+            showColorChange: true
+          }}/>
       </div>
     )
   }
