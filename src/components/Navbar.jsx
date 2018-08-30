@@ -262,8 +262,7 @@ class Navbar extends Component {
                       objectFit: 'cover',
                       float: 'left',
                       marginTop: -5,
-                      marginRight: 10,
-                      boxShadow: isLogedIn ? '': '0px 1px 5px 1px #e1e1e1',
+                      marginRight: 5,
                       borderRadius: 7,
                       marginBottom: 0}}
                       src="/assets/img/favicon.png"/>
