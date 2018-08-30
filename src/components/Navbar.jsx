@@ -206,9 +206,9 @@ class Navbar extends Component {
 
   renderLanding() {
     return (
-      <div className="navbar-collapse collapse move-me">
+      <div className="navbar-collapse collapse move-me" style={{backgroundColor: '#f6f6f6'}}>
         <ul className="nav navbar-nav navbar-right">
-            <li><a href="/login">Register / Login</a></li>
+            <li><a style={{color: '#3b4e68'}} href="/login">Register / Login</a></li>
         </ul>
       </div>
     )
@@ -223,6 +223,7 @@ class Navbar extends Component {
 
   render() {
     const navElements = this.getNavElements()
+    const {isLogedIn} = this.props
     return (
       <div>
       {this.props.imageUploader.isOpen &&
@@ -238,14 +239,23 @@ class Navbar extends Component {
         <ComposeThreadModal/>}
 
       <div className="navbar navbar-inverse navbar-fixed-top" style={{width: '100%'}}>
-        <div className="container" style={{width: '100%'}}>
+        <div className="container" style={{width: '100%' , backgroundColor: isLogedIn ? '#3b4e68' : '#f6f6f6'}}>
             <div className="navbar-header" >
                 <button type="button" className="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span className="icon-bar"></span>
                     <span className="icon-bar"></span>
                     <span className="icon-bar"></span>
                 </button>
-                <a className="navbar-brand" style={{marginTop: 4, fontFamily: "'Julius Sans One', sans-serif"}} href="/">
+                <a
+                  className="navbar-brand"
+                  style={{
+                    marginTop: 4,
+                    fontFamily: '\'Julius Sans One\', sans-serif',
+                    color: isLogedIn ? '#f6f6f6' : '#3b4e68',
+                    fontSize: isLogedIn ? '': 24
+                  }}
+                  href="/"
+                >
                   <img style={{
                       width: 30,
                       height: 30,
@@ -253,6 +263,8 @@ class Navbar extends Component {
                       float: 'left',
                       marginTop: -5,
                       marginRight: 10,
+                      boxShadow: isLogedIn ? '': '0px 1px 5px 1px #e1e1e1',
+                      borderRadius: 7,
                       marginBottom: 0}}
                       src="/assets/img/favicon.png"/>
                   Stylifier
