@@ -72,7 +72,7 @@ class Landing extends Component {
                 Rediscover Your Art of Styling
               </h1>
               <div style={{width: '100%'}}>
-                <a href="https://itunes.apple.com/app/stylifier/id1412217511" style={{
+                <a href="https://itunes.apple.com/us/app/stylifier/id1412217511?mt=8" style={{
                   marginTop: '25%',
                   marginBottom: '10%',
                   display: 'block',
