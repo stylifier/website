@@ -99,14 +99,14 @@ class Landing extends Component {
             <div className="row clr-white" >
               <div className="col-lg-4 col-md-4 col-sm-4 col-xs-12" style={{padding: 40}}>
                 <h2 style={pointerStyle}>1</h2><br/>
-                <h2 style={pointerHeaderStyle}>Select Your Desired Color</h2><br/>
+                <h2 style={pointerHeaderStyle}>Select Your Desired Colour</h2><br/>
                 <p style={pointerBodyStyle}>
                   It can be your skin colour from a photo, a picture of a shirt you already own, or in fact anything at all.
                 </p>
               </div>
               <div className="col-lg-4 col-md-4 col-sm-4 col-xs-12" style={{padding: 40}}>
                 <h2 style={pointerStyle}>2</h2><br/>
-                <h2 style={pointerHeaderStyle}>Find the Right Color Combination</h2>
+                <h2 style={pointerHeaderStyle}>Find the Right Colour Combination</h2>
                 <p style={pointerBodyStyle}>
                   Find the best colour combinations from thousands of colour pallets available. We only offer you combinations that go with your chosen colour.
                 </p>
@@ -133,7 +133,7 @@ class Landing extends Component {
                   Stylifier makes it easy for everyone to dress with style. For buying new clothes or colour matching in your existing wardrobe, you’re just one snap away from the perfect outfit.
                 </p>
                 <p style={{textAlign: 'left', color: '#3b4e68', fontSize: '1.3em'}}>
-                  You can interact with other users and help the community grow. 
+                  You can interact with other users and help the community grow.
                 </p>
               </div>
               <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12" style={{marginLeft: -120}}>
