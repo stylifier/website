@@ -69,7 +69,7 @@ class Landing extends Component {
             <div className="col-lg-4 col-md-4 col-sm-4 col-xs-12" style={{padding: 40}}>
 
               <h1 style={{fontFamily: '\'Julius Sans One\', sans-serif', paddingTop: '20%', textAlign: 'center', color: '#3b4e68'}}>
-                Rediscover Your Art of Styling
+                Discover the Stylist within You
               </h1>
               <div style={{width: '100%'}}>
                 <a href="https://itunes.apple.com/us/app/stylifier/id1412217511?mt=8" style={{
@@ -101,21 +101,21 @@ class Landing extends Component {
                 <h2 style={pointerStyle}>1</h2><br/>
                 <h2 style={pointerHeaderStyle}>Select Your Desired Color</h2><br/>
                 <p style={pointerBodyStyle}>
-                  It can be your skin color from a selfie, picture of a item you already have or in fact anything.
+                  It can be your skin colour from a photo, a picture of a shirt you already own, or in fact anything at all.
                 </p>
               </div>
               <div className="col-lg-4 col-md-4 col-sm-4 col-xs-12" style={{padding: 40}}>
                 <h2 style={pointerStyle}>2</h2><br/>
                 <h2 style={pointerHeaderStyle}>Find the Right Color Combination</h2>
                 <p style={pointerBodyStyle}>
-                  Find the exact color combination from thousands of color pallets available. We make sure we only offer you combinations that goes with your chosen color.
+                  Find the best colour combinations from thousands of colour pallets available. We only offer you combinations that go with your chosen colour.
                 </p>
               </div>
               <div className="col-lg-4 col-md-4 col-sm-4 col-xs-12" style={{padding: 40}}>
                 <h2 style={pointerStyle}>3</h2><br/>
                 <h2 style={pointerHeaderStyle}>Create an Outfit</h2>
                 <p style={pointerBodyStyle}>
-                  Create an outfit from hundreds of thousands available pieces. Share it with your friends and get their opinion.
+                  Put together an outfit from nearly unlimited options. Upload photos to your profile and see what your friends and other users think.
                 </p>
               </div>
             </div>
@@ -127,13 +127,13 @@ class Landing extends Component {
             <div className="row clr-white" >
               <div className="col-lg-5 col-md-5 col-sm-5 col-xs-12" style={{padding: 40, zIndex: 10}}>
                 <h2 style={{textAlign: 'left', color: '#3b4e68', marginBottom: 40}}>
-                  Always have a stylist in your packet!
+                  Always have a stylist in your pocket!
                 </h2>
                 <p style={{textAlign: 'left', color: '#3b4e68', fontSize: '1.3em'}}>
-                  Stylifier makes it easy for everyone to have a stylish outfit. It helps you to use all the items of your closet with finding a perfect match for them.
+                  Stylifier makes it easy for everyone to dress with style. For buying new clothes or colour matching in your existing wardrobe, you’re just one snap away from the perfect outfit.
                 </p>
                 <p style={{textAlign: 'left', color: '#3b4e68', fontSize: '1.3em'}}>
-                  You can have others give their suggestions on your outfits as well as helping others.
+                  You can interact with other users and help the community grow. 
                 </p>
               </div>
               <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12" style={{marginLeft: -120}}>
