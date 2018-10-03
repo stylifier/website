@@ -53,13 +53,13 @@ class Navbar extends Component {
     OneSignal.push(() => {
       OneSignal.on('subscriptionChange', (isSubscribed) => {
         OneSignal.getUserId().then(id => isSubscribed ?
-          this.api.addSubsctiption(id) :
+          this.api.addSubsctiption(id, 'WEB_NOTIFICATION') :
           this.api.removeSubsctiption(id)
         )
       });
     });
 
-    OneSignal.push(() => OneSignal.getUserId().then(id => this.api.addSubsctiption(id)))
+    OneSignal.push(() => OneSignal.getUserId().then(id => this.api.addSubsctiption(id, 'WEB_NOTIFICATION')))
 
     this.api.fetchUserInfo()
     .then((info) => {
