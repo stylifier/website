@@ -4,7 +4,7 @@ import Promise from 'bluebird'
 class API {
   constructor() {
     this.baseAddress = 'https://cloud.stylifier.com'
-    // this.baseAddress = 'http://localhost:3000'
+    this.baseAddress = 'http://localhost:3000'
     this.token = localStorage.getItem('user_token')
     this.userInfo = JSON.parse(localStorage.getItem('user_info')) || {}
   }
@@ -251,7 +251,7 @@ class API {
     if(!q)
       q = {}
 
-    return this.get('/products',
+    return this.get('/self_products',
       [
         ...(q.name ? ['name=' + q.name] : []),
         ...(q.color ? ['color=' + q.color] : []),
