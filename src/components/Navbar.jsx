@@ -100,7 +100,7 @@ class Navbar extends Component {
     this.pullingInterval = setInterval(() => {
       this.fetchThreads.call(this)
       this.fetchOrders.call(this)
-    }, 4000)
+    }, 60000)
   }
 
   componentWillUnmount() {

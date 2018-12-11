@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react'
 import moment from 'moment'
 require('../styles/Messages.scss')
 
-class ProfileImage extends Component {
+class ThreadItem extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -14,7 +14,7 @@ class ProfileImage extends Component {
   }
 
   render() {
-    if(!this.props.base.from) return (<div/>)
+    if(!this.props.base.from || !this.props.base.to) return (<div/>)
 
     const isSelected = this.props.activeThreadId && this.props.activeThreadId === this.props.base.id
     const isFromMe = this.props.base.from.username === this.props.currentUserUsername
@@ -86,7 +86,7 @@ class ProfileImage extends Component {
   }
 }
 
-ProfileImage.propTypes = {
+ThreadItem.propTypes = {
   base: PropTypes.object,
   onClick: PropTypes.func,
   onClose: PropTypes.func,
@@ -94,4 +94,4 @@ ProfileImage.propTypes = {
   activeThreadId: React.PropTypes.string
 }
 
-export default ProfileImage
+export default ThreadItem
