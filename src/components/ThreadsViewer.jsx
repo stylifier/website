@@ -17,7 +17,7 @@ class ThreadsViewer extends Component {
   }
 
   componentDidMount() {
-    this.pullingInterval = setInterval(() => this.viewer.fetcher.call(this.viewer), 2000)
+    this.pullingInterval = setInterval(() => this.viewer.fetcher.call(this.viewer), 60000)
   }
 
   componentWillUnmount() {
