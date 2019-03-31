@@ -17,6 +17,7 @@ import Policy from './pages/Policy.jsx'
 import Orders from './pages/Orders.jsx'
 import Basket from './pages/Basket.jsx'
 import Colors from './pages/Colors.jsx'
+import ColorPallets from './pages/ColorPallets.jsx'
 import ColorCodeManager from './pages/ColorCodeManager.jsx'
 import ProductManeger from './pages/ProductManeger.jsx'
 import ApproveUser from './pages/ApproveUser.jsx'
@@ -76,9 +77,19 @@ class App extends Component {
         <Route exact path='/colors' component={colors}/>
         <Route exact path='/approve_user' component={approveUser}/>
         <Route exact path='/color_code' component={colorCodeManager}/>
+        <Route exact path='/color_pallets' component={colorPallets}/>
       </Switch>
     )
   }
+}
+
+function colorPallets() {
+  return (
+    <div>
+      <Navbar isLogedIn={userToken ? true : false}/>
+      <ColorPallets/>
+    </div>
+  )
 }
 
 function productManeger() {

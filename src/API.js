@@ -300,8 +300,20 @@ class API {
     .then(t => t.reverse())
   }
 
+  bookmarkColorPallet(palletId, title) {
+    return this.post(`/color_pallets/${palletId}${title ? '?title=' + title : ''}`, {})
+  }
+
+  deleteBookmarkedColorPallet(palletId) {
+    return this.delete(`/color_pallets/${palletId}`, {})
+  }
+
   getProductById(id) {
     return this.get('/product/' + parseInt(id))
+  }
+
+  fetchAllColorPallets() {
+    return this.get('/all_color_pallets?min_popularity=1&max_popularity=1.3')
   }
 
   deleteOrderItem(item) {
